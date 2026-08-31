@@ -538,6 +538,21 @@ window.handlePatientSignup = handlePatientSignup;
 
 function loadSavedUserSession() {
   try {
+    const adminSaved = localStorage.getItem('dc_current_session');
+    if (adminSaved) {
+      const sess = JSON.parse(adminSaved);
+      if (sess && sess.role === 'admin') {
+        currentSession = sess;
+        const lbl = document.getElementById('admin-logged-in-label');
+        if (lbl) lbl.textContent = `Logged in as ${sess.name}`;
+        const disp = document.getElementById('admin-display-username');
+        if (disp) disp.textContent = sess.name;
+        setTimeout(() => {
+          showScreen('admin-panel');
+        }, 100);
+        return;
+      }
+    }
     const saved = localStorage.getItem('currentUser');
     if (saved) {
       const u = JSON.parse(saved);
