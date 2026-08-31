@@ -194,7 +194,7 @@
                     </div>
                   </div>
                   <p class="text-[10px] text-[var(--text-muted)]">Swipe right to go back to Patient login</p>
-                  <div class="space-y-2.5">
+                  <form id="admin-login-form" onsubmit="handleAdminLogin(event); return false;" class="space-y-2.5">
                     <div>
                       <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Admin Phone Number</label>
                       <input type="tel" id="admin-user-input" placeholder="Enter Phone Number (03103716116)" autocomplete="tel"
@@ -213,10 +213,10 @@
                         </button>
                       </div>
                     </div>
-                    <button id="btn-admin-login" onclick="handleAdminLogin(event)" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none">
+                    <button type="submit" id="btn-admin-login" onclick="handleAdminLogin(event)" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none cursor-pointer">
                       🔐 ADMIN LOGIN
                     </button>
-                  </div>
+                  </form>
                 </div>
               </div>
 
