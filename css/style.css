@@ -16,24 +16,24 @@ html, body {
 
 /* CSS variables defining theme palettes */
 :root {
-  --bg-color: #F8F9FA;
-  --text-color: #0F172A;
-  --accent-color: #00A86B;
-  --card-bg: #ffffff;
-  --input-bg: #F1F5F9;
-  --border-color: rgba(15, 23, 42, 0.08);
-  --primary-btn-bg: #00A86B;
-  --primary-btn-text: #ffffff;
-  --google-btn-bg: #ffffff;
-  --google-btn-text: #0F172A;
-  --modal-bg: rgba(255, 255, 255, 0.98);
-  --text-muted: #64748B;
-  --toggle-bg: #ffffff;
-  --toggle-border: rgba(15, 23, 42, 0.12);
-  --toggle-icon-color: #0F172A;
-  --wa-chat-bg: #efeae2;
-  --wa-bubble-sent-bg: #d9fdd3;
-  --wa-bubble-sent-text: #111b21;
+  --bg-color: #0A1128;
+  --text-color: #F8FAFC;
+  --accent-color: #00E5FF;
+  --card-bg: rgba(17, 28, 48, 0.85);
+  --input-bg: #0B132B;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --primary-btn-bg: #00E5FF;
+  --primary-btn-text: #0A1128;
+  --google-btn-bg: #0B132B;
+  --google-btn-text: #F8FAFC;
+  --modal-bg: rgba(10, 17, 40, 0.96);
+  --text-muted: #94A3B8;
+  --toggle-bg: #111a36;
+  --toggle-border: #00E5FF;
+  --toggle-icon-color: #00E5FF;
+  --wa-chat-bg: #0b141a;
+  --wa-bubble-sent-bg: #005c4b;
+  --wa-bubble-sent-text: #e9edef;
 }
 
 .theme-dark {
