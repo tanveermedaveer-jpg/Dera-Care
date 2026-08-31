@@ -1030,7 +1030,11 @@ function handleDoctorLogin() {
     }, 400);
   } catch (err) {
     console.error("Doctor Login Error:", err);
-    function renderGuaranteedAdminDashboard(adminPanel) {
+    showScreen('doctor-dashboard');
+  }
+}
+
+function renderGuaranteedAdminDashboard(adminPanel) {
   if (!adminPanel) return;
 
   adminPanel.style.cssText = 'position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; display: flex !important; flex-direction: column !important; background: #ffffff !important; color: #000000 !important; z-index: 999999 !important; overflow-y: auto !important; opacity: 1 !important; visibility: visible !important; transform: none !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; box-sizing: border-box !important;';
@@ -1167,9 +1171,8 @@ function handleDoctorLogin() {
     </div>
   `;
 }
-    showScreen('doctor-dashboard');
-  }
-}
+
+window.renderGuaranteedAdminDashboard = renderGuaranteedAdminDashboard;
 
 function handleAdminLogin(e) {
   if (e) {
