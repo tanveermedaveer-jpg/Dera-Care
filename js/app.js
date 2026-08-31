@@ -982,22 +982,25 @@ function handleDoctorLogin() {
 }
 
 function handleAdminLogin(e) {
-  if (e) e.preventDefault();
+  if (e) {
+    e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+  }
   try {
     const userEl = document.getElementById('admin-user-input');
     const passEl = document.getElementById('admin-pass-input');
-    const user = userEl ? userEl.value.trim() : "";
-    const pass = passEl ? passEl.value.trim() : "";
+    const phoneInput = userEl ? userEl.value.trim() : "";
+    const passwordInput = passEl ? passEl.value.trim() : "";
 
-    if (!user || !pass) {
+    if (!phoneInput || !passwordInput) {
       showToast('Missing Fields', 'Please enter your Admin Phone Number and Password.', 'error');
       return;
     }
 
-    const isMasterPhone = (user === '03103716116' && pass === 'Sadaf@9099');
-    const isMasterUser = (user === 'MSadaf' && pass === 'Sadaf@9099');
+    const isMasterPhone = (phoneInput === '03103716116' && passwordInput === 'Sadaf@9099');
+    const isMasterUser = (phoneInput === 'MSadaf' && passwordInput === 'Sadaf@9099');
     const creds = DC.getAdminCreds();
-    const isStored = (user === creds.username && pass === creds.password);
+    const isStored = (phoneInput === creds.username && passwordInput === creds.password);
 
     if (!isMasterPhone && !isMasterUser && !isStored) {
       showToast('Access Denied', 'Invalid Admin Phone Number or Password.', 'error');
@@ -1019,16 +1022,47 @@ function handleAdminLogin(e) {
     const disp = document.getElementById('admin-display-username');
     if (disp) disp.textContent = activeDisplay;
 
-    try { if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList(); } catch(e) {}
-    try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
-    try { if (typeof switchAdminTab === 'function') switchAdminTab('stats'); } catch(e) {}
+    // Force hide login container completely
+    const loginCard = document.getElementById('login-container');
+    if (loginCard) {
+      loginCard.style.setProperty('display', 'none', 'important');
+      loginCard.style.setProperty('opacity', '0', 'important');
+      loginCard.style.setProperty('pointer-events', 'none', 'important');
+      loginCard.style.setProperty('visibility', 'hidden', 'important');
+      loginCard.classList.add('translate-x-full', 'opacity-0', 'hidden');
+    }
 
-    showScreen('admin-panel');
-    showToast('Admin Access Granted ✓', `Welcome back, ${activeDisplay}! Control Panel Active.`, 'success');
+    // Force display admin panel directly with maximum specificity inline styles
+    const adminPanel = document.getElementById('admin-panel');
+    if (adminPanel) {
+      document.querySelectorAll('.app-view, #home-container, #doctor-dashboard, #terms-view, #privacy-view').forEach(el => {
+        el.style.setProperty('display', 'none', 'important');
+        el.style.setProperty('opacity', '0', 'important');
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.classList.add('translate-x-full', 'hidden');
+      });
+
+      adminPanel.style.setProperty('display', 'flex', 'important');
+      adminPanel.style.setProperty('visibility', 'visible', 'important');
+      adminPanel.style.setProperty('opacity', '1', 'important');
+      adminPanel.style.setProperty('transform', 'none', 'important');
+      adminPanel.style.setProperty('--tw-translate-x', '0px', 'important');
+      adminPanel.style.setProperty('--tw-translate-y', '0px', 'important');
+      adminPanel.style.setProperty('z-index', '99999', 'important');
+      adminPanel.style.setProperty('background', 'var(--bg-color)', 'important');
+      adminPanel.style.setProperty('color', 'var(--text-color)', 'important');
+      adminPanel.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+      adminPanel.classList.add('translate-x-0', 'opacity-100');
+    }
+
+    try { if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList(); } catch(err) {}
+    try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(err) {}
+    try { if (typeof switchAdminTab === 'function') switchAdminTab('stats'); } catch(err) {}
+
+    showToast('Admin Access Granted ✓', `Welcome Admin: 03103716116`, 'success');
   } catch (err) {
     console.error("Admin Login Error:", err);
     showScreen('admin-panel');
-    showToast("Admin Panel Active", "Switching to Control Panel...", "success");
   }
 }
 
