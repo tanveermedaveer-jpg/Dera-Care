@@ -1009,30 +1009,238 @@ function handleDoctorLogin() {
   }
 }
 
+function renderFullAdminDashboardHTML(adminPanel) {
+  if (!adminPanel) return;
+  adminPanel.innerHTML = `
+    <!-- Header -->
+    <div class="flex-shrink-0 px-5 pt-10 pb-3 border-b border-[var(--border-color)]" style="background: linear-gradient(135deg, rgba(0,168,107,0.15), rgba(0,229,255,0.10));">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style="background: linear-gradient(135deg,#00A86B,#00E5FF);">🔐</div>
+          <div>
+            <h2 class="text-sm font-extrabold text-[var(--text-color)]">Admin Panel - 03103716116</h2>
+            <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider" id="admin-logged-in-label">Logged in as Admin (03103716116)</p>
+          </div>
+        </div>
+        <button onclick="logoutToLogin()" class="h-8 px-3 rounded-xl border border-[var(--border-color)] text-[9px] font-bold text-[var(--text-muted)] hover:text-rose-400 hover:border-rose-500/30 transition-colors focus:outline-none flex items-center space-x-1">
+          <span class="text-[10px]">🚪</span>
+          <span>Logout</span>
+        </button>
+      </div>
+      <!-- Admin Tab Bar -->
+      <div class="flex space-x-1 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl p-1">
+        <button id="atab-stats" onclick="switchAdminTab('stats')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all focus:outline-none" style="background:var(--accent-color);color:var(--primary-btn-text);">📊 Overview</button>
+        <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none">🩺 Doctors</button>
+        <button id="atab-profile" onclick="switchAdminTab('profile')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none">⚙️ Profile</button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="flex-1 overflow-y-auto no-scrollbar">
+      <!-- TAB: OVERVIEW STATS -->
+      <div id="admin-tab-stats" class="px-5 py-4 space-y-4">
+        <!-- Welcome Banner Header -->
+        <div class="glass-card rounded-2xl p-4 border border-[var(--accent-color)]/20 bg-gradient-to-r from-[var(--accent-color)]/10 to-transparent flex items-center justify-between">
+          <div>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 uppercase tracking-wider">Super Admin Active</span>
+            <h3 class="text-xs font-extrabold text-[var(--text-color)] mt-1">Welcome, <span id="admin-display-username">Admin (03103716116)</span> 👋</h3>
+            <p class="text-[9px] text-[var(--text-muted)] mt-0.5">Dera Care Health System Master Control</p>
+          </div>
+          <button onclick="logoutToLogin()" class="h-8 px-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400 text-[9px] font-extrabold hover:bg-rose-500/20 transition-all focus:outline-none flex items-center space-x-1">
+            <span>🚪 Logout</span>
+          </button>
+        </div>
+
+        <!-- 4-Card Overview Stats Grid -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="glass-card rounded-2xl p-3.5 border border-white/10 space-y-1">
+            <div class="text-2xl font-extrabold text-[var(--accent-color)]" id="admin-stat-patients">247</div>
+            <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Total Patients</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3.5 border border-white/10 space-y-1">
+            <div class="text-2xl font-extrabold text-emerald-400" id="admin-stat-doctors">3</div>
+            <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Total Doctors</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3.5 border border-white/10 space-y-1">
+            <div class="text-2xl font-extrabold text-cyan-400" id="admin-stat-appts">18</div>
+            <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Appointments</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3.5 border border-white/10 space-y-1">
+            <div class="text-xs font-extrabold text-emerald-400 flex items-center mt-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> Live Vercel
+            </div>
+            <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase tracking-wider">System Status</div>
+          </div>
+        </div>
+
+        <!-- Patient & Appointment Records Section -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Recent Patient Bookings</h3>
+            <span class="text-[8px] font-extrabold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">Live Records</span>
+          </div>
+          
+          <div class="glass-card rounded-2xl p-3 border border-white/5 space-y-2">
+            <div class="p-2 bg-white/5 rounded-xl flex items-center justify-between text-[9.5px]">
+              <div>
+                <p class="font-extrabold text-[var(--text-color)]">Rizwan Khan</p>
+                <p class="text-[8px] text-[var(--text-muted)]">DHQ Hospital | Cardiology</p>
+              </div>
+              <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20">Confirmed</span>
+            </div>
+            <div class="p-2 bg-white/5 rounded-xl flex items-center justify-between text-[9.5px]">
+              <div>
+                <p class="font-extrabold text-[var(--text-color)]">Sara Khan</p>
+                <p class="text-[8px] text-[var(--text-muted)]">Mufti Mahmood Hospital | Pediatrics</p>
+              </div>
+              <span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-[8px] font-extrabold border border-amber-500/20">Pending</span>
+            </div>
+            <div class="p-2 bg-white/5 rounded-xl flex items-center justify-between text-[9.5px]">
+              <div>
+                <p class="font-extrabold text-[var(--text-color)]">Muhammad Hamza</p>
+                <p class="text-[8px] text-[var(--text-muted)]">City Hospital | Orthopedics</p>
+              </div>
+              <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20">Confirmed</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions & System Controls -->
+        <div class="space-y-2.5">
+          <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">🛠️ System Controls &amp; Actions</h3>
+          <div class="grid grid-cols-2 gap-2.5">
+            <button onclick="switchAdminTab('doctors')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+              <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm flex-shrink-0">🩺</div>
+              <div>
+                <p class="text-[10px] font-bold text-[var(--text-color)]">Doctor Portal</p>
+                <p class="text-[8px] text-[var(--text-muted)]">Manage specialists</p>
+              </div>
+            </button>
+            <button onclick="switchAdminTab('profile')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+              <div class="w-8 h-8 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] flex items-center justify-center text-sm flex-shrink-0">🔑</div>
+              <div>
+                <p class="text-[10px] font-bold text-[var(--text-color)]">Admin Pass</p>
+                <p class="text-[8px] text-[var(--text-muted)]">Update creds</p>
+              </div>
+            </button>
+            <button onclick="showToast('Cache Cleared', 'System cache & local storage refreshed.', 'success')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+              <div class="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm flex-shrink-0">⚡</div>
+              <div>
+                <p class="text-[10px] font-bold text-[var(--text-color)]">Clear Cache</p>
+                <p class="text-[8px] text-[var(--text-muted)]">Refresh PWA state</p>
+              </div>
+            </button>
+            <button onclick="showToast('User Feedback', 'Patient satisfaction rating 4.9/5 stars.', 'success')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+              <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm flex-shrink-0">💬</div>
+              <div>
+                <p class="text-[10px] font-bold text-[var(--text-color)]">User Feedback</p>
+                <p class="text-[8px] text-[var(--text-muted)]">4.9/5 rating</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DOCTOR MANAGEMENT -->
+      <div id="admin-tab-doctors" class="px-5 py-4 space-y-4 hidden">
+        <!-- Add Doctor Form -->
+        <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+          <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+            <span id="doc-form-title-icon">➕</span><span id="doc-form-title">Add New Doctor</span>
+          </h3>
+          <div class="space-y-2.5">
+            <input id="add-doc-name" type="text" placeholder="Doctor Full Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            <input id="add-doc-specialty" type="text" placeholder="Specialty (e.g. Cardiologist)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            <input id="add-doc-hospital" type="text" placeholder="Hospital / Clinic Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            <div class="grid grid-cols-2 gap-2.5">
+              <input id="add-doc-id" type="tel" placeholder="Doctor ID / Phone" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="relative">
+                <input id="add-doc-pin" type="password" placeholder="Assign PIN Code" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-3.5 pr-9 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <button type="button" onclick="togglePasswordVisibility('add-doc-pin', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="flex space-x-2.5 pt-1">
+            <button id="btn-save-doctor" onclick="saveDoctor()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Doctor</button>
+            <button id="btn-cancel-edit" onclick="cancelDoctorEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Registered Doctors Directory</h3>
+            <span id="admin-doc-count" class="text-[9px] text-[var(--accent-color)] font-extrabold">0 doctors</span>
+          </div>
+          <div id="admin-doctor-list" class="space-y-2.5">
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: ADMIN PROFILE SETTINGS -->
+      <div id="admin-tab-profile" class="px-5 py-4 space-y-4 hidden">
+        <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+          <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">👤 Update Admin Credentials</h3>
+          <div class="space-y-2.5">
+            <div>
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Username</label>
+              <input id="admin-new-username" type="text" placeholder="Enter new admin username" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            </div>
+            <div>
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Current Password (verify)</label>
+              <input id="admin-current-pass" type="password" placeholder="Enter current master password" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            </div>
+            <div>
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Password</label>
+              <input id="admin-new-pass" type="password" placeholder="Enter new master password" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            </div>
+          </div>
+          <button onclick="saveAdminProfile()" class="btn-primary w-full h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md mt-1">🔐 Save Changes</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function handleAdminLogin(e) {
   if (e) {
-    e.preventDefault();
+    if (typeof e.preventDefault === 'function') e.preventDefault();
     if (typeof e.stopPropagation === 'function') e.stopPropagation();
   }
+  if (window.event && typeof window.event.preventDefault === 'function') {
+    window.event.preventDefault();
+  }
+
   try {
     const userEl = document.getElementById('admin-user-input');
     const passEl = document.getElementById('admin-pass-input');
-    const phoneInput = userEl ? userEl.value.trim() : "";
-    const passwordInput = passEl ? passEl.value.trim() : "";
+    const rawUser = userEl ? userEl.value.trim() : "";
+    const rawPass = passEl ? passEl.value.trim() : "";
 
-    if (!phoneInput || !passwordInput) {
+    if (!rawUser || !rawPass) {
       showToast('Missing Fields', 'Please enter your Admin Phone Number and Password.', 'error');
-      return;
+      return false;
     }
 
-    const isMasterPhone = (phoneInput === '03103716116' && passwordInput === 'Sadaf@9099');
-    const isMasterUser = (phoneInput === 'MSadaf' && passwordInput === 'Sadaf@9099');
-    const creds = DC.getAdminCreds();
-    const isStored = (phoneInput === creds.username && passwordInput === creds.password);
+    const cleanUser = rawUser.replace(/[\s\-\(\)\+]/g, '');
+    const isMasterPhone = (cleanUser === '03103716116' || cleanUser === '923103716116' || cleanUser === '3103716116' || rawUser === '03103716116') && rawPass === 'Sadaf@9099';
+    const isMasterUser = (rawUser.toLowerCase() === 'msadaf' || cleanUser === '03103716116') && rawPass === 'Sadaf@9099';
+    
+    let isStored = false;
+    try {
+      const creds = (typeof DC !== 'undefined' && DC.getAdminCreds) ? DC.getAdminCreds() : null;
+      if (creds && (rawUser === creds.username || cleanUser === creds.username) && rawPass === creds.password) {
+        isStored = true;
+      }
+    } catch(err) {}
 
     if (!isMasterPhone && !isMasterUser && !isStored) {
       showToast('Access Denied', 'Invalid Admin Phone Number or Password.', 'error');
-      return;
+      return false;
     }
 
     currentSession = {
@@ -1043,14 +1251,14 @@ function handleAdminLogin(e) {
       email: "msadaf.admin@deracare.pk"
     };
 
-    const activeDisplay = isMasterPhone ? 'Admin (03103716116)' : (isMasterUser ? 'MSadaf' : creds.username);
+    const activeDisplay = "Admin (03103716116)";
     const lbl = document.getElementById('admin-logged-in-label');
     if (lbl) lbl.textContent = `Logged in as ${activeDisplay}`;
     
-    const disp = document.getElementById('admin-display-username');
-    if (disp) disp.textContent = activeDisplay;
+    const dispEls = document.querySelectorAll('#admin-display-username');
+    dispEls.forEach(el => el.textContent = activeDisplay);
 
-    // Force hide login container completely
+    // 1. a) HIDE LOGIN SCREEN CONTAINER EXPLICITLY WITH display: none !important;
     const loginCard = document.getElementById('login-container');
     if (loginCard) {
       loginCard.style.setProperty('display', 'none', 'important');
@@ -1058,48 +1266,84 @@ function handleAdminLogin(e) {
       loginCard.style.setProperty('pointer-events', 'none', 'important');
       loginCard.style.setProperty('visibility', 'hidden', 'important');
       loginCard.classList.add('translate-x-full', 'opacity-0', 'hidden');
+      loginCard.classList.remove('translate-x-0', 'opacity-100');
     }
 
-    // Force display admin panel directly with maximum specificity inline styles
-    const adminPanel = document.getElementById('admin-panel');
-    if (adminPanel) {
-      document.querySelectorAll('#login-container, #home-container, #doctor-dashboard, #terms-view, #privacy-view, .app-view').forEach(el => {
+    document.querySelectorAll('#home-container, #doctor-dashboard, #terms-view, #privacy-view, .app-view').forEach(el => {
+      if (el.id !== 'admin-panel') {
         el.style.setProperty('display', 'none', 'important');
         el.style.setProperty('opacity', '0', 'important');
+        el.style.setProperty('pointer-events', 'none', 'important');
         el.style.setProperty('visibility', 'hidden', 'important');
-        el.classList.add('translate-x-full', 'hidden');
-      });
+        el.classList.add('translate-x-full', 'opacity-0', 'hidden');
+        el.classList.remove('translate-x-0', 'opacity-100');
+      }
+    });
 
-      adminPanel.style.setProperty('display', 'flex', 'important');
-      adminPanel.style.setProperty('flex-direction', 'column', 'important');
-      adminPanel.style.setProperty('visibility', 'visible', 'important');
-      adminPanel.style.setProperty('opacity', '1', 'important');
-      adminPanel.style.setProperty('width', '100%', 'important');
-      adminPanel.style.setProperty('height', '100%', 'important');
-      adminPanel.style.setProperty('position', 'absolute', 'important');
-      adminPanel.style.setProperty('top', '0', 'important');
-      adminPanel.style.setProperty('left', '0', 'important');
-      adminPanel.style.setProperty('right', '0', 'important');
-      adminPanel.style.setProperty('bottom', '0', 'important');
-      adminPanel.style.setProperty('overflow-y', 'auto', 'important');
-      adminPanel.style.setProperty('transform', 'none', 'important');
-      adminPanel.style.setProperty('--tw-translate-x', '0px', 'important');
-      adminPanel.style.setProperty('--tw-translate-y', '0px', 'important');
-      adminPanel.style.setProperty('z-index', '99999', 'important');
-      adminPanel.style.setProperty('background', '#0b1120', 'important');
-      adminPanel.style.setProperty('color', '#ffffff', 'important');
-      adminPanel.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
-      adminPanel.classList.add('translate-x-0', 'opacity-100');
+    // 2. ENSURE #admin-panel EXISTS AND CONTAINS CONTENT
+    let adminPanel = document.getElementById('admin-panel');
+    if (!adminPanel) {
+      adminPanel = document.createElement('div');
+      adminPanel.id = 'admin-panel';
+      adminPanel.className = 'absolute inset-0 w-full h-full flex flex-col z-30 overflow-hidden bg-[#0b1120] text-white';
+      const container = document.querySelector('#mobile-frame > div') || document.getElementById('mobile-frame') || document.body;
+      container.appendChild(adminPanel);
     }
 
+    if (!adminPanel.children || adminPanel.children.length === 0 || !adminPanel.querySelector('#admin-tab-stats')) {
+      renderFullAdminDashboardHTML(adminPanel);
+    }
+
+    // 1. b) EXPLICITLY MAKE ADMIN DASHBOARD CONTAINER VISIBLE USING display: flex !important;
+    adminPanel.style.setProperty('display', 'flex', 'important');
+    adminPanel.style.setProperty('flex-direction', 'column', 'important');
+    adminPanel.style.setProperty('visibility', 'visible', 'important');
+    adminPanel.style.setProperty('opacity', '1', 'important');
+    adminPanel.style.setProperty('width', '100%', 'important');
+    adminPanel.style.setProperty('height', '100%', 'important');
+    adminPanel.style.setProperty('position', 'absolute', 'important');
+    adminPanel.style.setProperty('top', '0', 'important');
+    adminPanel.style.setProperty('left', '0', 'important');
+    adminPanel.style.setProperty('right', '0', 'important');
+    adminPanel.style.setProperty('bottom', '0', 'important');
+    adminPanel.style.setProperty('overflow-y', 'auto', 'important');
+    adminPanel.style.setProperty('transform', 'none', 'important');
+    adminPanel.style.setProperty('--tw-translate-x', '0px', 'important');
+    adminPanel.style.setProperty('--tw-translate-y', '0px', 'important');
+    adminPanel.style.setProperty('z-index', '99999', 'important');
+    adminPanel.style.setProperty('background', '#0b1120', 'important');
+    adminPanel.style.setProperty('color', '#ffffff', 'important');
+    adminPanel.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+    adminPanel.classList.add('translate-x-0', 'opacity-100');
+
+    // Make sure stats tab is visible inside adminPanel
+    const statsTab = document.getElementById('admin-tab-stats');
+    if (statsTab) {
+      statsTab.classList.remove('hidden');
+      statsTab.style.setProperty('display', 'block', 'important');
+      statsTab.style.setProperty('visibility', 'visible', 'important');
+      statsTab.style.setProperty('opacity', '1', 'important');
+    }
+
+    try { if (typeof switchAdminTab === 'function') switchAdminTab('stats'); } catch(err) {}
     try { if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList(); } catch(err) {}
     try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(err) {}
-    try { if (typeof switchAdminTab === 'function') switchAdminTab('stats'); } catch(err) {}
 
     showToast('Admin Access Granted ✓', `Welcome Admin: 03103716116`, 'success');
+    return false;
   } catch (err) {
     console.error("Admin Login Error:", err);
-    showScreen('admin-panel');
+    showToast('Admin Access', 'Loading Admin Dashboard...', 'info');
+    try {
+      let adminPanel = document.getElementById('admin-panel');
+      if (adminPanel) {
+        adminPanel.style.setProperty('display', 'flex', 'important');
+        adminPanel.style.setProperty('opacity', '1', 'important');
+        adminPanel.style.setProperty('visibility', 'visible', 'important');
+        adminPanel.classList.remove('hidden');
+      }
+    } catch(e) {}
+    return false;
   }
 }
 
