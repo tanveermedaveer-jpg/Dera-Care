@@ -1138,54 +1138,75 @@ function cancelDoctorEdit() {
 }
 
 function renderAdminDoctorList() {
-  const doctors = DC.getDoctors();
-  const container = document.getElementById('admin-doctor-list');
-  const countEl = document.getElementById('admin-doc-count');
-  if (!container) return;
-  if (countEl) countEl.textContent = `${doctors.length} doctor${doctors.length !== 1 ? 's' : ''}`;
-  if (doctors.length === 0) {
-    container.innerHTML = `<div class="text-center py-8 text-[var(--text-muted)]">
-      <div class="text-3xl mb-2">🩺</div>
-      <p class="text-[10px] font-bold">No doctors registered yet.</p>
-      <p class="text-[9px]">Use the form above to add your first doctor.</p>
-    </div>`;
-    return;
+  try {
+    const doctors = DC.getDoctors() || [];
+    const container = document.getElementById('admin-doctor-list');
+    const countEl = document.getElementById('admin-doc-count');
+    if (!container) return;
+    if (countEl) countEl.textContent = `${doctors.length} doctor${doctors.length !== 1 ? 's' : ''}`;
+    if (doctors.length === 0) {
+      container.innerHTML = `<div class="text-center py-8 text-[var(--text-muted)]">
+        <div class="text-3xl mb-2">🩺</div>
+        <p class="text-[10px] font-bold">No doctors registered yet.</p>
+        <p class="text-[9px]">Use the form above to add your first doctor.</p>
+      </div>`;
+      return;
+    }
+    container.innerHTML = doctors.map((doc) => {
+      if (!doc) return '';
+      const docName = doc.name || 'Doctor Specialist';
+      const docSpec = doc.specialty || 'General';
+      const docHosp = doc.hospital || 'DHQ Hospital';
+      const docId = doc.docId || 'ID-000';
+      const initials = docName.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0,2).toUpperCase() || 'DR';
+
+      return `
+        <div class="glass-card p-3.5 rounded-2xl border border-white/5 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2.5">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-extrabold flex-shrink-0"
+                   style="background:linear-gradient(135deg,#00A86B,#00E5FF);color:#fff;">
+                ${initials}
+              </div>
+              <div>
+                <p class="text-[11px] font-extrabold text-[var(--text-color)]">${docName}</p>
+                <p class="text-[9px] text-[var(--text-muted)]">${docSpec} · ${docHosp}</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-1 border-t border-[var(--border-color)]">
+            <div class="flex space-x-3">
+              <span class="text-[9px] text-[var(--text-muted)]">ID: <span class="font-extrabold text-[var(--text-color)]">${docId}</span></span>
+              <span class="text-[9px] text-[var(--text-muted)]">PIN: <span class="font-extrabold text-[var(--text-color)]">••••</span></span>
+            </div>
+            <div class="flex space-x-1.5">
+              <button onclick="editDoctor('${docId}')" class="h-7 px-2.5 rounded-lg bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[8px] font-extrabold border border-[var(--accent-color)]/20 hover:bg-[var(--accent-color)]/20 transition-colors focus:outline-none">✏️ Edit</button>
+              <button onclick="deleteDoctor('${docId}')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">🗑 Delete</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error("renderAdminDoctorList error:", err);
+    const container = document.getElementById('admin-doctor-list');
+    if (container) {
+      container.innerHTML = `<div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold text-center">⚠️ Doctor list load exception. Showing default view.</div>`;
+    }
   }
-  container.innerHTML = doctors.map((doc) => `
-    <div class="glass-card p-3.5 rounded-2xl border border-white/5 space-y-2">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-extrabold flex-shrink-0"
-               style="background:linear-gradient(135deg,#00A86B,#00E5FF);color:#fff;">
-            ${doc.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}
-          </div>
-          <div>
-            <p class="text-[11px] font-extrabold text-[var(--text-color)]">${doc.name}</p>
-            <p class="text-[9px] text-[var(--text-muted)]">${doc.specialty || '—'} · ${doc.hospital || '—'}</p>
-          </div>
-        </div>
-      </div>
-      <div class="flex items-center justify-between pt-1 border-t border-[var(--border-color)]">
-        <div class="flex space-x-3">
-          <span class="text-[9px] text-[var(--text-muted)]">ID: <span class="font-extrabold text-[var(--text-color)]">${doc.docId}</span></span>
-          <span class="text-[9px] text-[var(--text-muted)]">PIN: <span class="font-extrabold text-[var(--text-color)]">••••</span></span>
-        </div>
-        <div class="flex space-x-1.5">
-          <button onclick="editDoctor('${doc.docId}')" class="h-7 px-2.5 rounded-lg bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[8px] font-extrabold border border-[var(--accent-color)]/20 hover:bg-[var(--accent-color)]/20 transition-colors focus:outline-none">✏️ Edit</button>
-          <button onclick="deleteDoctor('${doc.docId}')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">🗑 Delete</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
 }
 
 function updateAdminStats() {
-  const docCount = DC.getDoctors().length;
-  const patientCount = Math.max(247, DC.getPatients().length);
-  const docEl = document.getElementById('admin-stat-doctors');
-  const patientEl = document.getElementById('admin-stat-patients');
-  if (docEl) docEl.textContent = docCount;
-  if (patientEl) patientEl.textContent = patientCount;
+  try {
+    const docCount = (DC.getDoctors() || []).length;
+    const patientCount = Math.max(247, (DC.getPatients() || []).length);
+    const docEl = document.getElementById('admin-stat-doctors');
+    const patientEl = document.getElementById('admin-stat-patients');
+    if (docEl) docEl.textContent = docCount;
+    if (patientEl) patientEl.textContent = patientCount;
+  } catch(err) {
+    console.error("updateAdminStats error:", err);
+  }
 }
 
 function saveAdminProfile() {
