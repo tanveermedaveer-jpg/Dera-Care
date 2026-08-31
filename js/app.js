@@ -1063,7 +1063,7 @@ function handleAdminLogin(e) {
     // Force display admin panel directly with maximum specificity inline styles
     const adminPanel = document.getElementById('admin-panel');
     if (adminPanel) {
-      document.querySelectorAll('.app-view, #home-container, #doctor-dashboard, #terms-view, #privacy-view').forEach(el => {
+      document.querySelectorAll('#login-container, #home-container, #doctor-dashboard, #terms-view, #privacy-view, .app-view').forEach(el => {
         el.style.setProperty('display', 'none', 'important');
         el.style.setProperty('opacity', '0', 'important');
         el.style.setProperty('visibility', 'hidden', 'important');
@@ -1071,8 +1071,17 @@ function handleAdminLogin(e) {
       });
 
       adminPanel.style.setProperty('display', 'flex', 'important');
+      adminPanel.style.setProperty('flex-direction', 'column', 'important');
       adminPanel.style.setProperty('visibility', 'visible', 'important');
       adminPanel.style.setProperty('opacity', '1', 'important');
+      adminPanel.style.setProperty('width', '100%', 'important');
+      adminPanel.style.setProperty('height', '100%', 'important');
+      adminPanel.style.setProperty('position', 'absolute', 'important');
+      adminPanel.style.setProperty('top', '0', 'important');
+      adminPanel.style.setProperty('left', '0', 'important');
+      adminPanel.style.setProperty('right', '0', 'important');
+      adminPanel.style.setProperty('bottom', '0', 'important');
+      adminPanel.style.setProperty('overflow-y', 'auto', 'important');
       adminPanel.style.setProperty('transform', 'none', 'important');
       adminPanel.style.setProperty('--tw-translate-x', '0px', 'important');
       adminPanel.style.setProperty('--tw-translate-y', '0px', 'important');
