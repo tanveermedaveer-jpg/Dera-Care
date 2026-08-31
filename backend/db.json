@@ -1,0 +1,77 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Rizwan Khan",
+      "email": "rizwan.khan@gmail.com",
+      "password": "Password123",
+      "role": "patient",
+      "createdAt": "2026-08-31T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Tanveer Ahmed",
+      "email": "tanveer.dev@gmail.com",
+      "password": "Password123",
+      "role": "patient",
+      "createdAt": "2026-08-31T10:30:00.000Z"
+    }
+  ],
+  "doctors": [
+    {
+      "id": 1,
+      "name": "Dr. Saifullah Khan",
+      "specialty": "Cardiology",
+      "hospital": "DHQ Hospital D.I. Khan",
+      "fee": 1500,
+      "avatar": "SK",
+      "rating": 4.9,
+      "credentials": "MBBS, FCPS - Cardiology",
+      "timings": "Mon - Sat: 04:00 PM - 09:00 PM",
+      "about": "Dr. Saifullah is a leading cardiovascular expert in KP, specializing in non-invasive cardiology and advanced hypertensive care.",
+      "phone": "923001234561",
+      "isSelfSubmitted": false
+    },
+    {
+      "id": 2,
+      "name": "Dr. Ayesha Malik",
+      "specialty": "Pediatrics",
+      "hospital": "Mufti Mahmood Memorial Hospital",
+      "fee": 1200,
+      "avatar": "AM",
+      "rating": 4.8,
+      "credentials": "MBBS, FCPS - Pediatrics",
+      "timings": "Mon - Fri: 02:00 PM - 06:00 PM",
+      "about": "Dr. Ayesha Malik provides complete child development checkups, pediatric critical care, and immunization counseling.",
+      "phone": "923001234562",
+      "isSelfSubmitted": false
+    },
+    {
+      "id": 3,
+      "name": "Dr. Zafar Iqbal",
+      "specialty": "Orthopedics",
+      "hospital": "City Hospital D.I. Khan",
+      "fee": 1000,
+      "avatar": "ZI",
+      "rating": 4.7,
+      "credentials": "MBBS, MS - Orthopedic Surgery",
+      "timings": "Mon - Sat: 05:00 PM - 09:00 PM",
+      "about": "Dr. Zafar Iqbal specializes in orthopedic trauma, joint replacements, complex fractures, and athletic rehabilitation.",
+      "phone": "923001234563",
+      "isSelfSubmitted": false
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "doctor": "Dr. Saifullah Khan",
+      "hospital": "DHQ Hospital",
+      "specialty": "Cardiology",
+      "date": "2026-08-31",
+      "time": "10:30 AM",
+      "avatar": "SK",
+      "patientName": "Rizwan Khan",
+      "patientPhone": "0300 9876543"
+    }
+  ]
+}

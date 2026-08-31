@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dera Care - Premium Healthcare Login</title>
+  <!-- Load allowlisted Tailwind CDN -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <!-- External stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0b0f19] h-screen w-screen flex items-center justify-center p-2 sm:p-4 antialiased overflow-hidden m-0">
+
+  <!-- Background glowing ambient blobs -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-[30%] -right-[20%] w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-full bg-[#00E5FF]/5 blur-[120px]"></div>
+    <div class="absolute -bottom-[30%] -left-[20%] w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-full bg-[#00A86B]/8 opacity-80 blur-[150px]"></div>
+  </div>
+
+  <!-- Centered Mobile Viewport Frame -->
+  <div id="mobile-frame" class="relative w-[410px] max-w-full h-[844px] max-h-[92vh] my-auto mx-auto bg-[var(--bg-color)] text-[var(--text-color)] rounded-[36px] shadow-[0_25px_65px_-10px_rgba(0,0,0,0.8)] border border-[var(--border-color)] flex flex-col justify-between overflow-hidden z-10 transition-all duration-500 ease-in-out">
+    
+    <!-- Screen Accent Blobs -->
+    <div class="absolute -top-[15%] -right-[15%] w-[250px] h-[250px] rounded-full bg-[#00E5FF]/10 blur-[50px] pointer-events-none"></div>
+    <div class="absolute bottom-[10%] -left-[15%] w-[250px] h-[250px] rounded-full bg-[#00A86B]/10 blur-[50px] pointer-events-none"></div>
+
+    <!-- Mobile Top Status Bar -->
+    <header class="w-full flex justify-between items-center text-[11px] font-semibold text-[var(--text-color)] opacity-70 pt-4 px-6 z-30 select-none">
+      <div id="phone-time">12:38</div>
+      <div class="flex items-center space-x-1.5">
+        <!-- Cellular -->
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+          <path d="M3 21.5h3.6V16H3v5.5zm5.1 0h3.6V12H8.1v9.5zm5.2 0h3.6V8h-3.6v13.5zm5.3 0H21v-17h-2.6v17z" />
+        </svg>
+        <!-- Wifi -->
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+          <path d="M12 21a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM4.8 13.8a10 10 0 0 1 14.4 0l-1.4 1.4a8 8 0 0 0-11.6 0l-1.4-1.4zM1.3 10.3a15 15 0 0 1 21.4 0l-1.4 1.4a13 13 0 0 0-18.6 0L1.3 10.3z"/>
+        </svg>
+        <!-- Battery -->
+        <div class="relative w-5.5 h-3 border border-[var(--text-color)] opacity-70 rounded-[3px] p-[1px] flex items-center">
+          <div class="w-full h-full bg-[var(--text-color)] rounded-[1px]"></div>
+          <div class="absolute -right-[3px] top-1/2 -translate-y-1/2 w-[2px] h-[4px] bg-[var(--text-color)] rounded-r-[1px]"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Simulated Phone notch -->
+    <div class="absolute top-3 left-1/2 -translate-x-1/2 h-5 w-24 bg-black rounded-full z-40"></div>
+
+    <!-- MAIN INTERACTIVE CONTAINER -->
+    <div class="flex-1 flex flex-col justify-between z-20 relative overflow-hidden">
+      
+      <!-- SCREEN 1: LOGIN SCREEN -->
+      <div id="login-container" class="absolute inset-0 flex flex-col transition-all duration-500 ease-out z-20 overflow-y-auto no-scrollbar">
+        <!-- Scrollable inner wrapper -->
+        <div class="flex flex-col h-full justify-between px-6 pt-3 pb-4 space-y-0">
+
+          <!-- Top Action Row (Theme Switcher + Skip Button) -->
+          <div class="flex justify-between items-center pt-1 select-none flex-shrink-0">
+            <button class="btn-theme-toggle p-2 rounded-xl bg-[var(--toggle-bg)] border border-[var(--toggle-border)] text-[var(--toggle-icon-color)] shadow-sm hover:border-[var(--accent-color)]/50 transition-colors flex items-center justify-center focus:outline-none">
+              <svg class="w-4 h-4 text-[var(--toggle-icon-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+              </svg>
+            </button>
+            <button id="btn-skip" class="text-[var(--text-muted)] hover:text-[var(--text-color)] text-[13px] font-semibold transition-colors hover:underline flex items-center focus:outline-none">
+              Skip &rarr;
+            </button>
+          </div>
+
+          <!-- Header & Branding Section -->
+          <div class="flex flex-col items-center text-center space-y-3 pt-4 flex-shrink-0">
+            <!-- Logo Emblem Frame -->
+            <div class="relative w-[68px] h-[68px] flex items-center justify-center">
+              <div class="absolute -inset-1.5 rounded-2xl bg-cyan-500/20 pulse-ring-element"></div>
+              <div class="w-[68px] h-[68px] rounded-2xl bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] p-[2px] shadow-[0_0_20px_rgba(0,229,255,0.25)] flex items-center justify-center relative z-10">
+                <div class="w-full h-full rounded-[14px] bg-[var(--bg-color)] flex items-center justify-center">
+                  <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00E5FF" />
+                        <stop offset="100%" stop-color="#00A86B" />
+                      </linearGradient>
+                      <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                      </filter>
+                    </defs>
+                    <path d="M50 36 C 50 31, 38 19, 27 27 C 16 35, 25 53, 50 76 C 75 53, 84 35, 73 27 C 62 19, 50 31, 50 36 Z" fill="url(#heartGrad)" opacity="0.8" filter="url(#logoGlow)" />
+                    <path d="M22 50 H 38 L 43 32 L 48 68 L 53 40 L 57 56 L 61 48 L 65 50 H 78" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#logoGlow)" />
+                    <circle r="3" fill="#FFFFFF" filter="url(#logoGlow)">
+                      <animateMotion path="M22 50 H 38 L 43 32 L 48 68 L 53 40 L 57 56 L 61 48 L 65 50 H 78" dur="2.8s" repeatCount="indefinite" />
+                    </circle>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- Typography Header -->
+            <div class="space-y-0.5">
+              <h1 class="text-[26px] font-extrabold text-[var(--text-color)] tracking-wide">Dera Care</h1>
+              <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-[0.16em]">Smart Healthcare Ecosystem for D.I. Khan</p>
+            </div>
+          </div>
+
+          <!-- ════════════════════════════════════════════════════
+               SWIPE CAROUSEL: Patient · Doctor · Admin
+          ════════════════════════════════════════════════════ -->
+          <div id="login-carousel-clip" class="mt-5 overflow-hidden rounded-[24px] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] flex-shrink-0" style="touch-action:pan-y;">
+            <div id="login-carousel-track" class="flex will-change-transform" style="transform:translateX(0%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);">
+
+              <!-- ── SLIDE 0: PATIENT (Login only by default) ──── -->
+              <div class="flex-shrink-0 w-full glass-card rounded-[24px] p-5">
+                <div class="space-y-4">
+                  <!-- Header row with dots -->
+                  <div class="flex items-center justify-between">
+                    <h2 class="text-[17px] font-bold text-[var(--text-color)] tracking-tight">Welcome Back 👋</h2>
+                    <div class="flex items-center space-x-1.5 cursor-pointer">
+                      <div onclick="window.carouselGoToSlide(0)" class="w-4 h-1.5 rounded-full transition-all duration-300 cursor-pointer" id="dot-0" style="background:var(--accent-color);" title="Patient Login"></div>
+                      <div onclick="window.carouselGoToSlide(1)" class="w-1.5 h-1.5 rounded-full transition-all duration-300 bg-[var(--text-muted)]/40 cursor-pointer" id="dot-1" title="Doctor Portal"></div>
+                      <div onclick="window.carouselGoToSlide(2)" class="w-1.5 h-1.5 rounded-full transition-all duration-300 bg-[var(--text-muted)]/40 cursor-pointer" id="dot-2" title="Admin Access"></div>
+                    </div>
+                  </div>
+                  <p class="text-[10px] text-[var(--text-muted)] -mt-2 leading-relaxed">Sign in to your Dera Care account</p>
+
+                  <!-- LOGIN fields -->
+                  <div class="space-y-2.5">
+                    <input type="email" id="patient-login-email" placeholder="Enter your email or username" autocomplete="username"
+                      class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                    <div class="relative">
+                      <input type="password" id="patient-login-pass" placeholder="Enter your password" autocomplete="current-password"
+                        class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                      <button type="button" onclick="togglePasswordVisibility('patient-login-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <button onclick="handlePatientLogin()" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none">
+                      LOGIN &rarr;
+                    </button>
+                  </div>
+
+                  <!-- Register link -->
+                  <p class="text-center text-[11px] text-[var(--text-muted)] pt-0.5">
+                    Don't have an account?
+                    <button onclick="openRegisterView()" class="font-extrabold text-[var(--accent-color)] hover:underline focus:outline-none ml-0.5 transition-colors">Register here</button>
+                  </p>
+                </div>
+              </div>
+
+              <!-- ── SLIDE 1: DOCTOR ─────────────────────────── -->
+              <div class="flex-shrink-0 w-full glass-card rounded-[24px] p-5">
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2.5">
+                      <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#00A86B,#00E5FF);">🩺</div>
+                      <div>
+                        <h2 class="text-base font-bold text-[var(--text-color)] leading-tight">Doctor Portal</h2>
+                        <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Credentials by Admin only</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center space-x-1.5 cursor-pointer">
+                      <div onclick="window.carouselGoToSlide(0)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Patient Login"></div>
+                      <div onclick="window.carouselGoToSlide(1)" class="w-4 h-1.5 rounded-full bg-[var(--accent-color)] cursor-pointer" title="Doctor Portal"></div>
+                      <div onclick="window.carouselGoToSlide(2)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Admin Access"></div>
+                    </div>
+                  </div>
+                  <p class="text-[10px] text-[var(--text-muted)]">Swipe left for Admin · Swipe right to go back</p>
+                  <div class="space-y-2.5">
+                    <div>
+                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Doctor ID / Phone</label>
+                      <input type="tel" id="doctor-id-input" placeholder="Enter your phone number" autocomplete="username"
+                        class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                    </div>
+                    <div>
+                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">PIN Code</label>
+                      <div class="relative mt-1.5">
+                        <input type="password" id="doctor-pin-input" placeholder="Enter your 4-digit PIN" autocomplete="current-password"
+                          class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('doctor-pin-input', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle PIN Visibility">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <button onclick="handleDoctorLogin()" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none">
+                      🩺 LOGIN AS DOCTOR
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ── SLIDE 2: ADMIN ──────────────────────────── -->
+              <div class="flex-shrink-0 w-full glass-card rounded-[24px] p-5">
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2.5">
+                      <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#00A86B,#00E5FF);">🔐</div>
+                      <div>
+                        <h2 class="text-base font-bold text-[var(--text-color)] leading-tight">Admin Access</h2>
+                        <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Restricted · Authorized Only</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center space-x-1.5 cursor-pointer">
+                      <div onclick="window.carouselGoToSlide(0)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Patient Login"></div>
+                      <div onclick="window.carouselGoToSlide(1)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Doctor Portal"></div>
+                      <div onclick="window.carouselGoToSlide(2)" class="w-4 h-1.5 rounded-full bg-[var(--accent-color)] cursor-pointer" title="Admin Access"></div>
+                    </div>
+                  </div>
+                  <p class="text-[10px] text-[var(--text-muted)]">Swipe right to go back to Patient login</p>
+                  <div class="space-y-2.5">
+                    <div>
+                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Admin Username</label>
+                      <input type="text" id="admin-user-input" placeholder="Enter admin username" autocomplete="username"
+                        class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                    </div>
+                    <div>
+                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Master Password</label>
+                      <div class="relative mt-1.5">
+                        <input type="password" id="admin-pass-input" placeholder="Enter master password" autocomplete="current-password"
+                          class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('admin-pass-input', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <button onclick="handleAdminLogin()" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none">
+                      🔐 ADMIN LOGIN
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- End Swipe Carousel -->
+
+          <!-- Social Auth & Trust Section (always visible below carousel) -->
+          <div class="space-y-3 pt-5 flex-shrink-0">
+            <!-- OR divider -->
+            <div class="flex items-center space-x-3">
+              <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
+              <span class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-widest">or continue with</span>
+              <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
+            </div>
+
+            <!-- Google Button -->
+            <button id="btn-google" onclick="alert('Google Accounts Selector: Connected to device accounts.'); showScreen('patient-dashboard');" class="w-full h-[50px] rounded-xl bg-[var(--google-btn-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--google-btn-text)] text-xs font-semibold flex items-center justify-center transition-all duration-300 focus:outline-none">
+              <svg class="w-5 h-5 mr-2.5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              <span>Continue with Google</span>
+            </button>
+
+            <!-- Apple Button -->
+            <button id="btn-apple" onclick="alert('Apple ID Authenticated.'); showScreen('patient-dashboard');" class="w-full h-[50px] rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] text-xs font-semibold flex items-center justify-center transition-all duration-300 focus:outline-none" style="background:var(--input-bg);">
+              <svg class="w-5 h-5 mr-2.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <span>Sign in with Apple</span>
+            </button>
+
+            <!-- Legal & Trust -->
+            <div class="flex flex-col items-center space-y-3 pt-1">
+              <p class="text-[10.5px] text-[var(--text-muted)] text-center leading-relaxed font-medium" style="position: relative; z-index: 9999; pointer-events: auto;">
+                By continuing, you agree to Dera Care's 
+                <a href="terms.html" target="_self" style="color: #00b074; text-decoration: underline; pointer-events: auto; z-index: 9999; position: relative;">Terms of Service</a> 
+                &amp; 
+                <a href="privacy.html" target="_self" style="color: #00b074; text-decoration: underline; pointer-events: auto; z-index: 9999; position: relative;">Privacy Policy</a>.
+              </p>
+              <div class="flex items-center space-x-1.5 px-3 py-1 bg-white/5 rounded-full border border-white/5">
+                <svg class="w-2.5 h-2.5 text-[var(--accent-color)] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+                <span class="text-[9px] font-bold text-[var(--text-muted)] tracking-wider uppercase">256-Bit Encrypted &amp; Secure</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /scrollable inner -->
+
+        <!-- ═══════════════════════════════════════════════════════
+             REGISTER OVERLAY — slides up from bottom on demand
+        ═══════════════════════════════════════════════════════ -->
+        <div id="register-overlay" class="app-view absolute inset-0 z-30 flex flex-col transition-transform duration-400 ease-out" style="position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; display: none !important; transform: translateY(100%); background: var(--bg-color) !important; z-index: 30 !important;">
+          <!-- Overlay scrollable body -->
+          <div class="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-8 flex flex-col space-y-6">
+            <!-- Back button row -->
+            <div class="flex items-center space-x-3">
+              <button onclick="closeRegisterView()" class="p-2.5 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] transition-all focus:outline-none flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+              <div>
+                <h2 class="text-[17px] font-bold text-[var(--text-color)] leading-tight">Create Account</h2>
+                <p class="text-[10px] text-[var(--text-muted)]">Join Dera Care — it's free</p>
+              </div>
+            </div>
+
+            <!-- Register form card -->
+            <div class="glass-card rounded-[24px] p-5 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] space-y-3">
+              <div class="space-y-2.5">
+                <div>
+                  <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Full Name</label>
+                  <input type="text" id="patient-signup-name" placeholder="Enter your name" autocomplete="name"
+                    class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                </div>
+                <div>
+                  <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Email Address</label>
+                  <input type="email" id="patient-signup-email" placeholder="Enter your email address" autocomplete="email"
+                    class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                </div>
+                <div>
+                  <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Create Password</label>
+                  <div class="relative mt-1.5">
+                    <input type="password" id="patient-signup-pass" placeholder="Enter your password" autocomplete="new-password"
+                      class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                    <button type="button" onclick="togglePasswordVisibility('patient-signup-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button id="register-btn" onclick="handlePatientSignup(event)" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none mt-1">
+                CREATE ACCOUNT &rarr;
+              </button>
+            </div>
+
+            <!-- Already have account link -->
+            <p class="text-center text-[11px] text-[var(--text-muted)]">
+              Already have an account?
+              <button onclick="closeRegisterView()" class="font-extrabold text-[var(--accent-color)] hover:underline focus:outline-none ml-0.5">Back to Login</button>
+            </p>
+
+            <!-- Google + Apple in register view too -->
+            <div class="space-y-2.5">
+              <div class="flex items-center space-x-3">
+                <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
+                <span class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-widest">or sign up with</span>
+                <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
+              </div>
+              <button onclick="document.getElementById('btn-google').click()" class="w-full h-[48px] rounded-xl bg-[var(--google-btn-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--google-btn-text)] text-xs font-semibold flex items-center justify-center transition-all focus:outline-none">
+                <svg class="w-5 h-5 mr-2.5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Continue with Google
+              </button>
+              <button class="w-full h-[48px] rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] text-xs font-semibold flex items-center justify-center transition-all focus:outline-none" style="background:var(--input-bg);">
+                <svg class="w-5 h-5 mr-2.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                Sign in with Apple
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- /Register Overlay -->
+
+      </div>
+
+
+      <!-- SCREEN 4: CONNECTED HOME SCREEN UI -->
+      <div id="home-container" class="absolute inset-0 flex flex-col justify-between transition-all duration-500 ease-out transform translate-x-full opacity-0 pointer-events-none z-20">
+        
+        <!-- Tab View A: Dashboard View -->
+        <div id="home-dashboard-view" class="flex-1 overflow-y-auto px-5 pt-5 pb-20 no-scrollbar space-y-5">
+          
+          <!-- 1. HEADER (Top Navigation) -->
+          <div class="flex items-center justify-between pb-1 select-none">
+            <div class="flex items-center space-x-3">
+              <div class="relative w-9 h-9 rounded-full bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] p-[2px]">
+                <div class="w-full h-full rounded-full bg-[var(--bg-color)] flex items-center justify-center text-xs font-bold">DC</div>
+                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-[var(--bg-color)] animate-pulse"></span>
+              </div>
+              <div class="space-y-0.5">
+                <h3 class="text-sm font-extrabold text-[var(--text-color)] leading-none">Hello, <span id="home-username">Guest</span> 👋</h3>
+                <p class="text-[10px] text-[var(--text-muted)] font-medium flex items-center">
+                  <svg class="w-2.5 h-2.5 mr-0.5 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                  </svg>
+                  D.I. Khan, KP 📍
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right Controls (Bell & Toggle button) -->
+            <div class="flex items-center space-x-2">
+              <button id="btn-bell" onclick="showToast('Notifications', 'No new security flags currently.', 'success')" class="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-[var(--text-color)] relative transition-colors focus:outline-none">
+                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-500 border border-[var(--bg-color)]"></span>
+              </button>
+
+              <button class="btn-theme-toggle p-2 rounded-xl bg-[var(--toggle-bg)] border border-[var(--toggle-border)] text-[var(--toggle-icon-color)] shadow-sm hover:border-[var(--accent-color)]/50 transition-colors flex items-center justify-center focus:outline-none">
+                <svg class="w-4.5 h-4.5 text-[var(--toggle-icon-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. SEARCH BAR -->
+          <div class="flex items-center space-x-2.5">
+            <div class="flex-1 h-12 bg-[var(--input-bg)] border border-[var(--border-color)] focus-within:border-[var(--accent-color)] rounded-2xl flex items-center px-4 justify-between transition-all">
+              <div class="flex items-center flex-1">
+                <svg class="w-[18px] h-[18px] text-slate-400 mr-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" id="home-search-input" placeholder="Search doctors or specialties..." class="w-full bg-transparent border-none text-xs text-[var(--text-color)] placeholder-slate-400 focus:outline-none focus:ring-0 p-0">
+              </div>
+              <button id="btn-voice-search" class="p-1 text-slate-400 hover:text-[var(--accent-color)] transition-colors focus:outline-none flex items-center justify-center">
+                <svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.42 2.72 6.2 6 6.72V21h2v-3.28c3.28-.52 6-3.3 6-6.72h-1.7z"/>
+                </svg>
+              </button>
+            </div>
+            <button onclick="openSpecialtiesModal()" class="p-3 rounded-2xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 hover:bg-[var(--accent-color)]/20 transition-all focus:outline-none">
+              <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- 3. PROMOTIONAL SLIDER BANNER -->
+          <div class="glass-card rounded-[24px] p-5 bg-gradient-to-tr from-[var(--accent-color)]/10 via-[var(--accent-color)]/5 to-transparent relative overflow-hidden flex flex-col justify-center h-[115px]">
+            <div class="space-y-1 z-10">
+              <span class="px-2.5 py-0.5 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[8px] font-extrabold uppercase tracking-widest border border-[var(--accent-color)]/10">DI KHAN SPECIAL</span>
+              <h2 class="text-base font-extrabold text-[var(--text-color)] tracking-tight leading-snug">24/7 Healthcare in D.I. Khan</h2>
+              <p class="text-[10px] text-[var(--text-muted)] font-medium max-w-[240px]">Book appointments with top regional specialists across DHQ and Mufti Mahmood Memorial Hospitals.</p>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-[var(--accent-color)]/10 blur-[20px] pointer-events-none"></div>
+          </div>
+
+          <!-- 4. QUICK SERVICES GRID (4 Primary Cards clickable) -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider pl-1">Primary Services</h3>
+            <div class="grid grid-cols-2 gap-3.5">
+              <div id="srv-doctors" class="glass-card p-4 rounded-[20px] flex flex-col justify-between h-[105px] border border-white/5 hover:border-[var(--accent-color)]/20 transition-all cursor-pointer">
+                <div class="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg">🩺</div>
+                <div>
+                  <h4 class="text-[12px] font-bold text-[var(--text-color)] leading-tight">Find Doctors</h4>
+                  <p class="text-[9px] text-[var(--text-muted)] mt-0.5">Book slots instantly</p>
+                </div>
+              </div>
+              <div id="srv-hospitals" class="glass-card p-4 rounded-[20px] flex flex-col justify-between h-[105px] border border-white/5 hover:border-emerald-500/20 transition-all cursor-pointer">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">🏥</div>
+                <div>
+                  <h4 class="text-[12px] font-bold text-[var(--text-color)] leading-tight">Hospitals</h4>
+                  <p class="text-[9px] text-[var(--text-muted)] mt-0.5">Local centers & maps</p>
+                </div>
+              </div>
+              <div id="srv-pharmacy" class="glass-card p-4 rounded-[20px] flex flex-col justify-between h-[105px] border border-white/5 hover:border-amber-500/20 transition-all cursor-pointer">
+                <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">💊</div>
+                <div>
+                  <h4 class="text-[12px] font-bold text-[var(--text-color)] leading-tight">Order Medicine</h4>
+                  <p class="text-[9px] text-[var(--text-muted)] mt-0.5">Express delivery</p>
+                </div>
+              </div>
+              <div id="srv-labs" class="glass-card p-4 rounded-[20px] flex flex-col justify-between h-[105px] border border-white/5 hover:border-rose-500/20 transition-all cursor-pointer">
+                <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-lg">🧪</div>
+                <div>
+                  <h4 class="text-[12px] font-bold text-[var(--text-color)] leading-tight">Lab Tests</h4>
+                  <p class="text-[9px] text-[var(--text-muted)] mt-0.5">Diagnostic booking</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. SPECIALTIES HORIZONTAL SCROLL -->
+          <div class="space-y-2.5">
+            <div class="flex justify-between items-center pl-1">
+              <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider">Doctor Specialties</h3>
+              <button onclick="openSpecialtiesModal()" class="text-[10px] text-emerald-500 font-bold hover:underline focus:outline-none">View All</button>
+            </div>
+            
+            <div class="overflow-x-auto no-scrollbar flex space-x-4 pb-1 select-none">
+              <!-- Heart -->
+              <div onclick="filterDoctorsBySpecialty('Heart')" class="flex flex-col items-center space-y-1.5 flex-shrink-0 cursor-pointer group">
+                <div class="w-13 h-13 rounded-full bg-white/5 group-hover:bg-[var(--accent-color)]/10 border border-white/5 flex items-center justify-center transition-all">
+                  <svg class="w-6 h-6 text-rose-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  </svg>
+                </div>
+                <span class="text-[10px] font-semibold text-[var(--text-color)]">Heart</span>
+              </div>
+              <!-- Bones -->
+              <div onclick="filterDoctorsBySpecialty('Bones')" class="flex flex-col items-center space-y-1.5 flex-shrink-0 cursor-pointer group">
+                <div class="w-13 h-13 rounded-full bg-white/5 group-hover:bg-[var(--accent-color)]/10 border border-white/5 flex items-center justify-center transition-all">
+                  <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 6a2 2 0 100-4 2 2 0 000 4zM17 6a2 2 0 100-4 2 2 0 000 4zM7 18a2 2 0 100 4 2 2 0 000-4zM17 18a2 2 0 100 4 2 2 0 000-4zM7 4h10v2H7V4zm0 14h10v-2H7v2zm5-10v4m-3-2h6"/>
+                  </svg>
+                </div>
+                <span class="text-[10px] font-semibold text-[var(--text-color)]">Bones</span>
+              </div>
+              <!-- Eyes -->
+              <div onclick="filterDoctorsBySpecialty('Eyes')" class="flex flex-col items-center space-y-1.5 flex-shrink-0 cursor-pointer group">
+                <div class="w-13 h-13 rounded-full bg-white/5 group-hover:bg-[var(--accent-color)]/10 border border-white/5 flex items-center justify-center transition-all">
+                  <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                  </svg>
+                </div>
+                <span class="text-[10px] font-semibold text-[var(--text-color)]">Eyes</span>
+              </div>
+              <!-- Children -->
+              <div onclick="filterDoctorsBySpecialty('Children')" class="flex flex-col items-center space-y-1.5 flex-shrink-0 cursor-pointer group">
+                <div class="w-13 h-13 rounded-full bg-white/5 group-hover:bg-[var(--accent-color)]/10 border border-white/5 flex items-center justify-center transition-all">
+                  <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+                  </svg>
+                </div>
+                <span class="text-[10px] font-semibold text-[var(--text-color)]">Children</span>
+              </div>
+              <!-- Dental -->
+              <div onclick="filterDoctorsBySpecialty('Dental')" class="flex flex-col items-center space-y-1.5 flex-shrink-0 cursor-pointer group">
+                <div class="w-13 h-13 rounded-full bg-white/5 group-hover:bg-[var(--accent-color)]/10 border border-white/5 flex items-center justify-center transition-all">
+                  <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h12a2 2 0 012 2v2c0 3-1.5 6-3 8l-1 2H8l-1-2c-1.5-2-3-5-3-8zM12 4v14" />
+                  </svg>
+                </div>
+                <span class="text-[10px] font-semibold text-[var(--text-color)]">Dental</span>
+              </div>
+              <!-- Neurology -->
+              <div onclick="filterDoctorsBySpecialty('Neurology')" class="flex flex-col items-center space-y-1.5 flex-shrink-0 cursor-pointer group">
+                <div class="w-13 h-13 rounded-full bg-white/5 group-hover:bg-[var(--accent-color)]/10 border border-white/5 flex items-center justify-center transition-all">
+                  <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13a9 9 0 0118 0v1a3 3 0 01-3 3H6a3 3 0 01-3-3v-1zm9-9v3" />
+                  </svg>
+                </div>
+                <span class="text-[10px] font-semibold text-[var(--text-color)]">Neurology</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. TOP RATED DOCTORS SECTION (Filtered/Rendered dynamically) -->
+          <div id="doctors-anchor" class="space-y-3 pb-4">
+            <div class="flex justify-between items-center pl-1">
+              <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider">Top Rated Doctors</h3>
+              <button onclick="clearDoctorsFilter()" id="btn-clear-filter" class="text-[10px] text-emerald-500 font-bold hover:underline focus:outline-none hidden">Clear Filter</button>
+            </div>
+            
+            <div id="doctors-list-container" class="space-y-3">
+              <!-- Rendered Dynamically via JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tab View B: Slots / Active Bookings View -->
+        <div id="home-appointments-view" class="flex-1 overflow-y-auto px-5 pt-5 pb-20 no-scrollbar space-y-5 hidden">
+          <div class="flex items-center justify-between pb-1 border-b border-[var(--border-color)]">
+            <div>
+              <h2 class="text-xl font-extrabold text-[var(--text-color)]">Active Slots</h2>
+              <p class="text-[10px] text-[var(--text-muted)]">Your scheduled medical slots</p>
+            </div>
+          </div>
+          <div id="appointments-list-container" class="space-y-4 pt-2">
+            <!-- Rendered Dynamically via JS -->
+          </div>
+        </div>
+
+
+
+        <!-- Tab View D: Patient EHR / Records & Chat View -->
+        <div id="home-records-view" class="flex-1 overflow-y-auto px-5 pt-5 pb-20 no-scrollbar space-y-5 hidden">
+          <div class="flex items-center justify-between pb-1 border-b border-[var(--border-color)]">
+            <div>
+              <h2 class="text-xl font-extrabold text-[var(--text-color)]">Records &amp; Consultation</h2>
+              <p class="text-[10px] text-[var(--text-muted)] font-medium">In-App Chat &amp; Encrypted Medical Files</p>
+            </div>
+          </div>
+
+          <!-- In-App Doctor Chat List -->
+          <div class="space-y-2 pt-1">
+            <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider pl-1">💬 In-App Doctor Chat</h3>
+            <div class="glass-card rounded-2xl p-4 border border-white/5 space-y-3">
+              <p class="text-[10px] text-[var(--text-muted)] font-semibold leading-relaxed">
+                Connect directly with specialist doctors in D.I. Khan. End-to-end encrypted in-app messaging.
+              </p>
+              <div id="in-app-patient-doctor-list" class="space-y-2">
+                <!-- Dynamically rendered via renderWhatsAppDoctorList() -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Medical EHR Records -->
+          <div class="space-y-2 pt-2">
+            <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider pl-1">📄 Health Records</h3>
+            <div class="space-y-3">
+              <div class="glass-card p-4 rounded-2xl flex items-center justify-between border border-white/5">
+                <div class="flex items-center space-x-3.5">
+                  <div class="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg">📄</div>
+                  <div class="space-y-0.5">
+                    <h4 class="text-xs font-bold text-[var(--text-color)]">Cardiology EKG Report</h4>
+                    <p class="text-[9px] text-[var(--text-muted)] font-semibold">DHQ Hospital Laboratory | Aug 28, 2026</p>
+                  </div>
+                </div>
+                <button onclick="showToast('Loading PDF', 'Downloading encrypted medical report map...', 'success')" class="h-8 px-2.5 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-colors">View PDF</button>
+              </div>
+              <div class="glass-card p-4 rounded-2xl flex items-center justify-between border border-white/5">
+                <div class="flex items-center space-x-3.5">
+                  <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">📝</div>
+                  <div class="space-y-0.5">
+                    <h4 class="text-xs font-bold text-[var(--text-color)]">Prescription Record</h4>
+                    <p class="text-[9px] text-[var(--text-muted)] font-semibold">Dr. Ayesha Malik | Aug 15, 2026</p>
+                  </div>
+                </div>
+                <button onclick="showToast('Ordering Refill', 'Prescription dispatched to e-pharmacy...', 'success')" class="h-8 px-2.5 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-colors">Refill</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab View E: Patient Profile / Settings View -->
+        <div id="home-profile-view" class="flex-1 overflow-y-auto px-5 pt-5 pb-20 no-scrollbar space-y-5 hidden">
+          <!-- Header -->
+          <div class="flex items-center justify-between pb-2 border-b border-[var(--border-color)]">
+            <div>
+              <h2 class="text-xl font-extrabold text-[var(--text-color)]">User Profile</h2>
+              <p class="text-[10px] text-[var(--text-muted)]">Personal Account &amp; Settings</p>
+            </div>
+            <span id="profile-badge-header" class="px-2.5 py-1 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 text-[9px] font-extrabold uppercase tracking-wider">
+              Patient Account
+            </span>
+          </div>
+
+          <!-- Profile User Card -->
+          <div class="glass-card rounded-[24px] p-5 space-y-4 border border-white/10 shadow-lg">
+            <div class="flex items-center space-x-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] p-[2px] shadow-md flex-shrink-0">
+                <div class="w-full h-full rounded-[14px] bg-[var(--bg-color)] flex items-center justify-center text-xl font-bold text-white">
+                  👤
+                </div>
+              </div>
+              <div class="space-y-1 overflow-hidden">
+                <h3 class="text-base font-extrabold text-[var(--text-color)] truncate" id="profile-display-name">Guest User</h3>
+                <p class="text-[11px] text-[var(--text-muted)] font-medium truncate" id="profile-display-email">guest@deracare.pk</p>
+                <div class="flex items-center space-x-2 pt-0.5" id="profile-badge-container">
+                  <span id="profile-badge-tag" class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-[8px] font-bold border border-amber-500/20">Guest Mode (Limited Access)</span>
+                  <span class="text-[9px] text-[var(--text-muted)] font-semibold">D.I. Khan, KP</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Guest Mode Upgrade Banner (Hidden for logged in patients) -->
+            <div id="guest-upgrade-banner" class="pt-2 border-t border-[var(--border-color)] space-y-2">
+              <p class="text-[10px] text-amber-300 font-semibold leading-relaxed">
+                ⚠️ You are in Guest Mode. Register or log in to unlock doctor appointment bookings and EHR records.
+              </p>
+              <button onclick="logoutToLogin()" class="w-full py-2.5 rounded-xl bg-[var(--accent-color)] text-[#0D1B2A] text-[10px] font-extrabold uppercase tracking-wider transition-all focus:outline-none shadow-md">
+                Register or Log In &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Feature Card 1: My Appointments -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider pl-1">Clinical Activity</h3>
+            <div onclick="btnNavSlots.click()" class="glass-card rounded-2xl p-4 border border-white/5 hover:border-[var(--accent-color)]/30 transition-all cursor-pointer flex items-center justify-between">
+              <div class="flex items-center space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg font-bold">📅</div>
+                <div>
+                  <h4 class="text-xs font-bold text-[var(--text-color)]">My Appointments</h4>
+                  <p class="text-[9px] text-[var(--text-muted)] font-semibold">View active &amp; scheduled doctor slots</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-extrabold text-[var(--accent-color)] flex items-center">
+                <span id="profile-appt-count" class="mr-1 text-white font-extrabold">0</span> Slots &rarr;
+              </span>
+            </div>
+          </div>
+
+          <!-- Feature Card 2: Account Settings Grid -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider pl-1">Account Settings</h3>
+            <div class="glass-card rounded-2xl p-4 space-y-3 border border-white/5">
+              <div class="flex items-center justify-between text-xs py-1 border-b border-[var(--border-color)]">
+                <span class="text-[var(--text-muted)] font-semibold">Account Type</span>
+                <span class="font-extrabold text-[var(--text-color)]" id="profile-acct-type">Guest Session</span>
+              </div>
+              <div class="flex items-center justify-between text-xs py-1 border-b border-[var(--border-color)]">
+                <span class="text-[var(--text-muted)] font-semibold">Healthcare Region</span>
+                <span class="font-bold text-[var(--text-color)]">Dera Ismail Khan District</span>
+              </div>
+              <div class="flex items-center justify-between text-xs py-1">
+                <span class="text-[var(--text-muted)] font-semibold">Security Encryption</span>
+                <span class="font-bold text-[var(--accent-color)]">256-Bit SSL Protected</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Card 3: Security & Password -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-[var(--accent-color)] uppercase tracking-wider pl-1">Security &amp; Preferences</h3>
+            <div class="glass-card rounded-2xl p-3 space-y-2 border border-white/5">
+              <button onclick="openChangePassModal()" class="w-full p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-xs transition-colors focus:outline-none text-left">
+                <div class="flex items-center space-x-3">
+                  <span class="text-base">🔑</span>
+                  <span class="font-bold text-[var(--text-color)]">Change Password</span>
+                </div>
+                <span class="text-[10px] text-[var(--accent-color)] font-bold">Update &rarr;</span>
+              </button>
+              <button onclick="showToast('Notifications Active', 'Push alerts configured for appointments.', 'success')" class="w-full p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-xs transition-colors focus:outline-none text-left">
+                <div class="flex items-center space-x-3">
+                  <span class="text-base">🔔</span>
+                  <span class="font-bold text-[var(--text-color)]">Appointment Reminders</span>
+                </div>
+                <span class="text-[10px] text-emerald-400 font-bold">Enabled ✓</span>
+              </button>
+              <button onclick="window.open('privacy.html', '_blank')" class="w-full p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-xs transition-colors focus:outline-none text-left">
+                <div class="flex items-center space-x-3">
+                  <span class="text-base">🔒</span>
+                  <span class="font-bold text-[var(--text-color)]">Privacy &amp; Data Policy</span>
+                </div>
+                <span class="text-[10px] text-[var(--text-muted)] font-bold">View &rarr;</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Safe Sign Out Button -->
+          <div class="pt-2">
+            <button id="btn-profile-signout" onclick="logoutModal.classList.remove('hidden', 'translate-y-full')" class="w-full py-3.5 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none flex items-center justify-center space-x-2">
+              <span>🚪</span>
+              <span>Sign Out of Account</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 7. FIXED BOTTOM NAVIGATION BAR -->
+        <div class="glass-card absolute bottom-0 inset-x-0 h-16 border-t border-[var(--border-color)] flex items-center justify-around px-2 z-30 rounded-b-[36px]">
+          <button id="btn-nav-home" class="flex flex-col items-center justify-center w-14 h-full text-[var(--accent-color)] focus:outline-none">
+            <span class="text-lg">🏠</span>
+            <span class="text-[8px] font-bold mt-0.5 uppercase tracking-wide">Home</span>
+          </button>
+          <button id="btn-nav-slots" class="flex flex-col items-center justify-center w-14 h-full text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors focus:outline-none">
+            <span class="text-lg">📅</span>
+            <span class="text-[8px] font-semibold mt-0.5 uppercase tracking-wide">Slots</span>
+          </button>
+          <button id="btn-nav-records" class="flex flex-col items-center justify-center w-14 h-full text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors focus:outline-none">
+            <span class="text-lg">📑</span>
+            <span class="text-[8px] font-semibold mt-0.5 uppercase tracking-wide">Records</span>
+          </button>
+          <button id="btn-nav-profile" class="flex flex-col items-center justify-center w-14 h-full text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors focus:outline-none">
+            <span class="text-lg">👤</span>
+            <span class="text-[8px] font-semibold mt-0.5 uppercase tracking-wide">Profile</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SCREEN 5: DOCTOR DASHBOARD -->
+    <div id="doctor-dashboard" class="absolute inset-0 flex flex-col transition-all duration-500 ease-out transform translate-x-full opacity-0 pointer-events-none z-20 overflow-hidden bg-[var(--bg-color)]">
+      <!-- Header -->
+      <div class="flex-shrink-0 glass-card px-5 pt-10 pb-4 border-b border-[var(--border-color)] space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style="background: linear-gradient(135deg,#00A86B,#00E5FF);">🩺</div>
+            <div>
+              <h2 class="text-sm font-extrabold text-[var(--text-color)]">Doctor Portal</h2>
+              <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider" id="doc-dashboard-name">Dr. Specialist</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button type="button" onclick="toggleDoctorDutyStatus(this)" id="btn-doc-duty-status" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 focus:outline-none transition-all" title="Click to toggle duty status">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="text-[9px] font-extrabold uppercase tracking-wider">ON DUTY</span>
+            </button>
+            <button onclick="openDoctorLogoutModal()" class="h-8 px-3 rounded-xl border border-[var(--border-color)] text-[9px] font-bold text-[var(--text-muted)] hover:text-rose-400 hover:border-rose-500/30 transition-colors focus:outline-none flex items-center space-x-1">
+              <span class="text-[10px]">🚪</span>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="flex-1 overflow-y-auto px-5 py-4 space-y-4 no-scrollbar">
+        <!-- Stats row -->
+        <div class="grid grid-cols-3 gap-3">
+          <div class="glass-card rounded-2xl p-3 text-center border border-white/5">
+            <div class="text-xl font-extrabold text-[var(--accent-color)]" id="doc-stat-slots">12</div>
+            <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase mt-0.5">Today's Slots</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3 text-center border border-white/5">
+            <div class="text-xl font-extrabold text-emerald-400" id="doc-stat-confirmed">8</div>
+            <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase mt-0.5">Confirmed</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3 text-center border border-white/5">
+            <div class="text-xl font-extrabold text-amber-400" id="doc-stat-pending">3</div>
+            <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase mt-0.5">Pending</div>
+          </div>
+        </div>
+
+        <!-- Appointment Requests -->
+        <div class="space-y-2.5">
+          <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Appointment Requests</h3>
+          <div class="space-y-3">
+            <div class="glass-card p-3.5 rounded-2xl border border-white/5 flex items-center justify-between transition-all">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 flex items-center justify-center text-xs font-extrabold">AR</div>
+                <div>
+                  <p class="text-[11px] font-bold text-[var(--text-color)]">Ahmed Raza</p>
+                  <p class="text-[9px] text-[var(--text-muted)]">09:00 AM · Chest Pain</p>
+                </div>
+              </div>
+              <div class="flex space-x-1.5">
+                <button onclick="acceptDoctorRequest(this, 'Ahmed Raza')" class="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors focus:outline-none">✓ Accept</button>
+                <button onclick="rejectDoctorRequest(this, 'Ahmed Raza')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">✕ Decline</button>
+              </div>
+            </div>
+            <div class="glass-card p-3.5 rounded-2xl border border-white/5 flex items-center justify-between transition-all">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 flex items-center justify-center text-xs font-extrabold">SK</div>
+                <div>
+                  <p class="text-[11px] font-bold text-[var(--text-color)]">Sara Khan</p>
+                  <p class="text-[9px] text-[var(--text-muted)]">10:30 AM · Routine Checkup</p>
+                </div>
+              </div>
+              <div class="flex space-x-1.5">
+                <button onclick="acceptDoctorRequest(this, 'Sara Khan')" class="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors focus:outline-none">✓ Accept</button>
+                <button onclick="rejectDoctorRequest(this, 'Sara Khan')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">✕ Decline</button>
+              </div>
+            </div>
+            <div class="glass-card p-3.5 rounded-2xl border border-white/5 flex items-center justify-between transition-all">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 flex items-center justify-center text-xs font-extrabold">MH</div>
+                <div>
+                  <p class="text-[11px] font-bold text-[var(--text-color)]">Muhammad Hamza</p>
+                  <p class="text-[9px] text-[var(--text-muted)]">02:00 PM · Diabetes Follow-up</p>
+                </div>
+              </div>
+              <div class="flex space-x-1.5">
+                <button onclick="acceptDoctorRequest(this, 'Muhammad Hamza')" class="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors focus:outline-none">✓ Accept</button>
+                <button onclick="rejectDoctorRequest(this, 'Muhammad Hamza')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">✕ Decline</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="space-y-2.5">
+          <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">⚡ Quick Actions</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="openDocAvailabilityModal()" class="glass-card p-3.5 rounded-2xl border border-white/5 text-left hover:border-[var(--accent-color)]/30 transition-all focus:outline-none">
+              <span class="text-lg">📅</span>
+              <p class="text-[10px] font-bold text-[var(--text-color)] mt-1.5">Set Availability</p>
+              <p class="text-[8px] text-[var(--text-muted)]">Manage time slots</p>
+            </button>
+            <button onclick="openDocPrescriptionModal()" class="glass-card p-3.5 rounded-2xl border border-white/5 text-left hover:border-[var(--accent-color)]/30 transition-all focus:outline-none">
+              <span class="text-lg">📝</span>
+              <p class="text-[10px] font-bold text-[var(--text-color)] mt-1.5">Write Prescription</p>
+              <p class="text-[8px] text-[var(--text-muted)]">Digital Rx pad</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Doctor Profile Setup & Home Dashboard Sync Section -->
+        <div class="space-y-2.5 pt-2">
+          <div class="glass-card rounded-2xl p-4 border border-[var(--accent-color)]/20 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-extrabold text-[var(--accent-color)] uppercase tracking-wider">🩺 Doctor Profile Setup &amp; Home Sync</h3>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20">Sync to Patient Dashboard</span>
+            </div>
+            <p class="text-[9.5px] text-[var(--text-muted)] leading-relaxed">Input your professional clinical details. Clicking "Submit &amp; Publish Profile" will dynamically list your profile on the public Patient Home Dashboard so patients can view and book appointments with you.</p>
+
+            <div class="space-y-2.5 pt-1">
+              <div>
+                <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Full Doctor Name</label>
+                <input id="doc-self-name" type="text" placeholder="e.g. Dr. High Specialist" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Specialty</label>
+                  <select id="doc-self-specialty" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+                    <option value="Cardiology">Cardiology (Heart)</option>
+                    <option value="Neurology">Neurology (Brain/Nerves)</option>
+                    <option value="Pediatrics">Pediatrics (Children)</option>
+                    <option value="Orthopedics">Orthopedics (Bones)</option>
+                    <option value="Ophthalmology">Ophthalmology (Eyes)</option>
+                    <option value="Dentistry">Dentistry (Dental)</option>
+                    <option value="General Physician">General Physician</option>
+                    <option value="Dermatology">Dermatology (Skin)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Fee (PKR)</label>
+                  <input id="doc-self-fee" type="number" placeholder="1500" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                </div>
+              </div>
+              <div>
+                <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Hospital / Clinic Location</label>
+                <input id="doc-self-hospital" type="text" placeholder="e.g. DHQ Hospital D.I. Khan, Chishti Chowk" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+              <div>
+                <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Available Timings &amp; Days</label>
+                <input id="doc-self-timings" type="text" placeholder="e.g. Mon - Sat: 04:00 PM - 08:00 PM" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+              <button onclick="submitDoctorSelfProfile()" class="w-full py-3.5 rounded-xl bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] text-[#0D1B2A] text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none shadow-lg active:scale-[0.98]">
+                🚀 Submit &amp; Publish Profile to Home
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Patient In-App Messages Section -->
+        <div class="space-y-2.5 pt-2">
+          <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">💬 Patient Consultations (In-App Chat)</h3>
+          <div class="glass-card rounded-2xl p-4 border border-white/5 space-y-3">
+            <div class="flex items-center justify-between">
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider">Select Active Patient</label>
+              <span class="text-[9px] text-emerald-400 font-extrabold flex items-center">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span> Live Sync
+              </span>
+            </div>
+            <select id="doc-chat-patient-select" onchange="renderDoctorPatientChat()" class="w-full h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+              <option value="Ahmed Raza">Ahmed Raza (Chest Pain Patient)</option>
+              <option value="Sara Khan">Sara Khan (Routine Checkup)</option>
+              <option value="Muhammad Hamza">Muhammad Hamza (Diabetes Follow-up)</option>
+            </select>
+
+            <!-- Chat Stream Box -->
+            <div id="doc-chat-stream" class="h-44 overflow-y-auto p-3 rounded-xl bg-black/30 border border-white/5 space-y-2.5 no-scrollbar text-xs">
+              <!-- Dynamically populated messages -->
+            </div>
+
+            <!-- Reply Input Box -->
+            <div class="flex space-x-2 pt-1">
+              <input id="doc-chat-reply-input" type="text" placeholder="Type doctor reply..." class="flex-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <button onclick="sendDoctorReply()" class="btn-primary px-4 h-10 rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all focus:outline-none shadow-md">
+                Send &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- SCREEN 6: ADMIN PANEL -->
+    <div id="admin-panel" class="absolute inset-0 flex flex-col transition-all duration-500 ease-out transform translate-x-full opacity-0 pointer-events-none z-20 overflow-hidden">
+      <!-- Header -->
+      <div class="flex-shrink-0 px-5 pt-10 pb-3 border-b border-[var(--border-color)]" style="background: linear-gradient(135deg, rgba(0,168,107,0.15), rgba(0,229,255,0.10));">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style="background: linear-gradient(135deg,#00A86B,#00E5FF);">🔐</div>
+            <div>
+              <h2 class="text-sm font-extrabold text-[var(--text-color)]">Admin Control Panel</h2>
+              <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider" id="admin-logged-in-label">Dera Care Master Access</p>
+            </div>
+          </div>
+          <button onclick="openAdminLogoutModal()" class="h-8 px-3 rounded-xl border border-[var(--border-color)] text-[9px] font-bold text-[var(--text-muted)] hover:text-rose-400 hover:border-rose-500/30 transition-colors focus:outline-none flex items-center space-x-1">
+            <span class="text-[10px]">🚪</span>
+            <span>Logout</span>
+          </button>
+        </div>
+        <!-- Admin Tab Bar -->
+        <div class="flex space-x-1 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl p-1">
+          <button id="atab-stats" onclick="switchAdminTab('stats')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all focus:outline-none" style="background:var(--accent-color);color:var(--primary-btn-text);">📊 Overview</button>
+          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none">🩺 Doctors</button>
+          <button id="atab-profile" onclick="switchAdminTab('profile')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none">⚙️ Profile</button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="flex-1 overflow-y-auto no-scrollbar">
+
+        <!-- TAB: OVERVIEW STATS -->
+        <div id="admin-tab-stats" class="px-5 py-4 space-y-4">
+          <!-- Clean 2-Card Overview Stats -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-1">
+              <div class="text-2xl font-extrabold text-[var(--accent-color)]" id="admin-stat-patients">247</div>
+              <div class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Registered Patients</div>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-1">
+              <div class="text-2xl font-extrabold text-emerald-400" id="admin-stat-doctors">0</div>
+              <div class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Active Doctors</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="space-y-2.5">
+            <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">🛠️ Management Controls</h3>
+            <button onclick="switchAdminTab('doctors')" class="w-full glass-card p-4 rounded-2xl border border-white/5 flex items-center space-x-3.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg flex-shrink-0">🩺</div>
+              <div>
+                <p class="text-xs font-bold text-[var(--text-color)]">Doctor Management</p>
+                <p class="text-[9px] text-[var(--text-muted)]">Add, edit, or remove doctor profiles</p>
+              </div>
+              <svg class="w-4 h-4 text-[var(--text-muted)] ml-auto flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button onclick="switchAdminTab('profile')" class="w-full glass-card p-4 rounded-2xl border border-white/5 flex items-center space-x-3.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+              <div class="w-10 h-10 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] flex items-center justify-center text-lg flex-shrink-0">🔑</div>
+              <div>
+                <p class="text-xs font-bold text-[var(--text-color)]">Admin Credentials &amp; Profile</p>
+                <p class="text-[9px] text-[var(--text-muted)]">Update master username &amp; password</p>
+              </div>
+              <svg class="w-4 h-4 text-[var(--text-muted)] ml-auto flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB: DOCTOR MANAGEMENT -->
+        <div id="admin-tab-doctors" class="px-5 py-4 space-y-4 hidden">
+          <!-- Add Doctor Form -->
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="doc-form-title-icon">➕</span><span id="doc-form-title">Add New Doctor</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="add-doc-name" type="text" placeholder="Doctor Full Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <input id="add-doc-specialty" type="text" placeholder="Specialty (e.g. Cardiologist)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <input id="add-doc-hospital" type="text" placeholder="Hospital / Clinic Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="add-doc-id" type="tel" placeholder="Doctor ID / Phone" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <div class="relative">
+                  <input id="add-doc-pin" type="password" placeholder="Assign PIN Code" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-3.5 pr-9 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <button type="button" onclick="togglePasswordVisibility('add-doc-pin', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-doctor" onclick="saveDoctor()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Doctor</button>
+              <button id="btn-cancel-edit" onclick="cancelDoctorEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+            </div>
+          </div>
+
+          <!-- Doctor Directory List -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Registered Doctors Directory</h3>
+              <span id="admin-doc-count" class="text-[9px] text-[var(--accent-color)] font-extrabold">0 doctors</span>
+            </div>
+            <div id="admin-doctor-list" class="space-y-2.5">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: ADMIN PROFILE SETTINGS -->
+        <div id="admin-tab-profile" class="px-5 py-4 space-y-4 hidden">
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">👤 Update Admin Credentials</h3>
+            <p class="text-[9px] text-[var(--text-muted)] leading-relaxed">Changes take effect immediately and persist across sessions.</p>
+            <div class="space-y-2.5">
+              <div>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Username</label>
+                <input id="admin-new-username" type="text" placeholder="Enter new admin username" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+              <div>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Current Password (verify)</label>
+                <div class="relative mt-1.5">
+                  <input id="admin-current-pass" type="password" placeholder="Enter current master password" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <button type="button" onclick="togglePasswordVisibility('admin-current-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Password</label>
+                <div class="relative mt-1.5">
+                  <input id="admin-new-pass" type="password" placeholder="Enter new master password" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <button type="button" onclick="togglePasswordVisibility('admin-new-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Confirm New Password</label>
+                <div class="relative mt-1.5">
+                  <input id="admin-confirm-pass" type="password" placeholder="Re-enter new password" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <button type="button" onclick="togglePasswordVisibility('admin-confirm-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button onclick="saveAdminProfile()" class="btn-primary w-full h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md mt-1">🔐 Save Changes</button>
+          </div>
+
+          <!-- Current credentials info card -->
+          <div class="glass-card rounded-2xl p-4 border border-white/5 space-y-2">
+            <h3 class="text-[10px] font-extrabold text-[var(--text-muted)] uppercase tracking-wider">Current Active Credentials</h3>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-[var(--text-color)] font-semibold">Master Username</span>
+              <span class="text-[10px] font-extrabold text-[var(--accent-color)]" id="admin-display-username">MSadaf</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-[var(--text-color)] font-semibold">Password Status</span>
+              <div class="flex items-center space-x-1.5">
+                <span class="text-[10px] font-extrabold text-emerald-400" id="admin-creds-pass-text">••••••••</span>
+                <button type="button" onclick="toggleAdminCredsPassVisibility(this)" class="text-[var(--text-muted)] hover:text-white p-0.5 focus:outline-none transition-colors" title="Toggle Password Visibility">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Phone Bottom simulated Bar -->
+    <footer class="w-full flex justify-center pb-2 z-30 select-none">
+      <div class="w-32 h-1 bg-white/20 rounded-full"></div>
+    </footer>
+
+    <!-- IN-FRAME OVERLAYS & MODALS -->
+    
+    <!-- 1. GOOGLE SIGN-IN SELECTOR POPUP -->
+    <div id="google-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-5 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2 mb-2"></div>
+        <div class="space-y-1.5 text-center">
+          <div class="flex justify-center">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <h3 class="text-sm font-bold text-[var(--text-color)]">Sign in with Google</h3>
+          <p class="text-[11px] text-[var(--text-muted)]">Choose an account to continue to Dera Care</p>
+        </div>
+        <div class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+          <div class="google-acc-btn p-3 bg-white/5 border border-white/5 hover:bg-white/10 rounded-xl flex items-center space-x-3.5 cursor-pointer transition-all">
+            <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-[#00E5FF] font-bold text-xs flex items-center justify-center">RC</div>
+            <div class="text-left space-y-0.5">
+              <h4 class="text-xs font-bold text-[var(--text-color)]">Rizwan Computers</h4>
+              <p class="text-[10px] text-[var(--text-muted)]">rizwan.computers@gmail.com</p>
+            </div>
+          </div>
+          <div class="google-acc-btn p-3 bg-white/5 border border-white/5 hover:bg-white/10 rounded-xl flex items-center space-x-3.5 cursor-pointer transition-all">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-[#00A86B] font-bold text-xs flex items-center justify-center">DC</div>
+            <div class="text-left space-y-0.5">
+              <h4 class="text-xs font-bold text-[var(--text-color)]">Dera Care Tester</h4>
+              <p class="text-[10px] text-[var(--text-muted)]">test.deracare@gmail.com</p>
+            </div>
+          </div>
+        </div>
+        <button id="btn-close-google" class="w-full py-3 rounded-xl border border-[var(--border-color)] hover:bg-white/5 text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- GUEST REGISTRATION PROMPT MODAL -->
+    <div id="guest-register-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="text-center space-y-2">
+          <div class="w-12 h-12 rounded-2xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] flex items-center justify-center text-2xl mx-auto">🔐</div>
+          <h3 class="text-base font-extrabold text-[var(--text-color)]">Account Required</h3>
+          <p class="text-xs text-[var(--text-muted)] leading-relaxed px-2">
+            You are currently in Guest Mode. Please log in or create a free Patient Account to book doctor appointments.
+          </p>
+        </div>
+        <div class="space-y-2 pt-2">
+          <button onclick="closeGuestModalAndGoLogin()" class="btn-primary w-full py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none shadow-md">
+            Register / Log In Now &rarr;
+          </button>
+          <button onclick="closeGuestRegisterModal()" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-muted)] font-bold hover:text-[var(--text-color)] transition-all focus:outline-none">
+            Continue Browsing
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHANGE PASSWORD MODAL -->
+    <div id="change-pass-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-extrabold text-[var(--text-color)]">Change Password</h3>
+            <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Update Patient Credentials</p>
+          </div>
+          <button onclick="closeChangePassModal()" class="text-slate-400 hover:text-white p-1 focus:outline-none">✕</button>
+        </div>
+        <div class="space-y-3 pt-1">
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Current Password</label>
+            <input type="password" id="profile-current-pass" placeholder="Enter current password" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Password</label>
+            <input type="password" id="profile-new-pass" placeholder="Minimum 6 characters" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Confirm New Password</label>
+            <input type="password" id="profile-confirm-pass" placeholder="Re-enter new password" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+          </div>
+          <button onclick="changePatientPassword()" class="btn-primary w-full h-12 rounded-xl text-xs font-extrabold tracking-wider uppercase flex items-center justify-center transition-all mt-2 focus:outline-none">
+            UPDATE PASSWORD &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN LOGOUT CONFIRMATION MODAL -->
+    <div id="admin-logout-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="text-center space-y-2">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-2xl mx-auto border border-amber-500/20">🔐</div>
+          <h3 class="text-base font-extrabold text-[var(--text-color)]">Exit Admin Panel</h3>
+          <p class="text-xs text-[var(--text-muted)] leading-relaxed px-2">
+            Are you sure you want to exit the Admin Control Panel and return to the main login portal?
+          </p>
+        </div>
+        <div class="space-y-2 pt-2">
+          <button onclick="confirmAdminExit()" class="w-full py-3.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none shadow-md">
+            Yes, Exit Master Session
+          </button>
+          <button onclick="closeAdminLogoutModal()" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-muted)] font-bold hover:text-[var(--text-color)] transition-all focus:outline-none">
+            Cancel &amp; Stay
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCTOR LOGOUT CONFIRMATION MODAL -->
+    <div id="doctor-logout-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="text-center space-y-2">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-2xl mx-auto border border-amber-500/20">🩺</div>
+          <h3 class="text-base font-extrabold text-[var(--text-color)]">Exit Doctor Portal</h3>
+          <p class="text-xs text-[var(--text-muted)] leading-relaxed px-2">
+            Are you sure you want to log out of your Doctor Dashboard and return to the main login portal?
+          </p>
+        </div>
+        <div class="space-y-2 pt-2">
+          <button onclick="confirmDoctorExit()" class="w-full py-3.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none shadow-md">
+            Yes, Log Out
+          </button>
+          <button onclick="closeDoctorLogoutModal()" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-muted)] font-bold hover:text-[var(--text-color)] transition-all focus:outline-none">
+            Cancel &amp; Stay
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCTOR SET AVAILABILITY MODAL -->
+    <div id="doc-availability-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-extrabold text-[var(--text-color)]">Set Working Hours</h3>
+            <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Configure Doctor Clinic Slots</p>
+          </div>
+          <button onclick="closeDocAvailabilityModal()" class="text-slate-400 hover:text-white p-1 focus:outline-none">✕</button>
+        </div>
+        <div class="space-y-3 pt-1">
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Active Clinic Days</label>
+            <select id="doc-avail-days" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+              <option value="Monday - Saturday">Monday - Saturday (Daily)</option>
+              <option value="Monday - Friday">Monday - Friday (Weekdays)</option>
+              <option value="Weekend (Sat - Sun)">Weekend (Saturday - Sunday)</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Morning Shift</label>
+              <input id="doc-avail-morning" type="text" value="09:00 AM - 01:00 PM" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+            </div>
+            <div>
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Evening Shift</label>
+              <input id="doc-avail-evening" type="text" value="05:00 PM - 09:00 PM" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+            </div>
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Slot Duration</label>
+            <select id="doc-avail-duration" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+              <option value="15 mins per patient">15 Minutes per Patient</option>
+              <option value="20 mins per patient" selected>20 Minutes per Patient</option>
+              <option value="30 mins per patient">30 Minutes per Patient</option>
+            </select>
+          </div>
+          <button onclick="saveDoctorAvailability()" class="btn-primary w-full h-12 rounded-xl text-xs font-extrabold tracking-wider uppercase flex items-center justify-center transition-all mt-2 focus:outline-none shadow-md">
+            💾 SAVE WORKING HOURS
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCTOR WRITE PRESCRIPTION MODAL -->
+    <div id="doc-prescription-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-base">📝</div>
+            <div>
+              <h3 class="text-base font-extrabold text-[var(--text-color)]">Digital Rx Pad</h3>
+              <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Issue Patient Prescription</p>
+            </div>
+          </div>
+          <button onclick="closeDocPrescriptionModal()" class="text-slate-400 hover:text-white p-1 focus:outline-none">✕</button>
+        </div>
+        <div class="space-y-3 pt-1">
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Patient Name</label>
+            <input id="doc-rx-patient" type="text" placeholder="Select or enter patient full name" value="Ahmed Raza" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Diagnosis &amp; Notes</label>
+            <input id="doc-rx-diagnosis" type="text" placeholder="e.g. Mild Hypertension, Routine Follow-up" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Medication Details &amp; Dosage</label>
+            <textarea id="doc-rx-meds" rows="3" placeholder="1. Tab. Panadol 500mg - 1+0+1 after meals&#10;2. Cap. Omeprazole 20mg - Before breakfast" class="w-full mt-1.5 p-3.5 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all no-scrollbar resize-none"></textarea>
+          </div>
+          <button onclick="issueDigitalPrescription()" class="btn-primary w-full h-12 rounded-xl text-xs font-extrabold tracking-wider uppercase flex items-center justify-center transition-all mt-1 focus:outline-none shadow-md">
+            📤 ISSUE DIGITAL PRESCRIPTION &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TERMS OF SERVICE MODAL -->
+    <div id="terms-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[480px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="space-y-1">
+          <h3 class="text-base font-bold text-[var(--text-color)]">Terms of Service</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Dera Care Health Network</p>
+        </div>
+        <div class="modal-scroll flex-1 overflow-y-auto space-y-3.5 pr-2 my-2 text-[11px] text-[var(--text-muted)] font-medium leading-relaxed text-justify">
+          <p class="font-bold text-[var(--text-color)]">1. Acceptance of Terms</p>
+          <p>Welcome to Dera Care, the premium digital healthcare ecosystem serving Dera Ismail Khan and surrounding districts. By downloading, installing, or logging into our application, you accept and agree to follow all operational rules, guidelines, and conditions detailed here.</p>
+          <p class="font-bold text-[var(--text-color)]">2. Medical Disclaimer</p>
+          <p>Dera Care provides slot booking, record management, and teleconsultation routing services. However, this application is NOT a substitute for emergency medical care. In case of severe illness, critical emergencies, or urgent trauma, please immediately contact emergency services or proceed to the nearest hospital facility in D.I. Khan.</p>
+        </div>
+        <button id="btn-close-terms" class="btn-primary w-full py-3 rounded-xl text-xs font-bold uppercase transition-all shadow-md active:scale-95 focus:outline-none">
+          Close & Accept
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. PRIVACY POLICY MODAL -->
+    <div id="privacy-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[480px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="space-y-1">
+          <h3 class="text-base font-bold text-[var(--text-color)]">Privacy & Security Policy</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">256-Bit Data Encryption Standards</p>
+        </div>
+        <div class="modal-scroll flex-1 overflow-y-auto space-y-3.5 pr-2 my-2 text-[11px] text-[var(--text-muted)] font-medium leading-relaxed text-justify">
+          <p class="font-bold text-[var(--text-color)]">1. Information Collection & Storage</p>
+          <p>We gather personal registration parameters (e.g. mobile credentials) and clinical telemetry explicitly entered by you (such as allergy charts, consultation logs, and medical files). All clinical records are stored securely in encrypted databases.</p>
+        </div>
+        <button id="btn-close-privacy" class="btn-primary w-full py-3 rounded-xl text-xs font-bold uppercase transition-all shadow-md active:scale-95 focus:outline-none">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. LOGOUT CONFIRMATION MODAL -->
+    <div id="logout-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-5 border-t border-white/10 shadow-2xl">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2 mb-2"></div>
+        <div class="space-y-1.5 text-center">
+          <h3 class="text-sm font-bold text-[var(--text-color)]">Sign Out</h3>
+          <p class="text-[11px] text-[var(--text-muted)]">Are you sure you want to end your active session?</p>
+        </div>
+        <div class="flex space-x-3.5">
+          <button id="btn-logout-confirm" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white text-xs font-bold uppercase transition-all shadow-md focus:outline-none">
+            Yes, Sign Out
+          </button>
+          <button id="btn-logout-cancel" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. VIEW ALL SPECIALTIES MODAL -->
+    <div id="specialties-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[560px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="space-y-1">
+          <h3 class="text-base font-bold text-[var(--text-color)]">All Specialties</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Select to filter local specialists</p>
+        </div>
+        
+        <!-- Specialties Grid (Exhaustive List of 22) -->
+        <div class="grid grid-cols-3 gap-3 overflow-y-auto pr-1 my-2 max-h-[380px] modal-scroll py-1">
+          <!-- 1. General Physician -->
+          <div onclick="selectSpecialtyFromModal('Physician')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75v-10.5" />
+                <circle cx="12" cy="5.25" r="1.5" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">General Physician</span>
+          </div>
+
+          <!-- 2. ENT -->
+          <div onclick="selectSpecialtyFromModal('ENT')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M17.657 6.343a8 8 0 010 11.314M12 18.5a6.5 6.5 0 110-13 6.5 6.5 0 010 13z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">ENT Specialist</span>
+          </div>
+
+          <!-- 3. Skin & Dermatology -->
+          <div onclick="selectSpecialtyFromModal('Skin')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v13m0 0a4 4 0 11-8 0 4 4 0 018 0zm0 0a4 4 0 108 0 4 4 0 00-8 0z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Skin & Derm.</span>
+          </div>
+
+          <!-- 4. Gastroenterology -->
+          <div onclick="selectSpecialtyFromModal('Stomach')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.66 0 3 1.34 3 3v1.78c.89.4 1.57 1.22 1.9 2.18L17.9 15.39z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Gastroenterology</span>
+          </div>
+
+          <!-- 5. Urology & Kidney -->
+          <div onclick="selectSpecialtyFromModal('Urology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Urology & Kidney</span>
+          </div>
+
+          <!-- 6. Pulmonology -->
+          <div onclick="selectSpecialtyFromModal('Pulmonology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Pulmonology</span>
+          </div>
+
+          <!-- 7. Psychiatry -->
+          <div onclick="selectSpecialtyFromModal('Psychiatry')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Psychiatry</span>
+          </div>
+
+          <!-- 8. Gynecology -->
+          <div onclick="selectSpecialtyFromModal('Gynecology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="9" r="5" />
+                <path d="M12 14v7M9 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Gynecology</span>
+          </div>
+
+          <!-- 9. General Surgeon -->
+          <div onclick="selectSpecialtyFromModal('Surgeon')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">General Surgeon</span>
+          </div>
+
+          <!-- 10. Endocrinology -->
+          <div onclick="selectSpecialtyFromModal('Endocrine')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a5 5 0 00-5 5v3a1 1 0 001 1h8a1 1 0 001-1V7a5 5 0 00-5-5zm0 11a5 5 0 015 5v3H7v-3a5 5 0 015-5z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Endocrinology</span>
+          </div>
+
+          <!-- 11. Hematology -->
+          <div onclick="selectSpecialtyFromModal('Hematology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Hematology</span>
+          </div>
+
+          <!-- 12. Oncology -->
+          <div onclick="selectSpecialtyFromModal('Oncology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zm-3-9h6" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Oncology Care</span>
+          </div>
+
+          <!-- 13. Rheumatology -->
+          <div onclick="selectSpecialtyFromModal('Rheumatology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v8" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Rheumatology</span>
+          </div>
+
+          <!-- 14. Neonatology -->
+          <div onclick="selectSpecialtyFromModal('Neonatology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-lime-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m16.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Neonatology</span>
+          </div>
+
+          <!-- 15. Allergist & Immunology -->
+          <div onclick="selectSpecialtyFromModal('Immunology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Immunology</span>
+          </div>
+
+          <!-- 16. Vascular Surgery -->
+          <div onclick="selectSpecialtyFromModal('Vascular')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Vascular Surgery</span>
+          </div>
+
+          <!-- 17. Physiotherapy -->
+          <div onclick="selectSpecialtyFromModal('Physiotherapy')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-7.18 0M3 21h18M12 3v10" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Physiotherapy</span>
+          </div>
+
+          <!-- 18. Optometry -->
+          <div onclick="selectSpecialtyFromModal('Eyes')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Optometry Care</span>
+          </div>
+
+          <!-- 19. Nutritionist -->
+          <div onclick="selectSpecialtyFromModal('Nutrition')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c-1.2 0-2.4.4-3.4 1.2A6 6 0 1017 14c0-3.3-2.7-6-5-11z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Nutritionist</span>
+          </div>
+
+          <!-- 20. Anesthesiology -->
+          <div onclick="selectSpecialtyFromModal('Anesthesiology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 3.75-3 6.75-6.75 6.75s-6.75-3-6.75-6.75c0-1.5.5-2.9 1.3-4L12 3l4.9 3.5c.8 1.1 1.3 2.5 1.3 4z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Anesthesiology</span>
+          </div>
+
+          <!-- 21. Pathology -->
+          <div onclick="selectSpecialtyFromModal('Pathology')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Pathology</span>
+          </div>
+
+          <!-- 22. Emergency Medicine -->
+          <div onclick="selectSpecialtyFromModal('Emergency')" class="glass-card p-3 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-[var(--accent-color)]/30 transition-all group">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[var(--accent-color)]/15 transition-all mb-1">
+              <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <span class="text-[8px] font-bold text-[var(--text-color)] leading-tight">Emergency Med.</span>
+          </div>
+        </div>
+
+        <button id="btn-close-specialties" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- 6. HOSPITALS MODAL -->
+    <div id="hospitals-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[460px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="space-y-1">
+          <h3 class="text-base font-bold text-[var(--text-color)]">D.I. Khan Hospitals</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Registered regional medical centers</p>
+        </div>
+        <div class="modal-scroll flex-1 overflow-y-auto space-y-3.5 pr-2 my-2 text-[11px] text-[var(--text-muted)] font-medium">
+          <!-- Hospital 1 -->
+          <div class="glass-card p-3.5 rounded-xl border border-white/5 flex flex-col space-y-1">
+            <h4 class="text-xs font-bold text-[var(--text-color)]">Mufti Mahmood Memorial Hospital</h4>
+            <p>Location: Wana Road, Near Gomal University, D.I. Khan</p>
+            <p class="text-[9px] text-[#00E5FF] font-semibold">Status: 24/7 Emergency Active</p>
+          </div>
+          <!-- Hospital 2 -->
+          <div class="glass-card p-3.5 rounded-xl border border-white/5 flex flex-col space-y-1">
+            <h4 class="text-xs font-bold text-[var(--text-color)]">DHQ Hospital D.I. Khan</h4>
+            <p>Location: Chishti Chowk, Circular Road, D.I. Khan</p>
+            <p class="text-[9px] text-[#00E5FF] font-semibold">Status: 24/7 Emergency Active</p>
+          </div>
+          <!-- Hospital 3 -->
+          <div class="glass-card p-3.5 rounded-xl border border-white/5 flex flex-col space-y-1">
+            <h4 class="text-xs font-bold text-[var(--text-color)]">City Hospital D.I. Khan</h4>
+            <p>Location: Near Commissionery Bazar Road, D.I. Khan</p>
+            <p class="text-[9px] text-slate-500 font-semibold">Status: General Slots Only</p>
+          </div>
+        </div>
+        <button id="btn-close-hospitals" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- 7. MEDICINE ORDERING MODAL -->
+    <div id="medicine-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[420px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="space-y-1">
+          <h3 class="text-base font-bold text-[var(--text-color)]">Order Medicine</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Fast dispatch across D.I. Khan</p>
+        </div>
+        <div class="space-y-3.5 flex-1 my-2">
+          <label class="text-[10px] font-bold text-[var(--text-color)] uppercase tracking-wider">Upload Prescription Image</label>
+          <div class="h-28 border-2 border-dashed border-[var(--border-color)] rounded-xl flex flex-col items-center justify-center space-y-1.5 cursor-pointer bg-white/5 hover:bg-white/10 transition-colors">
+            <span class="text-2xl">📸</span>
+            <span class="text-[10px] text-slate-400">Click to Snap or Upload File</span>
+          </div>
+          <p class="text-[9px] text-[var(--text-muted)] text-justify leading-relaxed">Our pharmacist map will review your uploaded file and match dosage parameters before dispatching rider. Payment on delivery.</p>
+        </div>
+        <div class="flex space-x-3">
+          <button onclick="showToast('Dispatching Order', 'Prescription dispatched to pharmacy.', 'success'); document.getElementById('btn-close-medicine').click();" class="btn-primary flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all shadow-md focus:outline-none">
+            Place Order
+          </button>
+          <button id="btn-close-medicine" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. LAB TEST BOOKING MODAL -->
+    <div id="lab-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[460px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="space-y-1">
+          <h3 class="text-base font-bold text-[var(--text-color)]">Diagnostic Lab Tests</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Home sample collection available</p>
+        </div>
+        <div class="space-y-3.5 flex-1 my-2 overflow-y-auto modal-scroll pr-1">
+          <!-- Labs selection list -->
+          <div onclick="selectLabTest(this, 'Complete Blood Count (CBC)', 800)" class="lab-item-card p-3 glass-card rounded-xl flex justify-between items-center cursor-pointer border border-white/5 hover:border-[var(--accent-color)]/20 transition-all">
+            <span class="text-xs text-[var(--text-color)] font-bold">CBC Test (General Health)</span>
+            <span class="text-xs text-[var(--accent-color)] font-extrabold">Rs. 800</span>
+          </div>
+          <div onclick="selectLabTest(this, 'Lipid Profile', 1500)" class="lab-item-card p-3 glass-card rounded-xl flex justify-between items-center cursor-pointer border border-white/5 hover:border-[var(--accent-color)]/20 transition-all">
+            <span class="text-xs text-[var(--text-color)] font-bold">Lipid Profile (Cholesterol)</span>
+            <span class="text-xs text-[var(--accent-color)] font-extrabold">Rs. 1,500</span>
+          </div>
+          <div onclick="selectLabTest(this, 'Blood Sugar Fasting', 300)" class="lab-item-card p-3 glass-card rounded-xl flex justify-between items-center cursor-pointer border border-white/5 hover:border-[var(--accent-color)]/20 transition-all">
+            <span class="text-xs text-[var(--text-color)] font-bold">Blood Sugar Fasting</span>
+            <span class="text-xs text-[var(--accent-color)] font-extrabold">Rs. 300</span>
+          </div>
+        </div>
+        <div class="flex space-x-3">
+          <button onclick="confirmLabBooking()" class="btn-primary flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all shadow-md focus:outline-none">
+            Book Sample
+          </button>
+          <button id="btn-close-lab" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. DOCTOR SLOT BOOKING MODAL (Enhanced) -->
+    <div id="booking-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[595px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="space-y-1">
+          <h3 class="text-base font-bold text-[var(--text-color)]">Select Appointment Slot</h3>
+          <p id="booking-doc-name" class="text-xs text-[var(--accent-color)] font-extrabold">Dr. Specialist</p>
+          <p id="booking-doc-spec" class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Cardiology</p>
+        </div>
+        
+        <!-- Selection fields -->
+        <div class="space-y-3.5 flex-1 my-1 overflow-y-auto modal-scroll pr-1 font-medium">
+          <div>
+            <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider">Patient Full Name</label>
+            <input type="text" id="booking-patient-name" placeholder="Enter patient's name" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none focus:ring-0">
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider">Patient Mobile Number</label>
+            <input type="tel" id="booking-patient-phone" placeholder="e.g., 0300 1234567" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none focus:ring-0">
+          </div>
+          <div class="grid grid-cols-2 gap-3.5">
+            <div>
+              <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider">Select Date</label>
+              <input type="date" id="booking-date" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl px-3 text-xs text-[var(--text-color)] focus:outline-none focus:ring-0">
+            </div>
+            <div>
+              <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider">Time Slot</label>
+              <select id="booking-time" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl px-3 text-xs text-[var(--text-color)] focus:outline-none focus:ring-0">
+                <option value="" disabled selected>Choose slot</option>
+                <option value="09:00 AM">09:00 AM - 10:00 AM</option>
+                <option value="10:30 AM">10:30 AM - 11:30 AM</option>
+                <option value="02:00 PM">02:00 PM - 03:00 PM</option>
+                <option value="04:30 PM">04:30 PM - 05:30 PM</option>
+                <option value="06:00 PM">06:00 PM - 07:00 PM</option>
+                <option value="07:30 PM">07:30 PM - 08:30 PM</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider">Additional Notes / Symptoms (Optional)</label>
+            <textarea id="booking-notes" placeholder="Type symptoms, previous history or special notes..." class="w-full mt-1 h-16 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl px-3.5 py-2.5 text-xs text-[var(--text-color)] focus:outline-none focus:ring-0 resize-none"></textarea>
+          </div>
+        </div>
+
+        <div class="flex space-x-3 pt-1">
+          <button onclick="confirmBooking()" class="flex-[1.6] py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba56] text-white text-xs font-extrabold uppercase flex items-center justify-center space-x-1.5 transition-all shadow-md focus:outline-none active:scale-[0.98]">
+            <svg style="width: 20px; height: 20px; max-width: 20px; max-height: 20px; display: inline-block;" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.37 5.054L2 22l5.177-1.358a9.927 9.927 0 004.825 1.258h.005c5.507 0 9.99-4.474 9.991-9.983.001-2.67-1.035-5.18-2.915-7.062C17.202 3.02 14.69 2 12.012 2zm6.059 14.125c-.333.93-1.637 1.793-2.277 1.93-.574.123-1.32.221-3.79-.76-3.159-1.257-5.187-4.47-5.345-4.679-.158-.21-1.266-1.683-1.266-3.208a3.3 3.3 0 011.025-2.42c.316-.316.693-.395.922-.395.228 0 .456.002.653.012.203.01.478-.077.747.568.277.663.948 2.31 1.03 2.476.083.166.138.36.028.58-.11.22-.165.36-.33.55-.165.195-.347.437-.495.586-.165.166-.34.348-.148.68.192.33.852 1.405 1.83 2.277.978.872 1.802 1.14 2.132 1.305.33.166.52.138.713-.083.193-.221.826-.96.105-1.479-.192-.138-.632-.276-1.196-.525-.563-.25-1.077-.525-1.479-.11l-.813.99c-.165.193-.33.221-.662.055-1.038-.517-2.055-1.285-2.822-2.055-.77-.77-1.538-1.787-2.055-2.822-.166-.33-.138-.497.055-.662l.99-.813c.414-.403.138-.916-.11-1.479-.25-.564-.527-1.077-.525-1.196-.52-.72-.19-.105-.147-.96.713-.083.193-.055.33.166.713zm0 0"/>
+            </svg>
+            <span>Book via WhatsApp</span>
+          </button>
+          <button id="btn-close-booking" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. DOCTOR PROFILE OVERLAY MODAL (Slid-up drawer) -->
+    <div id="doctor-profile-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[580px] flex flex-col justify-between">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        
+        <!-- Doctor Banner Profile Header -->
+        <div class="relative rounded-2xl overflow-hidden h-36 bg-gradient-to-tr from-[#00A86B]/20 via-[#00E5FF]/20 to-transparent border border-white/5 flex items-center justify-center p-4">
+          <div class="flex items-center space-x-4 z-10 w-full">
+            <div class="w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-2xl font-extrabold flex-shrink-0" id="profile-avatar">SK</div>
+            <div class="space-y-1">
+              <div class="flex items-center space-x-1.5">
+                <h3 class="text-sm font-extrabold text-[var(--text-color)] leading-tight" id="profile-name">Dr. Saifullah Khan</h3>
+                <span class="w-4.5 h-4.5 rounded-full bg-cyan-500/20 text-[var(--accent-color)] flex items-center justify-center text-[9px] font-bold">✓</span>
+              </div>
+              <p class="text-[11px] text-[var(--accent-color)] font-bold" id="profile-spec">Cardiologist (Heart Specialist)</p>
+              <p class="text-[9px] text-[var(--text-muted)] font-semibold" id="profile-credentials">MBBS, FCPS - Cardiology</p>
+            </div>
+          </div>
+          <div class="absolute -right-10 -top-10 w-28 h-28 rounded-full bg-cyan-500/10 blur-xl pointer-events-none"></div>
+        </div>
+        
+        <!-- Doctor details scroll -->
+        <div class="modal-scroll flex-1 overflow-y-auto space-y-4 pr-1 text-xs py-1">
+          <div class="space-y-1">
+            <h4 class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider">Hospital Address</h4>
+            <p class="text-[11px] text-[var(--text-color)] font-semibold" id="profile-hospital">DHQ Hospital D.I. Khan, Chishti Chowk, Circular Road</p>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <h4 class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider">Available Timings</h4>
+              <p class="text-[10px] text-[var(--text-color)] font-semibold" id="profile-timings">Mon - Sat: 04:00 PM - 09:00 PM</p>
+            </div>
+            <div class="space-y-1">
+              <h4 class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider">Consultation Fee</h4>
+              <p class="text-[10px] text-[var(--text-color)] font-semibold" id="profile-fee">PKR 1,500</p>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <h4 class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider">About Doctor</h4>
+            <p class="text-[10px] text-[var(--text-muted)] leading-relaxed text-justify" id="profile-about">
+              Dr. Saifullah is a leading cardiovascular expert in KP, specializing in non-invasive cardiology, heart valve therapies, and advanced hypertensive care.
+            </p>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex space-x-3.5 pt-1.5 border-t border-[var(--border-color)]">
+          <button onclick="triggerBookingFromProfile()" style="background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000; font-weight: bold;" class="flex-1 py-3 rounded-xl text-xs uppercase transition-all shadow-md focus:outline-none">
+            Book Appointment
+          </button>
+          <button onclick="closeDoctorProfile()" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+            Close Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. VOICE SEARCH LISTENING OVERLAY -->
+    <div id="voice-overlay" class="absolute inset-0 bg-black/75 backdrop-blur-sm z-50 flex flex-col items-center justify-center space-y-6 transition-all duration-300 transform translate-y-full hidden">
+      <div class="relative w-28 h-28 flex items-center justify-center">
+        <!-- Pulse Rings -->
+        <div class="absolute inset-0 rounded-full bg-cyan-500/20 pulse-ring-element" style="animation-duration: 2s;"></div>
+        <div class="absolute inset-2 rounded-full bg-cyan-500/30 pulse-ring-element" style="animation-duration: 1.5s;"></div>
+        
+        <div class="w-20 h-20 rounded-full bg-[var(--accent-color)] text-[#0D1B2A] flex items-center justify-center shadow-[0_0_30px_rgba(0,229,255,0.4)]">
+          <svg class="w-10 h-10 text-[var(--primary-btn-text)]" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.42 2.72 6.2 6 6.72V21h2v-3.28c3.28-.52 6-3.3 6-6.72h-1.7z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="text-center space-y-1.5">
+        <h3 class="text-base font-extrabold text-[var(--text-color)] tracking-wide">Listening...</h3>
+        <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-widest">Say a Doctor name or Specialty</p>
+    <!-- 12. GOOGLE & APPLE AUTH MODAL POPUP -->
+    <div id="auth-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-[999] flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden" style="position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; z-index: 999 !important; display: none !important;">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl flex flex-col justify-between max-h-[480px]">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            <h3 class="text-sm font-bold text-[var(--text-color)]">Select Account to Continue</h3>
+          </div>
+          <button onclick="closeModal('auth-modal')" class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-[var(--text-color)] text-xs font-bold hover:bg-white/20">✕</button>
+        </div>
+        <p class="text-[10px] text-[var(--text-muted)] font-medium">Choose an account to sign into Dera Care</p>
+        <div class="space-y-2.5 my-2">
+          <div onclick="selectAuthAccount('Tanveer Ahmed', 'tanveer.dev@gmail.com')" class="glass-card p-3 rounded-xl flex items-center space-x-3 cursor-pointer hover:border-[var(--accent-color)]/30 transition-all">
+            <div class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center text-xs">TA</div>
+            <div class="flex-1">
+              <p class="text-[11px] font-bold text-[var(--text-color)]">Tanveer Ahmed</p>
+              <p class="text-[9px] text-[var(--text-muted)]">tanveer.dev@gmail.com</p>
+            </div>
+          </div>
+          <div onclick="selectAuthAccount('Dera Care User', 'user.deracare@gmail.com')" class="glass-card p-3 rounded-xl flex items-center space-x-3 cursor-pointer hover:border-[var(--accent-color)]/30 transition-all">
+            <div class="w-9 h-9 rounded-full bg-cyan-500/20 text-cyan-400 font-extrabold flex items-center justify-center text-xs">DU</div>
+            <div class="flex-1">
+              <p class="text-[11px] font-bold text-[var(--text-color)]">Dera Care User</p>
+              <p class="text-[9px] text-[var(--text-muted)]">user.deracare@gmail.com</p>
+            </div>
+          </div>
+          <div onclick="selectAuthAccount('Rizwan Khan', 'rizwan.khan@gmail.com')" class="glass-card p-3 rounded-xl flex items-center space-x-3 cursor-pointer hover:border-[var(--accent-color)]/30 transition-all">
+            <div class="w-9 h-9 rounded-full bg-teal-500/20 text-teal-400 font-extrabold flex items-center justify-center text-xs">RK</div>
+            <div class="flex-1">
+              <p class="text-[11px] font-bold text-[var(--text-color)]">Rizwan Khan</p>
+              <p class="text-[9px] text-[var(--text-muted)]">rizwan.khan@gmail.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alias mapping container for backward compatibility -->
+    <div id="google-modal" class="hidden"></div>
+
+    <!-- 13. TERMS OF SERVICE VIEW -->
+    <div id="terms-view" class="app-view flex-col justify-between" style="position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: var(--bg-color) !important; z-index: 9999 !important; display: none; overflow-y: auto !important; padding: 24px; box-sizing: border-box;">
+      <div class="flex flex-col h-full justify-between space-y-4">
+        <!-- Header with Back Button -->
+        <div class="flex items-center space-x-3 border-b border-[var(--border-color)] pb-3.5 flex-shrink-0">
+          <button onclick="showScreen('login-container')" class="px-3 py-1.5 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] text-xs font-bold transition-all focus:outline-none flex items-center space-x-1">
+            <span>← Back</span>
+          </button>
+          <div>
+            <h3 class="text-sm font-extrabold text-[var(--text-color)]">Terms of Service - Dera Care</h3>
+            <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider">D.I. Khan Health Ecosystem</p>
+          </div>
+        </div>
+
+        <!-- Scrollable content -->
+        <div class="flex-1 overflow-y-auto space-y-3.5 text-xs text-[var(--text-muted)] leading-relaxed pr-1">
+          <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-2">
+            <h4 class="font-bold text-[var(--text-color)] text-xs">1. Acceptance &amp; Platform Access</h4>
+            <p class="text-[11px]">By accessing the Dera Care mobile healthcare platform in Dera Ismail Khan, users agree to strictly comply with KP healthcare privacy guidelines, patient data protection laws, and clinical appointment scheduling protocols.</p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-2">
+            <h4 class="font-bold text-[var(--text-color)] text-xs">2. Telehealth &amp; Clinical Appointments</h4>
+            <p class="text-[11px]">All clinical appointments and doctor bookings scheduled through Dera Care are routed directly to certified medical specialists across D.I. Khan hospitals (DHQ Hospital, Mufti Mahmood Memorial Hospital, City Hospital, and private clinics).</p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-2">
+            <h4 class="font-bold text-[var(--text-color)] text-xs">3. 256-Bit Encrypted Data Protection</h4>
+            <p class="text-[11px]">Patient medical records, symptom descriptions, and appointment history are protected using bank-grade 256-bit encryption. Data is accessible strictly by assigned attending physicians.</p>
+          </div>
+        </div>
+
+        <!-- Prominent Close Button -->
+        <button onclick="showScreen('login-container')" class="w-full py-3.5 rounded-xl bg-[var(--accent-color)] text-[#0D1B2A] text-xs font-extrabold uppercase tracking-wider focus:outline-none shadow-lg active:scale-[0.98] transition-all flex-shrink-0">
+          ← Back / Close Terms
+        </button>
+      </div>
+    </div>
+
+    <!-- 14. PRIVACY POLICY VIEW -->
+    <div id="privacy-view" class="app-view flex-col justify-between" style="position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: var(--bg-color) !important; z-index: 9999 !important; display: none; overflow-y: auto !important; padding: 24px; box-sizing: border-box;">
+      <div class="flex flex-col h-full justify-between space-y-4">
+        <!-- Header with Back Button -->
+        <div class="flex items-center space-x-3 border-b border-[var(--border-color)] pb-3.5 flex-shrink-0">
+          <button onclick="showScreen('login-container')" class="px-3 py-1.5 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] text-xs font-bold transition-all focus:outline-none flex items-center space-x-1">
+            <span>← Back</span>
+          </button>
+          <div>
+            <h3 class="text-sm font-extrabold text-[var(--text-color)]">Privacy Policy - Dera Care</h3>
+            <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Medical Data Protection</p>
+          </div>
+        </div>
+
+        <!-- Scrollable content -->
+        <div class="flex-1 overflow-y-auto space-y-3.5 text-xs text-[var(--text-muted)] leading-relaxed pr-1">
+          <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-2">
+            <h4 class="font-bold text-[var(--text-color)] text-xs">1. Confidentiality &amp; Information Usage</h4>
+            <p class="text-[11px]">Dera Care collects patient name, phone number, and medical symptoms solely for facilitating doctor appointments, lab test bookings, and emergency ambulance routing within D.I. Khan.</p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-2">
+            <h4 class="font-bold text-[var(--text-color)] text-xs">2. Patient &amp; Doctor Communications</h4>
+            <p class="text-[11px]">In-app chat messages, lab reports, and prescription records shared between patients and doctors are encrypted and confidential. Information is never disclosed to commercial third parties.</p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-2">
+            <h4 class="font-bold text-[var(--text-color)] text-xs">3. Health Security Compliance</h4>
+            <p class="text-[11px]">All database transactions comply with international HIPAA security benchmarks and KP Digital Health Privacy Standards.</p>
+          </div>
+        </div>
+
+        <!-- Prominent Close Button -->
+        <button onclick="showScreen('login-container')" class="w-full py-3.5 rounded-xl bg-[var(--accent-color)] text-[#0D1B2A] text-xs font-extrabold uppercase tracking-wider focus:outline-none shadow-lg active:scale-[0.98] transition-all flex-shrink-0">
+          ← Back / Close Privacy Policy
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Micro Toast Notifications inside wrapper -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 border border-slate-800 text-white rounded-2xl p-4 shadow-2xl flex items-center space-x-3 max-w-[320px]">
+    <div id="toast-icon-box" class="p-2 bg-rose-500/10 rounded-xl border border-rose-500/30 text-rose-400">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+      </svg>
+    </div>
+    <div>
+      <h4 id="toast-title" class="text-xs font-bold text-white uppercase tracking-wider">Validation Error</h4>
+      <p id="toast-desc" class="text-[11px] text-slate-400 font-medium mt-0.5">Please check input parameters.</p>
+    </div>
+  </div>
+
+  <!-- External JavaScript application logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>

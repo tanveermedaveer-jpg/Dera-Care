@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #0b0f19 !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden !important;
+}
+
+/* CSS variables defining theme palettes */
+:root {
+  --bg-color: #F8F9FA;
+  --text-color: #0F172A;
+  --accent-color: #00A86B;
+  --card-bg: #ffffff;
+  --input-bg: #F1F5F9;
+  --border-color: rgba(15, 23, 42, 0.08);
+  --primary-btn-bg: #00A86B;
+  --primary-btn-text: #ffffff;
+  --google-btn-bg: #ffffff;
+  --google-btn-text: #0F172A;
+  --modal-bg: rgba(255, 255, 255, 0.98);
+  --text-muted: #64748B;
+  --toggle-bg: #ffffff;
+  --toggle-border: rgba(15, 23, 42, 0.12);
+  --toggle-icon-color: #0F172A;
+  --wa-chat-bg: #efeae2;
+  --wa-bubble-sent-bg: #d9fdd3;
+  --wa-bubble-sent-text: #111b21;
+}
+
+.theme-dark {
+  --bg-color: #0A1128;
+  --text-color: #F8FAFC;
+  --accent-color: #00E5FF;
+  --card-bg: rgba(17, 28, 48, 0.85);
+  --input-bg: #0B132B;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --primary-btn-bg: #00E5FF;
+  --primary-btn-text: #0A1128;
+  --google-btn-bg: #0B132B;
+  --google-btn-text: #F8FAFC;
+  --modal-bg: rgba(10, 17, 40, 0.96);
+  --text-muted: #94A3B8;
+  --toggle-bg: #111a36;
+  --toggle-border: #00E5FF;
+  --toggle-icon-color: #00E5FF;
+  --wa-chat-bg: #0b141a;
+  --wa-bubble-sent-bg: #005c4b;
+  --wa-bubble-sent-text: #e9edef;
+}
+
+#mobile-frame {
+  position: relative !important;
+  width: 410px !important;
+  max-width: 100% !important;
+  height: 844px !important;
+  max-height: 90vh !important;
+  margin: 0 auto !important;
+  border-radius: 36px !important;
+  box-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.8) !important;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden !important;
+  z-index: 10;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Glassmorphism custom styling based on theme variables */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+}
+
+.glass-modal {
+  background: var(--modal-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--border-color);
+}
+
+/* Fixed size dropdown selector styling */
+#country-select {
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 14px;
+  line-height: normal;
+  border: none;
+  outline: none;
+}
+
+#country-select option {
+  background-color: #0D1724;
+  color: #00E5FF;
+  font-size: 14px;
+  border: none;
+  padding: 8px;
+}
+
+/* Standard shake animation for validation failures */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.shake-anim {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* Keyframe animation for subtle pulsing ring */
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+
+.pulse-ring-element {
+  animation: pulse-ring 3s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+}
+
+/* Custom scrollbar for glassmorphic modals & category feeds */
+.modal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.modal-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 9px;
+}
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.25);
+  border-radius: 9px;
+}
+
+/* Hide standard scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.btn-primary {
+  background: var(--primary-btn-bg) !important;
+  color: var(--primary-btn-text) !important;
+  font-weight: 800 !important;
+}
+
+.app-view {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: none !important;
+  overflow-y: auto !important;
+  background: var(--bg-color) !important;
+  z-index: 10;
+}
+
+button, input, select, textarea, a, label {
+  pointer-events: auto !important;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Dera Care</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b1329;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --accent-color: #00E5FF;
+      --primary-green: #00A86B;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-color: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body class="py-8 px-4 flex flex-col items-center">
+
+  <div class="max-w-2xl w-full space-y-6">
+
+    <!-- Header Navigation -->
+    <header class="glass-card rounded-2xl p-5 flex items-center justify-between shadow-xl">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] p-[2px] flex items-center justify-center shadow-lg">
+          <div class="w-full h-full rounded-[10px] bg-[var(--bg-color)] flex items-center justify-center text-xs font-black text-white">
+            DC
+          </div>
+        </div>
+        <div>
+          <h1 class="text-lg font-extrabold tracking-wide text-white">Dera Care</h1>
+          <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Privacy & Security</p>
+        </div>
+      </div>
+      <a href="index.html" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-bold text-white transition-all">
+        &larr; Back to App
+      </a>
+    </header>
+
+    <!-- Main Content Card -->
+    <main class="glass-card rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
+      
+      <div class="border-b border-white/10 pb-4">
+        <h2 class="text-2xl font-extrabold text-white">Privacy Policy</h2>
+        <p class="text-xs text-[var(--accent-color)] font-semibold uppercase tracking-wider mt-1">256-Bit Data Encryption Standards &bull; Updated August 2026</p>
+      </div>
+
+      <div class="space-y-6 text-sm text-[var(--text-muted)] leading-relaxed">
+        
+        <section class="space-y-2">
+          <h3 class="text-base font-bold text-white flex items-center">
+            <span class="w-6 h-6 rounded-lg bg-[#00A86B]/20 text-[#00E5FF] text-xs flex items-center justify-center mr-2 font-black">1</span>
+            Data We Collect
+          </h3>
+          <p class="pl-8">
+            Dera Care collects minimal essential user data required for patient management: full name, email address, contact phone numbers, and optional medical notes submitted during appointment requests.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h3 class="text-base font-bold text-white flex items-center">
+            <span class="w-6 h-6 rounded-lg bg-[#00A86B]/20 text-[#00E5FF] text-xs flex items-center justify-center mr-2 font-black">2</span>
+            How Information Is Used
+          </h3>
+          <p class="pl-8">
+            Your data is used strictly for authenticating patient sessions, facilitating appointment bookings with registered specialist doctors, and maintaining user preferences. We NEVER sell or commercialize patient records.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h3 class="text-base font-bold text-white flex items-center">
+            <span class="w-6 h-6 rounded-lg bg-[#00A86B]/20 text-[#00E5FF] text-xs flex items-center justify-center mr-2 font-black">3</span>
+            Data Security & Storage
+          </h3>
+          <p class="pl-8">
+            All credentials and local application data are protected using industry-standard 256-bit encryption. Local storage records remain strictly private on user devices and authorized administrative channels.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h3 class="text-base font-bold text-white flex items-center">
+            <span class="w-6 h-6 rounded-lg bg-[#00A86B]/20 text-[#00E5FF] text-xs flex items-center justify-center mr-2 font-black">4</span>
+            Third-Party Services
+          </h3>
+          <p class="pl-8">
+            When initiating WhatsApp booking communications, the app utilizes secure protocol deep-linking. Third-party messaging platforms process data in accordance with their respective privacy standards.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h3 class="text-base font-bold text-white flex items-center">
+            <span class="w-6 h-6 rounded-lg bg-[#00A86B]/20 text-[#00E5FF] text-xs flex items-center justify-center mr-2 font-black">5</span>
+            Contact Privacy Officer
+          </h3>
+          <p class="pl-8">
+            If you have questions about our data practices or wish to request data deletion, contact our Privacy Officer at <span class="text-white font-semibold">privacy@deracare.pk</span>.
+          </p>
+        </section>
+
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-[var(--text-muted)] space-y-2">
+      <p>&copy; 2026 Dera Care Health Network. All rights reserved.</p>
+      <div class="flex justify-center space-x-4">
+        <a href="terms.html" class="text-[var(--accent-color)] hover:underline font-bold">Terms of Service</a>
+        <span>&bull;</span>
+        <a href="privacy.html" class="text-[var(--accent-color)] hover:underline font-bold">Privacy Policy</a>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>
