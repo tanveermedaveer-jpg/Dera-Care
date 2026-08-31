@@ -1086,8 +1086,8 @@ function handleAdminLogin(e) {
       adminPanel.style.setProperty('--tw-translate-x', '0px', 'important');
       adminPanel.style.setProperty('--tw-translate-y', '0px', 'important');
       adminPanel.style.setProperty('z-index', '99999', 'important');
-      adminPanel.style.setProperty('background', 'var(--bg-color)', 'important');
-      adminPanel.style.setProperty('color', 'var(--text-color)', 'important');
+      adminPanel.style.setProperty('background', '#0b1120', 'important');
+      adminPanel.style.setProperty('color', '#ffffff', 'important');
       adminPanel.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
       adminPanel.classList.add('translate-x-0', 'opacity-100');
     }
