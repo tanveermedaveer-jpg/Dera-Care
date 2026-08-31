@@ -336,22 +336,43 @@ function switchRole(role) {}
 
 const allScreens = ['login-container', 'home-container', 'doctor-dashboard', 'admin-panel', 'terms-view', 'privacy-view'];
 function showScreen(id) {
-  if (id === 'patient-dashboard' || id === 'home-view' || id === 'patient-view') {
-    id = 'home-container';
-  }
-  if (id === 'login-view') id = 'login-container';
-  if (id === 'doctor-portal') id = 'doctor-dashboard';
+  try {
+    if (id === 'patient-dashboard' || id === 'home-view' || id === 'patient-view') {
+      id = 'home-container';
+    }
+    if (id === 'login-view') id = 'login-container';
+    if (id === 'doctor-portal') id = 'doctor-dashboard';
 
-  document.querySelectorAll('.app-view, #login-container, #home-container, #doctor-dashboard, #admin-panel, #terms-view, #privacy-view').forEach(el => {
-    el.style.setProperty('display', 'none', 'important');
-    el.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
-    el.classList.remove('translate-x-0', 'opacity-100');
-  });
-  const target = document.getElementById(id);
-  if (!target) return;
-  target.style.setProperty('display', 'flex', 'important');
-  target.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
-  target.classList.add('translate-x-0', 'opacity-100');
+    const target = document.getElementById(id);
+    if (!target) {
+      console.warn(`Target screen #${id} not found in DOM.`);
+      const fallback = document.getElementById('home-container') || document.getElementById('login-container');
+      if (fallback) {
+        fallback.style.setProperty('display', 'flex', 'important');
+        fallback.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+        fallback.classList.add('translate-x-0', 'opacity-100');
+      }
+      return;
+    }
+
+    document.querySelectorAll('.app-view, #login-container, #home-container, #doctor-dashboard, #admin-panel, #terms-view, #privacy-view').forEach(el => {
+      el.style.setProperty('display', 'none', 'important');
+      el.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+      el.classList.remove('translate-x-0', 'opacity-100');
+    });
+
+    target.style.setProperty('display', 'flex', 'important');
+    target.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+    target.classList.add('translate-x-0', 'opacity-100');
+  } catch (err) {
+    console.error("Error in showScreen:", err);
+    const fallback = document.getElementById('home-container') || document.getElementById('login-container');
+    if (fallback) {
+      fallback.style.setProperty('display', 'flex', 'important');
+      fallback.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+      fallback.classList.add('translate-x-0', 'opacity-100');
+    }
+  }
 }
 
 function openModal(id) {
@@ -901,47 +922,74 @@ function handlePatientSignup() {
 }
 
 function handleDoctorLogin() {
-  const id = document.getElementById('doctor-id-input').value.trim();
-  const pin = document.getElementById('doctor-pin-input').value.trim();
-  if (!id || !pin) {
-    showToast('Missing Fields', 'Please enter your Doctor ID and PIN Code.', 'error');
-    return;
-  }
-  const doctors = DC.getDoctors();
-  const match = doctors.find(d => d.docId === id && d.pin === pin);
-  if (!match) {
-    showToast('Access Denied', 'Invalid Doctor ID or PIN Code. Contact your Admin.', 'error');
-    return;
-  }
-  showToast('Authenticated ✓', `Welcome, ${match.name}! Loading your portal...`, 'success');
-  document.getElementById('doc-dashboard-name').textContent = match.name;
-  renderDoctorPatientChat();
-  setTimeout(() => {
+  try {
+    const idEl = document.getElementById('doctor-id-input');
+    const pinEl = document.getElementById('doctor-pin-input');
+    const id = idEl ? idEl.value.trim() : "";
+    const pin = pinEl ? pinEl.value.trim() : "";
+
+    if (!id || !pin) {
+      showToast('Missing Fields', 'Please enter your Doctor ID and PIN Code.', 'error');
+      return;
+    }
+    const doctors = DC.getDoctors();
+    const match = doctors.find(d => d.docId === id && d.pin === pin);
+    if (!match) {
+      showToast('Access Denied', 'Invalid Doctor ID or PIN Code. Contact your Admin.', 'error');
+      return;
+    }
+    showToast('Authenticated ✓', `Welcome, ${match.name}! Loading your portal...`, 'success');
+    
+    const docNameEl = document.getElementById('doc-dashboard-name');
+    if (docNameEl) docNameEl.textContent = match.name;
+
+    if (typeof renderDoctorPatientChat === 'function') renderDoctorPatientChat();
+
+    setTimeout(() => {
+      showScreen('doctor-dashboard');
+    }, 400);
+  } catch (err) {
+    console.error("Doctor Login Error:", err);
     showScreen('doctor-dashboard');
-  }, 800);
+  }
 }
 
 function handleAdminLogin() {
-  const user = document.getElementById('admin-user-input').value.trim();
-  const pass = document.getElementById('admin-pass-input').value.trim();
-  if (!user || !pass) {
-    showToast('Missing Fields', 'Please enter admin username and password.', 'error');
-    return;
-  }
-  const creds = DC.getAdminCreds();
-  if (user !== creds.username || pass !== creds.password) {
-    showToast('Access Denied', 'Invalid admin username or password.', 'error');
-    return;
-  }
-  showToast('Admin Access Granted ✓', 'Loading Dera Care Control Panel...', 'success');
-  document.getElementById('admin-logged-in-label').textContent = `Logged in as ${creds.username}`;
-  document.getElementById('admin-display-username').textContent = creds.username;
-  renderAdminDoctorList();
-  updateAdminStats();
-  switchAdminTab('stats');
-  setTimeout(() => {
+  try {
+    const userEl = document.getElementById('admin-user-input');
+    const passEl = document.getElementById('admin-pass-input');
+    const user = userEl ? userEl.value.trim() : "";
+    const pass = passEl ? passEl.value.trim() : "";
+
+    if (!user || !pass) {
+      showToast('Missing Fields', 'Please enter admin username and password.', 'error');
+      return;
+    }
+    const creds = DC.getAdminCreds();
+    if (user !== creds.username || pass !== creds.password) {
+      showToast('Access Denied', 'Invalid admin username or password.', 'error');
+      return;
+    }
+    showToast('Admin Access Granted ✓', 'Loading Dera Care Control Panel...', 'success');
+
+    const lbl = document.getElementById('admin-logged-in-label');
+    if (lbl) lbl.textContent = `Logged in as ${creds.username}`;
+    
+    const disp = document.getElementById('admin-display-username');
+    if (disp) disp.textContent = creds.username;
+
+    if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
+    if (typeof updateAdminStats === 'function') updateAdminStats();
+    if (typeof switchAdminTab === 'function') switchAdminTab('stats');
+
+    setTimeout(() => {
+      showScreen('admin-panel');
+    }, 400);
+  } catch (err) {
+    console.error("Admin Login Error:", err);
+    showToast("Login Exception", "Failed to switch to Admin Panel. Loading fallback.", "error");
     showScreen('admin-panel');
-  }, 800);
+  }
 }
 
 function logoutToLogin() {
