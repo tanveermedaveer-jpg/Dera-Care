@@ -349,6 +349,9 @@ function showScreen(id) {
       const fallback = document.getElementById('home-container') || document.getElementById('login-container');
       if (fallback) {
         fallback.style.setProperty('display', 'flex', 'important');
+        fallback.style.setProperty('transform', 'none', 'important');
+        fallback.style.setProperty('opacity', '1', 'important');
+        fallback.style.setProperty('pointer-events', 'auto', 'important');
         fallback.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
         fallback.classList.add('translate-x-0', 'opacity-100');
       }
@@ -357,11 +360,16 @@ function showScreen(id) {
 
     document.querySelectorAll('.app-view, #login-container, #home-container, #doctor-dashboard, #admin-panel, #terms-view, #privacy-view').forEach(el => {
       el.style.setProperty('display', 'none', 'important');
+      el.style.setProperty('opacity', '0', 'important');
+      el.style.setProperty('pointer-events', 'none', 'important');
       el.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
       el.classList.remove('translate-x-0', 'opacity-100');
     });
 
     target.style.setProperty('display', 'flex', 'important');
+    target.style.setProperty('transform', 'none', 'important');
+    target.style.setProperty('opacity', '1', 'important');
+    target.style.setProperty('pointer-events', 'auto', 'important');
     target.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
     target.classList.add('translate-x-0', 'opacity-100');
   } catch (err) {
@@ -369,6 +377,9 @@ function showScreen(id) {
     const fallback = document.getElementById('home-container') || document.getElementById('login-container');
     if (fallback) {
       fallback.style.setProperty('display', 'flex', 'important');
+      fallback.style.setProperty('transform', 'none', 'important');
+      fallback.style.setProperty('opacity', '1', 'important');
+      fallback.style.setProperty('pointer-events', 'auto', 'important');
       fallback.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
       fallback.classList.add('translate-x-0', 'opacity-100');
     }
