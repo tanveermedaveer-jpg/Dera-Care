@@ -346,29 +346,41 @@ function showScreen(id) {
     const target = document.getElementById(id);
     if (!target) {
       console.warn(`Target screen #${id} not found in DOM.`);
-      const fallback = document.getElementById('home-container') || document.getElementById('login-container');
+      const fallback = document.getElementById('admin-panel') || document.getElementById('login-container');
       if (fallback) {
         fallback.style.setProperty('display', 'flex', 'important');
+        fallback.style.setProperty('position', 'absolute', 'important');
+        fallback.style.setProperty('top', '0', 'important');
+        fallback.style.setProperty('left', '0', 'important');
+        fallback.style.setProperty('right', '0', 'important');
+        fallback.style.setProperty('bottom', '0', 'important');
+        fallback.style.setProperty('width', '100%', 'important');
+        fallback.style.setProperty('height', '100%', 'important');
         fallback.style.setProperty('transform', 'none', 'important');
         fallback.style.setProperty('--tw-translate-x', '0px', 'important');
         fallback.style.setProperty('opacity', '1', 'important');
         fallback.style.setProperty('pointer-events', 'auto', 'important');
         fallback.style.setProperty('visibility', 'visible', 'important');
+        fallback.style.setProperty('z-index', '100', 'important');
         fallback.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
         fallback.classList.add('translate-x-0', 'opacity-100');
       }
       return;
     }
 
-    document.querySelectorAll('.app-view, #login-container, #home-container, #doctor-dashboard, #admin-panel, #terms-view, #privacy-view').forEach(el => {
-      el.style.setProperty('display', 'none', 'important');
-      el.style.setProperty('opacity', '0', 'important');
-      el.style.setProperty('pointer-events', 'none', 'important');
-      el.style.setProperty('visibility', 'hidden', 'important');
-      el.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
-      el.classList.remove('translate-x-0', 'opacity-100');
+    // Hide all non-target screens
+    document.querySelectorAll('#login-container, #home-container, #doctor-dashboard, #admin-panel, #terms-view, #privacy-view').forEach(el => {
+      if (el !== target) {
+        el.style.setProperty('display', 'none', 'important');
+        el.style.setProperty('opacity', '0', 'important');
+        el.style.setProperty('pointer-events', 'none', 'important');
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+        el.classList.remove('translate-x-0', 'opacity-100');
+      }
     });
 
+    // Make target active screen 100% visible
     target.style.setProperty('display', 'flex', 'important');
     target.style.setProperty('position', 'absolute', 'important');
     target.style.setProperty('top', '0', 'important');
@@ -383,7 +395,7 @@ function showScreen(id) {
     target.style.setProperty('opacity', '1', 'important');
     target.style.setProperty('pointer-events', 'auto', 'important');
     target.style.setProperty('visibility', 'visible', 'important');
-    target.style.setProperty('z-index', '50', 'important');
+    target.style.setProperty('z-index', '100', 'important');
     target.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
     target.classList.add('translate-x-0', 'opacity-100');
 
@@ -392,21 +404,14 @@ function showScreen(id) {
       if (statsTab) {
         statsTab.classList.remove('hidden');
         statsTab.style.setProperty('display', 'block', 'important');
+        statsTab.style.setProperty('visibility', 'visible', 'important');
+        statsTab.style.setProperty('opacity', '1', 'important');
       }
+      try { if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList(); } catch(e) {}
+      try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
     }
   } catch (err) {
     console.error("Error in showScreen:", err);
-    const fallback = document.getElementById('home-container') || document.getElementById('login-container');
-    if (fallback) {
-      fallback.style.setProperty('display', 'flex', 'important');
-      fallback.style.setProperty('transform', 'none', 'important');
-      fallback.style.setProperty('--tw-translate-x', '0px', 'important');
-      fallback.style.setProperty('opacity', '1', 'important');
-      fallback.style.setProperty('pointer-events', 'auto', 'important');
-      fallback.style.setProperty('visibility', 'visible', 'important');
-      fallback.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
-      fallback.classList.add('translate-x-0', 'opacity-100');
-    }
   }
 }
 
