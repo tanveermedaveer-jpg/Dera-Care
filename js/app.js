@@ -370,12 +370,20 @@ function showScreen(id) {
     });
 
     target.style.setProperty('display', 'flex', 'important');
+    target.style.setProperty('position', 'absolute', 'important');
+    target.style.setProperty('top', '0', 'important');
+    target.style.setProperty('left', '0', 'important');
+    target.style.setProperty('right', '0', 'important');
+    target.style.setProperty('bottom', '0', 'important');
+    target.style.setProperty('width', '100%', 'important');
+    target.style.setProperty('height', '100%', 'important');
     target.style.setProperty('transform', 'none', 'important');
     target.style.setProperty('--tw-translate-x', '0px', 'important');
     target.style.setProperty('--tw-translate-y', '0px', 'important');
     target.style.setProperty('opacity', '1', 'important');
     target.style.setProperty('pointer-events', 'auto', 'important');
     target.style.setProperty('visibility', 'visible', 'important');
+    target.style.setProperty('z-index', '50', 'important');
     target.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
     target.classList.add('translate-x-0', 'opacity-100');
 
