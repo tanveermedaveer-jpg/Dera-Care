@@ -990,42 +990,45 @@ function handleAdminLogin(e) {
     const pass = passEl ? passEl.value.trim() : "";
 
     if (!user || !pass) {
-      showToast('Missing Fields', 'Please enter admin username and password.', 'error');
+      showToast('Missing Fields', 'Please enter your Admin Phone Number and Password.', 'error');
       return;
     }
+
+    const isMasterPhone = (user === '03103716116' && pass === 'Sadaf@9099');
+    const isMasterUser = (user === 'MSadaf' && pass === 'Sadaf@9099');
     const creds = DC.getAdminCreds();
-    const isMaster = (user === 'MSadaf' && pass === 'Sadaf@9099');
     const isStored = (user === creds.username && pass === creds.password);
 
-    if (!isMaster && !isStored) {
-      showToast('Access Denied', 'Invalid admin username or password.', 'error');
+    if (!isMasterPhone && !isMasterUser && !isStored) {
+      showToast('Access Denied', 'Invalid Admin Phone Number or Password.', 'error');
       return;
     }
 
     currentSession = {
       isGuest: false,
       role: 'admin',
-      name: "MSadaf (Master Admin)",
+      name: "Admin (03103716116)",
+      phone: "03103716116",
       email: "msadaf.admin@deracare.pk"
     };
 
-    const activeUser = isMaster ? 'MSadaf' : creds.username;
+    const activeDisplay = isMasterPhone ? 'Admin (03103716116)' : (isMasterUser ? 'MSadaf' : creds.username);
     const lbl = document.getElementById('admin-logged-in-label');
-    if (lbl) lbl.textContent = `Logged in as ${activeUser}`;
+    if (lbl) lbl.textContent = `Logged in as ${activeDisplay}`;
     
     const disp = document.getElementById('admin-display-username');
-    if (disp) disp.textContent = activeUser;
+    if (disp) disp.textContent = activeDisplay;
 
     try { if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList(); } catch(e) {}
     try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
     try { if (typeof switchAdminTab === 'function') switchAdminTab('stats'); } catch(e) {}
 
     showScreen('admin-panel');
-    showToast('Admin Access Granted ✓', `Welcome back, ${activeUser}! Dera Care Control Panel active.`, 'success');
+    showToast('Admin Access Granted ✓', `Welcome back, ${activeDisplay}! Control Panel Active.`, 'success');
   } catch (err) {
     console.error("Admin Login Error:", err);
-    showToast("Admin Panel Active", "Switching to Admin Control Panel...", "success");
     showScreen('admin-panel');
+    showToast("Admin Panel Active", "Switching to Control Panel...", "success");
   }
 }
 
