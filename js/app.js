@@ -1,3 +1,58 @@
+// Global Error Handler & Red Box Error UI
+if (typeof window.renderRedErrorBox !== 'function') {
+  window.renderRedErrorBox = function(msg, url, line, col, errObj) {
+    try {
+      var existing = document.getElementById('global-fatal-error-box');
+      if (existing) existing.remove();
+      
+      var errBox = document.createElement('div');
+      errBox.id = 'global-fatal-error-box';
+      errBox.style.cssText = 'position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;z-index:9999999!important;background:#990000!important;color:#ffffff!important;padding:20px!important;box-sizing:border-box!important;overflow-y:auto!important;font-family:monospace!important;font-size:12px!important;line-height:1.5!important;border:4px solid #ff4444!important;';
+      
+      var stackStr = (errObj && errObj.stack) ? errObj.stack : (new Error().stack || 'No stack trace available');
+      
+      function esc(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      }
+      
+      errBox.innerHTML = '<div style="background:#660000;border:2px solid #ff6666;padding:16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.8);">' +
+        '<h2 style="color:#ffffff;font-size:16px;font-weight:900;margin:0 0 10px 0;text-transform:uppercase;letter-spacing:1px;">🚨 RUNTIME ERROR CAUGHT 🚨</h2>' +
+        '<div style="background:#440000;padding:10px;border-radius:8px;margin-bottom:10px;word-break:break-all;">' +
+          '<strong style="color:#ffcccc;display:block;font-size:13px;margin-bottom:4px;">Error Message:</strong>' +
+          '<span style="color:#ffffff;font-size:14px;font-weight:bold;">' + esc(msg || 'Unknown Error') + '</span>' +
+        '</div>' +
+        '<div style="margin-bottom:6px;color:#ffeeee;"><strong>Script Source:</strong> ' + esc(url || 'Inline') + '</div>' +
+        '<div style="margin-bottom:6px;color:#ffeeee;"><strong>Line Number:</strong> ' + (line || 'N/A') + ' &nbsp;|&nbsp; <strong>Column:</strong> ' + (col || 'N/A') + '</div>' +
+        '<div style="margin-top:10px;background:#220000;padding:10px;border-radius:8px;border:1px solid #660000;">' +
+          '<strong style="color:#ffaaaa;display:block;margin-bottom:4px;">Stack Trace:</strong>' +
+          '<pre style="margin:0;white-space:pre-wrap;word-break:break-all;color:#ffcccc;font-size:10px;">' + esc(stackStr) + '</pre>' +
+        '</div>' +
+        '<button onclick="location.reload()" style="margin-top:14px;padding:10px 18px;background:#ffffff;color:#cc0000;font-weight:900;border:none;border-radius:8px;cursor:pointer;font-size:12px;text-transform:uppercase;">🔄 Reload Application</button>' +
+      '</div>';
+      
+      var frame = document.getElementById('mobile-frame') || document.body;
+      if (frame) frame.prepend(errBox);
+    } catch(e) {
+      console.error('Failed to render error box:', e);
+    }
+  };
+
+  window.onerror = function(msg, url, line, col, err) {
+    console.error('Global window.onerror:', msg, url, line, col, err);
+    window.renderRedErrorBox(msg, url, line, col, err);
+    return false;
+  };
+
+  window.addEventListener('unhandledrejection', function(event) {
+    console.error('Unhandled Promise Rejection:', event.reason);
+    var reason = event.reason;
+    var msg = (reason && reason.message) ? reason.message : String(reason);
+    var stack = (reason && reason.stack) ? reason : null;
+    window.renderRedErrorBox('Unhandled Rejection: ' + msg, 'Promise', 0, 0, stack);
+  });
+}
+
 // Live update phone clock
 function updateClock() {
   const now = new Date();
@@ -412,6 +467,9 @@ function showScreen(id) {
     }
   } catch (err) {
     console.error("Error in showScreen:", err);
+    if (typeof window.renderRedErrorBox === 'function') {
+      window.renderRedErrorBox("showScreen Error: " + (err.message || String(err)), "js/app.js", 0, 0, err);
+    }
   }
 }
 
@@ -1332,17 +1390,10 @@ function handleAdminLogin(e) {
     showToast('Admin Access Granted ✓', `Welcome Admin: 03103716116`, 'success');
     return false;
   } catch (err) {
-    console.error("Admin Login Error:", err);
-    showToast('Admin Access', 'Loading Admin Dashboard...', 'info');
-    try {
-      let adminPanel = document.getElementById('admin-panel');
-      if (adminPanel) {
-        adminPanel.style.setProperty('display', 'flex', 'important');
-        adminPanel.style.setProperty('opacity', '1', 'important');
-        adminPanel.style.setProperty('visibility', 'visible', 'important');
-        adminPanel.classList.remove('hidden');
-      }
-    } catch(e) {}
+    console.error("Admin Login Error Exception:", err);
+    if (typeof window.renderRedErrorBox === 'function') {
+      window.renderRedErrorBox("Admin Login Exception: " + (err.message || String(err)), "js/app.js", 0, 0, err);
+    }
     return false;
   }
 }
