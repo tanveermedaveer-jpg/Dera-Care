@@ -1,57 +1,24 @@
-// Global Error Handler & Red Box Error UI
-if (typeof window.renderRedErrorBox !== 'function') {
-  window.renderRedErrorBox = function(msg, url, line, col, errObj) {
-    try {
-      var existing = document.getElementById('global-fatal-error-box');
-      if (existing) existing.remove();
-      
-      var errBox = document.createElement('div');
-      errBox.id = 'global-fatal-error-box';
-      errBox.style.cssText = 'position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;z-index:9999999!important;background:#990000!important;color:#ffffff!important;padding:20px!important;box-sizing:border-box!important;overflow-y:auto!important;font-family:monospace!important;font-size:12px!important;line-height:1.5!important;border:4px solid #ff4444!important;';
-      
-      var stackStr = (errObj && errObj.stack) ? errObj.stack : (new Error().stack || 'No stack trace available');
-      
-      function esc(str) {
-        if (!str) return '';
-        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-      }
-      
-      errBox.innerHTML = '<div style="background:#660000;border:2px solid #ff6666;padding:16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.8);">' +
-        '<h2 style="color:#ffffff;font-size:16px;font-weight:900;margin:0 0 10px 0;text-transform:uppercase;letter-spacing:1px;">🚨 RUNTIME ERROR CAUGHT 🚨</h2>' +
-        '<div style="background:#440000;padding:10px;border-radius:8px;margin-bottom:10px;word-break:break-all;">' +
-          '<strong style="color:#ffcccc;display:block;font-size:13px;margin-bottom:4px;">Error Message:</strong>' +
-          '<span style="color:#ffffff;font-size:14px;font-weight:bold;">' + esc(msg || 'Unknown Error') + '</span>' +
-        '</div>' +
-        '<div style="margin-bottom:6px;color:#ffeeee;"><strong>Script Source:</strong> ' + esc(url || 'Inline') + '</div>' +
-        '<div style="margin-bottom:6px;color:#ffeeee;"><strong>Line Number:</strong> ' + (line || 'N/A') + ' &nbsp;|&nbsp; <strong>Column:</strong> ' + (col || 'N/A') + '</div>' +
-        '<div style="margin-top:10px;background:#220000;padding:10px;border-radius:8px;border:1px solid #660000;">' +
-          '<strong style="color:#ffaaaa;display:block;margin-bottom:4px;">Stack Trace:</strong>' +
-          '<pre style="margin:0;white-space:pre-wrap;word-break:break-all;color:#ffcccc;font-size:10px;">' + esc(stackStr) + '</pre>' +
-        '</div>' +
-        '<button onclick="location.reload()" style="margin-top:14px;padding:10px 18px;background:#ffffff;color:#cc0000;font-weight:900;border:none;border-radius:8px;cursor:pointer;font-size:12px;text-transform:uppercase;">🔄 Reload Application</button>' +
-      '</div>';
-      
-      var frame = document.getElementById('mobile-frame') || document.body;
-      if (frame) frame.prepend(errBox);
-    } catch(e) {
-      console.error('Failed to render error box:', e);
-    }
-  };
-
-  window.onerror = function(msg, url, line, col, err) {
-    console.error('Global window.onerror:', msg, url, line, col, err);
-    window.renderRedErrorBox(msg, url, line, col, err);
-    return false;
-  };
-
-  window.addEventListener('unhandledrejection', function(event) {
-    console.error('Unhandled Promise Rejection:', event.reason);
-    var reason = event.reason;
-    var msg = (reason && reason.message) ? reason.message : String(reason);
-    var stack = (reason && reason.stack) ? reason : null;
-    window.renderRedErrorBox('Unhandled Rejection: ' + msg, 'Promise', 0, 0, stack);
-  });
+// RAW DOM OVERRIDE GLOBAL ERROR HANDLER
+function triggerRawCrashDOM(msg, stack) {
+  try {
+    document.body.innerHTML = "<div style='background:red;color:white;padding:50px;font-size:25px;z-index:999999;position:fixed;inset:0;overflow:auto;word-break:break-all;'>CRASH REASON: " + (msg || 'Unknown Exception') + "<br><br>FILE/STACK: " + (stack || 'No stack trace') + "</div>";
+  } catch(e) {}
 }
+
+window.onerror = function(message, source, lineno, colno, error) {
+  var errObj = error || {};
+  var msg = message || errObj.message || 'Script Error';
+  var stack = errObj.stack || (source + ":" + lineno + ":" + colno);
+  triggerRawCrashDOM(msg, stack);
+  return false;
+};
+
+window.addEventListener('unhandledrejection', function(event) {
+  var reason = event.reason || {};
+  var msg = "Unhandled Rejection: " + (reason.message || String(reason));
+  var stack = reason.stack || 'Promise rejection stack unavailable';
+  triggerRawCrashDOM(msg, stack);
+});
 
 // Live update phone clock
 function updateClock() {
@@ -1391,9 +1358,7 @@ function handleAdminLogin(e) {
     return false;
   } catch (err) {
     console.error("Admin Login Error Exception:", err);
-    if (typeof window.renderRedErrorBox === 'function') {
-      window.renderRedErrorBox("Admin Login Exception: " + (err.message || String(err)), "js/app.js", 0, 0, err);
-    }
+    triggerRawCrashDOM(err.message, err.stack);
     return false;
   }
 }
@@ -1424,27 +1389,39 @@ function logoutToLogin() {
 }
 
 function switchAdminTab(tab) {
-  ['stats','doctors','profile'].forEach(t => {
-    const tabEl = document.getElementById('admin-tab-' + t);
-    if (tabEl) tabEl.classList.add('hidden');
-    const btn = document.getElementById('atab-' + t);
-    if (btn) {
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.classList.add('text-[var(--text-muted)]');
-      btn.classList.remove('shadow-sm');
+  try {
+    ['stats','doctors','profile'].forEach(t => {
+      const tabEl = document.getElementById('admin-tab-' + t);
+      if (tabEl) {
+        tabEl.classList.add('hidden');
+        tabEl.style.display = 'none';
+      }
+      const btn = document.getElementById('atab-' + t);
+      if (btn) {
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.classList.add('text-[var(--text-muted)]');
+        btn.classList.remove('shadow-sm');
+      }
+    });
+    const activeTabEl = document.getElementById('admin-tab-' + tab);
+    if (activeTabEl) {
+      activeTabEl.classList.remove('hidden');
+      activeTabEl.style.display = 'block';
+      activeTabEl.style.opacity = '1';
+      activeTabEl.style.visibility = 'visible';
     }
-  });
-  const activeTabEl = document.getElementById('admin-tab-' + tab);
-  if (activeTabEl) activeTabEl.classList.remove('hidden');
-  const active = document.getElementById('atab-' + tab);
-  if (active) {
-    active.classList.remove('text-[var(--text-muted)]');
-    active.style.background = 'var(--accent-color)';
-    active.style.color = 'var(--primary-btn-text)';
-    active.classList.add('shadow-sm');
+    const active = document.getElementById('atab-' + tab);
+    if (active) {
+      active.classList.remove('text-[var(--text-muted)]');
+      active.style.background = 'var(--accent-color)';
+      active.style.color = 'var(--primary-btn-text)';
+      active.classList.add('shadow-sm');
+    }
+    if (tab === 'doctors' && typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
+  } catch (err) {
+    triggerRawCrashDOM(err.message, err.stack);
   }
-  if (tab === 'doctors') renderAdminDoctorList();
 }
 
 let editingDocId = null;
