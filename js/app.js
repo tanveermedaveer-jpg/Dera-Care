@@ -1519,6 +1519,26 @@ window.deleteAdminDoctor = deleteAdminDoctor;
 window.toggleDoctorPassVis = toggleDoctorPassVis;
 window.renderUpgradedAdminDashboard = renderUpgradedAdminDashboard;
 
+function showLoginErrorBanner(msg) {
+  const banner = document.getElementById('login-error-banner');
+  const msgEl = document.getElementById('login-error-message');
+  if (banner && msgEl) {
+    msgEl.textContent = msg;
+    banner.classList.remove('hidden');
+    banner.style.display = 'flex';
+  }
+}
+
+function hideLoginErrorBanner() {
+  const banner = document.getElementById('login-error-banner');
+  if (banner) {
+    banner.classList.add('hidden');
+    banner.style.display = 'none';
+  }
+}
+window.showLoginErrorBanner = showLoginErrorBanner;
+window.hideLoginErrorBanner = hideLoginErrorBanner;
+
 function handleUniversalLogin(e) {
   if (e) {
     if (typeof e.preventDefault === 'function') e.preventDefault();
@@ -1539,7 +1559,9 @@ function handleUniversalLogin(e) {
     const rawPass = passEl ? passEl.value.trim() : "";
 
     if (!rawId || !rawPass) {
-      if (typeof showToast === 'function') showToast('Missing Fields', 'Please enter your login details (Email/Phone/ID and Password/PIN).', 'error');
+      const errMsg = 'Please enter your email/ID and password/PIN.';
+      showLoginErrorBanner(errMsg);
+      if (typeof showToast === 'function') showToast('Missing Fields', errMsg, 'error');
       return false;
     }
 
@@ -1552,6 +1574,7 @@ function handleUniversalLogin(e) {
     const isAdminUser = (cleanId === 'msadaf');
 
     if ((isAdminEmail || isAdminPhone || isAdminUser) && rawPass === adminPass) {
+      hideLoginErrorBanner();
       currentSession = {
         isGuest: false,
         role: 'admin',
@@ -1586,6 +1609,7 @@ function handleUniversalLogin(e) {
     );
 
     if (doctorMatch) {
+      hideLoginErrorBanner();
       currentSession = {
         isGuest: false,
         role: 'doctor',
@@ -1644,8 +1668,10 @@ function handleUniversalLogin(e) {
     });
 
     if (!patientMatch) {
+      const errMsg = 'Account not found. Please register first.';
+      showLoginErrorBanner(errMsg);
       if (typeof showToast === 'function') {
-        showToast('Account Not Found', 'Account not found. Please register first.', 'error');
+        showToast('Account Not Found', errMsg, 'error');
       }
       return false;
     }
@@ -1653,12 +1679,15 @@ function handleUniversalLogin(e) {
     // Verify stored password if defined
     const expectedPass = patientMatch.pass || patientMatch.password;
     if (expectedPass && expectedPass !== rawPass) {
+      const errMsg = 'Incorrect password.';
+      showLoginErrorBanner(errMsg);
       if (typeof showToast === 'function') {
-        showToast('Login Failed', 'Incorrect password.', 'error');
+        showToast('Login Failed', errMsg, 'error');
       }
       return false;
     }
 
+    hideLoginErrorBanner();
     currentSession = {
       isGuest: false,
       role: 'patient',
