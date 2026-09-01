@@ -89,6 +89,32 @@ html, body {
   overflow-x: hidden !important;
 }
 
+/* Corporate Publish Profile Button */
+.btn-publish-profile {
+  background-color: #008080 !important;
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 128, 128, 0.25) !important;
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn-publish-profile:hover {
+  background-color: #006666 !important;
+  box-shadow: 0 6px 16px rgba(0, 128, 128, 0.35) !important;
+}
+
+.btn-publish-profile:active {
+  transform: scale(0.99) !important;
+}
+
 /* Fixed size dropdown selector styling */
 #country-select {
   background-color: transparent;
