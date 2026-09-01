@@ -1175,19 +1175,11 @@ function renderGuaranteedAdminDashboard(adminPanel) {
 let adminEditingDocId = null;
 
 function getAdminDoctorsList() {
-  let list = [];
   try {
-    list = (typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : [];
-  } catch(e) {}
-  if (!list || list.length === 0) {
-    list = [
-      { docId: "03001234561", name: "Dr. Saifullah Khan", specialty: "Cardiology", hospital: "DHQ Hospital D.I. Khan", pin: "1234" },
-      { docId: "03001234562", name: "Dr. Ayesha Malik", specialty: "Pediatrics", hospital: "Mufti Mahmood Hospital", pin: "1234" },
-      { docId: "03001234563", name: "Dr. Zafar Iqbal", specialty: "Orthopedics", hospital: "City Hospital D.I. Khan", pin: "1234" }
-    ];
-    try { if (typeof DC !== 'undefined' && DC.saveDoctors) DC.saveDoctors(list); } catch(e) {}
+    return (typeof DC !== 'undefined' && DC.getDoctors) ? (DC.getDoctors() || []) : [];
+  } catch(e) {
+    return [];
   }
-  return list;
 }
 
 function saveAdminDoctor(e) {
@@ -1273,7 +1265,7 @@ function deleteAdminDoctor(docId) {
   let list = getAdminDoctorsList();
   list = list.filter(d => (d.docId !== docId && d.id !== docId));
   try { if (typeof DC !== 'undefined' && DC.saveDoctors) DC.saveDoctors(list); } catch(err) {}
-  if (typeof showToast === 'function') showToast('Doctor Removed', 'Doctor deleted from database.', 'info');
+  if (typeof showToast === 'function') showToast('Doctor Removed', 'Doctor deleted permanently from database.', 'info');
   const mainFrame = document.getElementById('mobile-frame') || document.body;
   renderUpgradedAdminDashboard(mainFrame);
 }
@@ -1296,43 +1288,53 @@ function renderUpgradedAdminDashboard(mainFrame) {
   const patientCount = 247;
 
   let doctorsCardsHtml = '';
-  doctors.forEach((d, idx) => {
-    const passInputId = `doc-pass-view-${idx}`;
-    doctorsCardsHtml += `
-      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-          <div>
-            <div style="font-weight: 800; font-size: 14px; color: #0f172a;">${d.name || 'Doctor'}</div>
-            <div style="font-size: 11px; color: #64748b; margin-top: 1px;">${d.specialty || 'General Practice'} · ${d.hospital || 'DHQ Hospital'}</div>
+  if (!doctors || doctors.length === 0) {
+    doctorsCardsHtml = `
+      <div style="text-align: center; color: #64748b; font-size: 12px; padding: 24px 16px; background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; margin-bottom: 10px;">
+        <div style="font-size: 22px; margin-bottom: 4px;">🩺</div>
+        <div style="font-weight: 800; color: #334155;">No Doctors Registered Yet</div>
+        <div style="font-size: 11px; margin-top: 2px; color: #64748b;">Add a new doctor using the form above.</div>
+      </div>
+    `;
+  } else {
+    doctors.forEach((d, idx) => {
+      const passInputId = `doc-pass-view-${idx}`;
+      doctorsCardsHtml += `
+        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div style="font-weight: 800; font-size: 14px; color: #0f172a;">${d.name || 'Doctor'}</div>
+              <div style="font-size: 11px; color: #64748b; margin-top: 1px;">${d.specialty || 'General Practice'} · ${d.hospital || 'DHQ Hospital'}</div>
+            </div>
+            <span style="background: #dcfce7; color: #15803d; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">Active</span>
           </div>
-          <span style="background: #dcfce7; color: #15803d; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">Active</span>
-        </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 10px; font-size: 11px;">
-          <div>
-            <span style="color: #64748b; font-weight: bold;">ID/Email:</span>
-            <span style="color: #0f172a; font-weight: bold; margin-left: 4px;">${d.docId || 'N/A'}</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 10px; font-size: 11px;">
+            <div>
+              <span style="color: #64748b; font-weight: bold;">ID/Email:</span>
+              <span style="color: #0f172a; font-weight: bold; margin-left: 4px;">${d.docId || 'N/A'}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <span style="color: #64748b; font-weight: bold;">PIN:</span>
+              <input id="${passInputId}" type="password" value="${d.pin || ''}" readonly style="width: 60px; border: none; background: transparent; font-weight: bold; color: #059669; outline: none; font-size: 11px;">
+              <button type="button" onclick="toggleDoctorPassVis('${passInputId}')" style="background: none; border: none; cursor: pointer; padding: 2px; color: #64748b; font-size: 13px;" title="Toggle Password Visibility">
+                👁️
+              </button>
+            </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <span style="color: #64748b; font-weight: bold;">PIN:</span>
-            <input id="${passInputId}" type="password" value="${d.pin || ''}" readonly style="width: 60px; border: none; background: transparent; font-weight: bold; color: #059669; outline: none; font-size: 11px;">
-            <button type="button" onclick="toggleDoctorPassVis('${passInputId}')" style="background: none; border: none; cursor: pointer; padding: 2px; color: #64748b; font-size: 13px;" title="Toggle Password Visibility">
-              👁️
+
+          <div style="display: flex; gap: 8px; margin-top: 2px;">
+            <button onclick="editAdminDoctor('${d.docId}')" style="flex: 1; background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 8px; padding: 6px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              ✏️ Change Password / Edit
+            </button>
+            <button onclick="deleteAdminDoctor('${d.docId}')" style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              🗑️ Delete
             </button>
           </div>
         </div>
-
-        <div style="display: flex; gap: 8px; margin-top: 2px;">
-          <button onclick="editAdminDoctor('${d.docId}')" style="flex: 1; background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 8px; padding: 6px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
-            ✏️ Change Password / Edit
-          </button>
-          <button onclick="deleteAdminDoctor('${d.docId}')" style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
-            🗑️ Delete
-          </button>
-        </div>
-      </div>
-    `;
-  });
+      `;
+    });
+  }
 
   mainFrame.innerHTML = `
     <div style="background: #ffffff; color: #000000; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; height: 100%; overflow-y: auto; box-sizing: border-box;">
@@ -1368,24 +1370,24 @@ function renderUpgradedAdminDashboard(mainFrame) {
         <form onsubmit="saveAdminDoctor(event); return false;" style="display: flex; flex-direction: column; gap: 10px;">
           <div>
             <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Doctor Full Name</label>
-            <input id="admin-add-doc-name" type="text" placeholder="e.g. Dr. Saifullah Khan" required
+            <input id="admin-add-doc-name" type="text" placeholder="Enter doctor's name" required
               style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
           </div>
           <div>
             <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Specialization</label>
-            <input id="admin-add-doc-spec" type="text" placeholder="e.g. Cardiology, Pediatrics" required
+            <input id="admin-add-doc-spec" type="text" placeholder="Enter specialization (e.g., Cardiology)" required
               style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div>
               <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Email / Login ID</label>
-              <input id="admin-add-doc-id" type="text" placeholder="03001234561" required
+              <input id="admin-add-doc-id" type="text" placeholder="Enter email or login ID" required
                 style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
             </div>
             <div>
               <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Password / Pin</label>
               <div style="position: relative; margin-top: 4px;">
-                <input id="admin-add-doc-pin" type="password" placeholder="1234" required
+                <input id="admin-add-doc-pin" type="password" placeholder="Enter password or PIN" required
                   style="width: 100%; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 32px 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
                 <button type="button" onclick="toggleDoctorPassVis('admin-add-doc-pin')" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748b; font-size: 12px;" title="Toggle Visibility">
                   👁️
