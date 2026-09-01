@@ -32,6 +32,47 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
+// Global Theme Management
+function toggleAppTheme() {
+  const mf = document.getElementById('mobile-frame') || document.body;
+  document.body.classList.toggle('dark-mode');
+  if (mf) mf.classList.toggle('theme-dark');
+
+  const isDark = document.body.classList.contains('dark-mode') || (mf && mf.classList.contains('theme-dark'));
+  try {
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  } catch(e) {}
+
+  if (typeof updateThemeIcons === 'function') updateThemeIcons();
+
+  if (typeof currentSession !== 'undefined' && currentSession && currentSession.role === 'admin' && typeof renderUpgradedAdminDashboard === 'function') {
+    renderUpgradedAdminDashboard(mf);
+  }
+}
+window.toggleAppTheme = toggleAppTheme;
+
+function loadSavedThemePreference() {
+  try {
+    const savedTheme = localStorage.getItem('theme');
+    const mf = document.getElementById('mobile-frame') || document.body;
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      if (mf) mf.classList.add('theme-dark');
+    } else if (savedTheme === 'light') {
+      document.body.classList.remove('dark-mode');
+      if (mf) mf.classList.remove('theme-dark');
+    }
+  } catch(e) {}
+  if (typeof updateThemeIcons === 'function') updateThemeIcons();
+}
+window.loadSavedThemePreference = loadSavedThemePreference;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadSavedThemePreference);
+} else {
+  loadSavedThemePreference();
+}
+
 // Doctor specialist static dataset with advanced profile fields
 const doctorsData = [
   { 
@@ -1824,17 +1865,6 @@ function saveAdminProfile() {
     });
   showToast('Settings Saved ✓', 'Admin credentials updated successfully.', 'success');
 }
-
-function toggleAppTheme() {
-  const mf = document.getElementById('mobile-frame') || document.body;
-  mf.classList.toggle('theme-dark');
-  if (typeof updateThemeIcons === 'function') updateThemeIcons();
-
-  if (currentSession && currentSession.role === 'admin' && typeof renderUpgradedAdminDashboard === 'function') {
-    renderUpgradedAdminDashboard(mf);
-  }
-}
-window.toggleAppTheme = toggleAppTheme;
 
 themeToggles.forEach(btn => {
   btn.addEventListener('click', () => {
