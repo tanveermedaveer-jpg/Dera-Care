@@ -511,69 +511,99 @@ function closeRegisterView() {
 }
 
 async function handlePatientSignup(e) {
-  if (e) e.preventDefault();
+  if (e && typeof e.preventDefault === 'function') e.preventDefault();
 
   const nameEl = document.getElementById('patient-signup-name');
   const emailEl = document.getElementById('patient-signup-email');
   const passEl = document.getElementById('patient-signup-pass');
 
   const name = nameEl ? nameEl.value.trim() : "";
-  const email = emailEl ? emailEl.value.trim() : "";
+  const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
   const pass = passEl ? passEl.value.trim() : "";
 
-  if (!name || !email) {
-    showToast("Missing Parameters", "Please enter your full name and email address.", "error");
-    return;
+  if (!name || !email || !pass) {
+    showToast("Missing Fields", "Please enter your full name, email address, and password.", "error");
+    return false;
   }
 
-  const userData = { name: name, email: email };
-  localStorage.setItem('currentUser', JSON.stringify(userData));
+  if (!email.includes('@') || !email.includes('.')) {
+    showToast("Invalid Email", "Please enter a valid email address.", "error");
+    return false;
+  }
 
-  // Connect to Node.js Backend API
+  if (pass.length < 6) {
+    showToast("Weak Password", "Password must be at least 6 characters long.", "error");
+    return false;
+  }
+
+  let patients = [];
   try {
-    const res = await fetch('http://localhost:5000/api/register', {
+    patients = (typeof DC !== 'undefined' && DC.getPatients) ? (DC.getPatients() || []) : [];
+  } catch(err) {
+    patients = [];
+  }
+
+  if (patients.some(p => p.email && p.email.toLowerCase() === email)) {
+    showToast("Already Registered", "An account with this email already exists. Please log in.", "error");
+    closeRegisterView();
+    const loginEmailEl = document.getElementById('patient-login-email') || document.getElementById('universal-login-id');
+    if (loginEmailEl) loginEmailEl.value = email;
+    return false;
+  }
+
+  const newUser = {
+    id: 'pat_' + Date.now(),
+    name: name,
+    email: email,
+    pass: pass,
+    password: pass,
+    createdAt: new Date().toISOString()
+  };
+
+  // Optional backend API sync
+  try {
+    fetch('http://localhost:5000/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password: pass })
-    });
-    const data = await res.json();
-    if (data.success && data.user) {
-      userData.id = data.user.id;
-    }
-  } catch (err) {
-    console.log("Backend server offline, using local storage fallback.");
-  }
+    }).catch(() => {});
+  } catch(err) {}
 
-  const storedPatients = DC.getPatients();
-  if (!storedPatients.some(p => p.email === email)) {
-    storedPatients.unshift(userData);
-    DC.savePatients(storedPatients);
-  }
+  patients.unshift(newUser);
+  try {
+    if (typeof DC !== 'undefined' && DC.savePatients) {
+      DC.savePatients(patients);
+    } else {
+      localStorage.setItem('dc_patients', JSON.stringify(patients));
+    }
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+  } catch(err) {}
 
   currentSession = {
     isGuest: false,
+    role: 'patient',
     name: name,
     email: email
   };
-  updateProfileUI();
 
   if (nameEl) nameEl.value = '';
   if (emailEl) emailEl.value = '';
   if (passEl) passEl.value = '';
 
   closeRegisterView();
-  showScreen('patient-dashboard');
+  if (typeof updateProfileUI === 'function') updateProfileUI();
+  const usernameHeader = document.getElementById('home-username');
+  if (usernameHeader) usernameHeader.textContent = name.split(' ')[0];
+
+  showToast("Account Created ✓", `Welcome ${name}! Account registered successfully.`, "success");
+  showScreen('home-container');
 
   if (typeof switchTab === 'function' && typeof btnNavHome !== 'undefined') {
     switchTab(btnNavHome, homeDashboardView);
   }
 
-  const usernameHeader = document.getElementById('home-username');
-  if (usernameHeader) usernameHeader.textContent = name.split(' ')[0];
-
-  showToast("Account Created ✓", `Welcome ${name}! Account registered successfully.`, "success");
+  return false;
 }
-
 window.handlePatientSignup = handlePatientSignup;
 
 function loadSavedUserSession() {
@@ -1051,46 +1081,7 @@ function handlePatientLogin() {
   }, 800);
 }
 
-function handlePatientSignup() {
-  const name = document.getElementById('patient-signup-name').value.trim();
-  const email = document.getElementById('patient-signup-email').value.trim().toLowerCase();
-  const pass = document.getElementById('patient-signup-pass').value.trim();
-  if (!name || !email || !pass) {
-    showToast('Missing Fields', 'Please fill in all fields.', 'error');
-    return;
-  }
-  if (!email.includes('@') || !email.includes('.')) {
-    showToast('Invalid Email', 'Please enter a valid email address.', 'error');
-    return;
-  }
-  if (pass.length < 6) {
-    showToast('Weak Password', 'Password must be at least 6 characters.', 'error');
-    return;
-  }
-  let patients = DC.getPatients();
-  if (patients.find(p => p.email === email)) {
-    showToast('Already Registered', 'An account with this email already exists.', 'error');
-    closeRegisterView();
-    document.getElementById('patient-login-email').value = email;
-    return;
-  }
-  patients.push({ name, email, password: pass, createdAt: new Date().toISOString() });
-  DC.savePatients(patients);
-  
-  currentSession = {
-    isGuest: false,
-    name: name,
-    email: email
-  };
-  updateProfileUI();
 
-  showToast('Account Created ✓', `Welcome, ${name}! Please log in below.`, 'success');
-  closeRegisterView();
-  setTimeout(() => {
-    document.getElementById('patient-login-email').value = email;
-    document.getElementById('patient-login-pass').value = '';
-  }, 350);
-}
 
 function handleDoctorLogin() {
   try {
@@ -1663,7 +1654,7 @@ function handleUniversalLogin(e) {
     const expectedPass = patientMatch.pass || patientMatch.password;
     if (expectedPass && expectedPass !== rawPass) {
       if (typeof showToast === 'function') {
-        showToast('Login Failed', 'Incorrect password. Please try again.', 'error');
+        showToast('Login Failed', 'Incorrect password.', 'error');
       }
       return false;
     }
