@@ -1060,9 +1060,13 @@ function changePatientPassword() {
     showToast("Guest Session", "Guest accounts do not have a password. Please log in or register.", "error");
     return;
   }
-  const currentP = document.getElementById('profile-current-pass').value.trim();
-  const newP = document.getElementById('profile-new-pass').value.trim();
-  const confirmP = document.getElementById('profile-confirm-pass').value.trim();
+  const currentEl = document.getElementById('profile-current-pass');
+  const newEl = document.getElementById('profile-new-pass');
+  const confirmEl = document.getElementById('profile-confirm-pass');
+
+  const currentP = currentEl ? currentEl.value.trim() : "";
+  const newP = newEl ? newEl.value.trim() : "";
+  const confirmP = confirmEl ? confirmEl.value.trim() : "";
 
   if (!currentP || !newP || !confirmP) {
     showToast("Missing Fields", "Please fill in all password fields.", "error");
@@ -1093,8 +1097,10 @@ function changePatientPassword() {
 }
 
 function handlePatientLogin() {
-  const email = document.getElementById('patient-login-email').value.trim().toLowerCase();
-  const pass = document.getElementById('patient-login-pass').value.trim();
+  const emailEl = document.getElementById('patient-login-email');
+  const passEl = document.getElementById('patient-login-pass');
+  const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
+  const pass = passEl ? passEl.value.trim() : "";
   if (!email || !pass) {
     showToast('Missing Fields', 'Please enter your email and password.', 'error');
     return;
@@ -1892,11 +1898,17 @@ function switchAdminTab(tab) {
 let editingDocId = null;
 
 function saveDoctor() {
-  const name = document.getElementById('add-doc-name').value.trim();
-  const specialty = document.getElementById('add-doc-specialty').value.trim();
-  const hospital = document.getElementById('add-doc-hospital').value.trim();
-  const docId = document.getElementById('add-doc-id').value.trim();
-  const pin = document.getElementById('add-doc-pin').value.trim();
+  const nameEl = document.getElementById('add-doc-name');
+  const specEl = document.getElementById('add-doc-specialty');
+  const hospEl = document.getElementById('add-doc-hospital');
+  const idEl = document.getElementById('add-doc-id');
+  const pinEl = document.getElementById('add-doc-pin');
+
+  const name = nameEl ? nameEl.value.trim() : "";
+  const specialty = specEl ? specEl.value.trim() : "";
+  const hospital = hospEl ? hospEl.value.trim() : "";
+  const docId = idEl ? idEl.value.trim() : "";
+  const pin = pinEl ? pinEl.value.trim() : "";
 
   if (!name || !docId || !pin) {
     showToast('Missing Fields', 'Name, Doctor ID, and PIN Code are required.', 'error');
@@ -1931,15 +1943,24 @@ function editDoctor(docId) {
   const doc = doctors.find(d => d.docId === docId);
   if (!doc) return;
   editingDocId = docId;
-  document.getElementById('add-doc-name').value = doc.name;
-  document.getElementById('add-doc-specialty').value = doc.specialty;
-  document.getElementById('add-doc-hospital').value = doc.hospital;
-  document.getElementById('add-doc-id').value = doc.docId;
-  document.getElementById('add-doc-pin').value = doc.pin;
-  document.getElementById('doc-form-title-icon').textContent = '✏️';
-  document.getElementById('doc-form-title').textContent = 'Edit Doctor Profile';
-  document.getElementById('btn-cancel-edit').classList.remove('hidden');
-  document.getElementById('add-doc-name').focus();
+  const nameEl = document.getElementById('add-doc-name');
+  const specEl = document.getElementById('add-doc-specialty');
+  const hospEl = document.getElementById('add-doc-hospital');
+  const idEl = document.getElementById('add-doc-id');
+  const pinEl = document.getElementById('add-doc-pin');
+  const iconEl = document.getElementById('doc-form-title-icon');
+  const titleEl = document.getElementById('doc-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-edit');
+
+  if (nameEl) nameEl.value = doc.name;
+  if (specEl) specEl.value = doc.specialty;
+  if (hospEl) hospEl.value = doc.hospital;
+  if (idEl) idEl.value = doc.docId;
+  if (pinEl) pinEl.value = doc.pin;
+  if (iconEl) iconEl.textContent = '✏️';
+  if (titleEl) titleEl.textContent = 'Edit Doctor Profile';
+  if (cancelBtn) cancelBtn.classList.remove('hidden');
+  if (nameEl) nameEl.focus();
 }
 
 function deleteDoctor(docId) {
@@ -1959,9 +1980,12 @@ function cancelDoctorEdit() {
       const el = document.getElementById(id);
       if (el) el.value = '';
     });
-  document.getElementById('doc-form-title-icon').textContent = '➕';
-  document.getElementById('doc-form-title').textContent = 'Add New Doctor';
-  document.getElementById('btn-cancel-edit').classList.add('hidden');
+  const iconEl = document.getElementById('doc-form-title-icon');
+  const titleEl = document.getElementById('doc-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-edit');
+  if (iconEl) iconEl.textContent = '➕';
+  if (titleEl) titleEl.textContent = 'Add New Doctor';
+  if (cancelBtn) cancelBtn.classList.add('hidden');
 }
 
 function renderAdminDoctorList() {
@@ -2037,10 +2061,15 @@ function updateAdminStats() {
 }
 
 function saveAdminProfile() {
-  const newUser = document.getElementById('admin-new-username').value.trim();
-  const currentPass = document.getElementById('admin-current-pass').value.trim();
-  const newPass = document.getElementById('admin-new-pass').value.trim();
-  const confirmPass = document.getElementById('admin-confirm-pass').value.trim();
+  const userEl = document.getElementById('admin-new-username');
+  const currPassEl = document.getElementById('admin-current-pass');
+  const newPassEl = document.getElementById('admin-new-pass');
+  const confPassEl = document.getElementById('admin-confirm-pass');
+
+  const newUser = userEl ? userEl.value.trim() : "";
+  const currentPass = currPassEl ? currPassEl.value.trim() : "";
+  const newPass = newPassEl ? newPassEl.value.trim() : "";
+  const confirmPass = confPassEl ? confPassEl.value.trim() : "";
 
   if (!currentPass) {
     showToast('Verify Required', 'Please enter your current password to make changes.', 'error');
@@ -2065,8 +2094,11 @@ function saveAdminProfile() {
     finalPass = newPass;
   }
   DC.saveAdminCreds(finalUser, finalPass);
-  document.getElementById('admin-display-username').textContent = finalUser;
-  document.getElementById('admin-logged-in-label').textContent = `Logged in as ${finalUser}`;
+  const dispUserEl = document.getElementById('admin-display-username');
+  const loggedLabelEl = document.getElementById('admin-logged-in-label');
+  if (dispUserEl) dispUserEl.textContent = finalUser;
+  if (loggedLabelEl) loggedLabelEl.textContent = `Logged in as ${finalUser}`;
+
   ['admin-new-username','admin-current-pass','admin-new-pass','admin-confirm-pass']
     .forEach(id => {
       const el = document.getElementById(id);
@@ -2505,14 +2537,21 @@ function triggerSpecificBooking(docName, specialty) {
   }
   selectedDoctorBooking = docName;
   selectedSpecialtyBooking = specialty;
-  document.getElementById('booking-doc-name').textContent = docName;
-  document.getElementById('booking-doc-spec').textContent = specialty + " Specialist";
-  
-  document.getElementById('booking-patient-name').value = currentSession.name !== "Guest User" ? currentSession.name : "";
-  document.getElementById('booking-patient-phone').value = "";
-  document.getElementById('booking-date').value = "";
-  document.getElementById('booking-time').value = "";
-  document.getElementById('booking-notes').value = "";
+  const docNameEl = document.getElementById('booking-doc-name');
+  const docSpecEl = document.getElementById('booking-doc-spec');
+  const patientNameEl = document.getElementById('booking-patient-name');
+  const patientPhoneEl = document.getElementById('booking-patient-phone');
+  const dateEl = document.getElementById('booking-date');
+  const timeEl = document.getElementById('booking-time');
+  const notesEl = document.getElementById('booking-notes');
+
+  if (docNameEl) docNameEl.textContent = docName;
+  if (docSpecEl) docSpecEl.textContent = specialty + " Specialist";
+  if (patientNameEl) patientNameEl.value = currentSession.name !== "Guest User" ? currentSession.name : "";
+  if (patientPhoneEl) patientPhoneEl.value = "";
+  if (dateEl) dateEl.value = "";
+  if (timeEl) timeEl.value = "";
+  if (notesEl) notesEl.value = "";
 
   if (bookingModal) bookingModal.classList.remove('hidden', 'translate-y-full');
 }
@@ -2525,11 +2564,17 @@ if (closeBookingBtn) {
 }
 
 function confirmBooking() {
-  const pName = document.getElementById('booking-patient-name').value.trim();
-  const pPhone = document.getElementById('booking-patient-phone').value.trim();
-  const bDate = document.getElementById('booking-date').value;
-  const bTime = document.getElementById('booking-time').value;
-  const notes = document.getElementById('booking-notes').value.trim();
+  const patientNameEl = document.getElementById('booking-patient-name');
+  const patientPhoneEl = document.getElementById('booking-patient-phone');
+  const dateEl = document.getElementById('booking-date');
+  const timeEl = document.getElementById('booking-time');
+  const notesEl = document.getElementById('booking-notes');
+
+  const pName = patientNameEl ? patientNameEl.value.trim() : "";
+  const pPhone = patientPhoneEl ? patientPhoneEl.value.trim() : "";
+  const bDate = dateEl ? dateEl.value : "";
+  const bTime = timeEl ? timeEl.value : "";
+  const notes = notesEl ? notesEl.value.trim() : "";
 
   if (!pName || !pPhone || !bDate || !bTime) {
     showToast("Missing Parameters", "Please fill in patient name, contact phone, select a date and time slot.", "error");
@@ -2539,41 +2584,38 @@ function confirmBooking() {
   const docObj = doctorsData.find(d => d.name === selectedDoctorBooking) || { phone: "923001234561", hospital: "DHQ Hospital" };
   const docHospital = docObj.hospital;
 
-  const newId = appointmentsData.length + 1;
-  const initials = selectedDoctorBooking.split(' ').map(n => n[0]).join('');
-  appointmentsData.push({
-    id: newId,
+  const newAppointment = {
+    id: Date.now(),
     doctor: selectedDoctorBooking,
     hospital: docHospital,
     specialty: selectedSpecialtyBooking,
     date: bDate,
     time: bTime,
-    avatar: initials.replace("Dr.", ""),
+    notes: notes,
+    avatar: selectedDoctorBooking.split(' ').map(n=>n[0]).join('').substring(0, 2).toUpperCase(),
     patientName: pName,
     patientPhone: pPhone
-  });
+  };
 
-  docPendingCount++;
-  const pendingEl = document.getElementById('doc-stat-pending');
-  if (pendingEl) pendingEl.textContent = docPendingCount;
+  appointmentsData.unshift(newAppointment);
 
-  if (!chatHistories[selectedDoctorBooking]) {
-    chatHistories[selectedDoctorBooking] = [
-      { sender: "them", text: `Hello ${pName}! ${selectedDoctorBooking}'s clinical team has received your consultation booking request.`, time: getCurrentTimeString() }
-    ];
+  // Sync booking with Node.js backend
+  fetch('http://localhost:5000/api/appointments', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newAppointment)
+  }).catch(err => console.log("Backend offline, logged locally"));
+
+  showToast("Appointment Scheduled ✓", `Slot reserved with ${selectedDoctorBooking} on ${bDate} at ${bTime}`, "success");
+
+  if (bookingModal) {
+    bookingModal.classList.add('translate-y-full');
+    setTimeout(() => bookingModal.classList.add('hidden'), 300);
   }
-  chatHistories[selectedDoctorBooking].push({
-    sender: "me",
-    text: `📅 *In-App Appointment Request*:\n• *Patient:* ${pName}\n• *Date:* ${bDate} at ${bTime}${notes ? `\n• *Symptoms/Notes:* ${notes}` : ""}`,
-    time: getCurrentTimeString()
-  });
 
-  bookingModal.classList.add('translate-y-full');
-  setTimeout(() => bookingModal.classList.add('hidden'), 300);
-
-  showToast("Booking Request Sent ✓", `Appointment request logged for ${selectedDoctorBooking}.`, "success");
-
-  switchTab(btnNavSlots, homeAppointmentsView);
+  if (typeof switchTab === 'function' && typeof btnNavSlots !== 'undefined') {
+    switchTab(btnNavSlots, homeAppointmentsView);
+  }
   renderAppointments();
 }
 
