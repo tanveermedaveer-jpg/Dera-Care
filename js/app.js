@@ -35,64 +35,7 @@ updateClock();
 
 
 // Dynamic Doctor dataset (populated via Doctor Portal submissions and backend API)
-let doctorsData = [
-  {
-    id: "doc_101",
-    docId: "doc_101",
-    name: "Dr. Saifullah Khan",
-    specialty: "Cardiology",
-    hospital: "DHQ Hospital D.I. Khan",
-    fee: 1500,
-    avatar: "SK",
-    rating: 4.9,
-    credentials: "MBBS, FCPS - Cardiology",
-    timings: "Mon - Sat: 04:00 PM - 09:00 PM",
-    about: "Dr. Saifullah is a leading cardiovascular expert in KP, specializing in non-invasive cardiology, heart valve therapies, and advanced hypertensive care.",
-    phone: "923001234561"
-  },
-  {
-    id: "doc_102",
-    docId: "doc_102",
-    name: "Dr. Ayesha Malik",
-    specialty: "Gynecology",
-    hospital: "Mufti Mahmood Memorial Hospital",
-    fee: 2000,
-    avatar: "AM",
-    rating: 4.8,
-    credentials: "MBBS, MCPS, FCPS - Obstetrics & Gynecology",
-    timings: "Mon - Fri: 03:00 PM - 08:00 PM",
-    about: "Dr. Ayesha is a highly renowned obstetrician and gynecologist with over 12 years of clinical experience in maternal-fetal medicine and high-risk pregnancy care.",
-    phone: "923001234562"
-  },
-  {
-    id: "doc_103",
-    docId: "doc_103",
-    name: "Dr. Tariq Mahmood",
-    specialty: "Pediatrics",
-    hospital: "Zubaida Medical Centre D.I. Khan",
-    fee: 1200,
-    avatar: "TM",
-    rating: 4.9,
-    credentials: "MBBS, DCH, FCPS - Pediatrics",
-    timings: "Mon - Sat: 05:00 PM - 10:00 PM",
-    about: "Dr. Tariq is a dedicated pediatric specialist providing comprehensive neonatal, child healthcare, vaccination guidance, and developmental assessments.",
-    phone: "923001234563"
-  },
-  {
-    id: "doc_104",
-    docId: "doc_104",
-    name: "Dr. Bilal Ahmed",
-    specialty: "Orthopedics",
-    hospital: "DHQ Hospital D.I. Khan",
-    fee: 1800,
-    avatar: "BA",
-    rating: 4.7,
-    credentials: "MBBS, MS - Orthopedic Surgery",
-    timings: "Mon - Sat: 02:00 PM - 07:00 PM",
-    about: "Dr. Bilal specializes in joint replacement, trauma surgery, sports injuries, and complex spinal alignment procedures.",
-    phone: "923001234564"
-  }
-];
+let doctorsData = [];
 
 // Scheduled slot dataset containing detailed booking info
 let appointmentsData = [];
@@ -2278,11 +2221,11 @@ if (btnVoiceSearch) {
     voiceTranscript.textContent = '"Listening..."';
 
     setTimeout(() => {
-      voiceTranscript.textContent = '"Saying: Dr. Saifullah..."';
+      voiceTranscript.textContent = '"Saying: Cardiology..."';
     }, 1000);
 
     setTimeout(() => {
-      voiceTranscript.textContent = '"Saying: Dr. Saifullah... Heart specialist..."';
+      voiceTranscript.textContent = '"Saying: Cardiology... Heart specialist..."';
     }, 2000);
 
     setTimeout(() => {
@@ -2291,10 +2234,10 @@ if (btnVoiceSearch) {
 
       const homeSearchInput = document.getElementById('home-search-input');
       if (homeSearchInput) {
-        homeSearchInput.value = "Saifullah";
-        renderDoctorsList(activeDoctorsFilter, "Saifullah");
+        homeSearchInput.value = "Cardiology";
+        renderDoctorsList(activeDoctorsFilter, "Cardiology");
       }
-      showToast("Voice Recognized", "Searching matches for 'Dr. Saifullah Khan'", "success");
+      showToast("Voice Recognized", "Searching matches for 'Cardiology'", "success");
     }, 3200);
   });
 }
