@@ -670,6 +670,28 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// Global fallback click delegation across document
+document.addEventListener('click', function(e) {
+  const profileBtn = e.target.closest('.btn-doc-profile');
+  const bookBtn = e.target.closest('.btn-doc-book');
+
+  if (profileBtn) {
+    const docId = profileBtn.dataset.docId || profileBtn.getAttribute('data-doc-id');
+    const docName = profileBtn.dataset.docName || profileBtn.getAttribute('data-doc-name');
+    if (docId || docName) {
+      console.log('[Dera Care] 🌐 Global document delegation captured profile click:', docId || docName);
+      openDoctorProfile(docId || docName);
+    }
+  } else if (bookBtn) {
+    const docName = bookBtn.dataset.docName || bookBtn.getAttribute('data-doc-name');
+    const docSpec = bookBtn.dataset.docSpec || bookBtn.getAttribute('data-doc-spec');
+    if (docName) {
+      console.log('[Dera Care] 🌐 Global document delegation captured book click:', docName, docSpec);
+      triggerSpecificBooking(docName, docSpec);
+    }
+  }
+});
+
 function loadSavedUserSession() {
   try {
     const adminSaved = localStorage.getItem('dc_current_session');
@@ -2285,12 +2307,16 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
 
   list.forEach(doc => {
     const docId = String(doc.id || doc.docId || 'doc_' + Math.random().toString(36).substr(2, 9));
+    doc.id = docId; // guarantee id is set on doc
     const dName = doc.name || 'Doctor Specialist';
     const dSpec = doc.specialty || 'General Physician';
     const dHosp = doc.hospital || 'DHQ Hospital D.I. Khan';
     const dFee = doc.fee ? parseInt(doc.fee) : 1500;
     const dRating = doc.rating || 5.0;
     const initials = doc.avatar || dName.replace('Dr.', '').trim().split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'DR';
+
+    const safeName = dName.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const safeSpec = dSpec.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
     const card = document.createElement('div');
     card.className = "glass-card p-4 rounded-2xl flex items-center justify-between border border-white/5 shadow-sm";
@@ -2307,8 +2333,8 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
         </div>
       </div>
       <div class="flex flex-col space-y-1.5 flex-shrink-0 ml-2">
-        <button type="button" data-doc-id="${docId}" data-doc-name="${dName.replace(/"/g, '&quot;')}" class="btn-doc-profile h-7 px-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:bg-[var(--accent-color)]/10 text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-all cursor-pointer">Profile</button>
-        <button type="button" data-doc-name="${dName.replace(/"/g, '&quot;')}" data-doc-spec="${dSpec.replace(/"/g, '&quot;')}" class="btn-doc-book h-7 px-3 rounded-lg bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-slate-900 text-[9px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all shadow-sm cursor-pointer">Book</button>
+        <button type="button" data-doc-id="${docId}" data-doc-name="${safeName}" onclick="openDoctorProfile('${docId}')" class="btn-doc-profile h-7 px-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:bg-[var(--accent-color)]/10 text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-all cursor-pointer">Profile</button>
+        <button type="button" data-doc-name="${safeName}" data-doc-spec="${safeSpec}" onclick="triggerSpecificBooking('${safeName}', '${safeSpec}')" class="btn-doc-book h-7 px-3 rounded-lg bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-slate-900 text-[9px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all shadow-sm cursor-pointer">Book</button>
       </div>
     `;
 
@@ -2363,11 +2389,12 @@ function clearDoctorsFilter() {
 let selectedProfileDoc = null;
 function openDoctorProfile(idOrDoc) {
   let doc = null;
+  const list = doctorsData.concat((typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : []);
+
   if (typeof idOrDoc === 'object' && idOrDoc !== null) {
     doc = idOrDoc;
   } else if (idOrDoc) {
     const searchKey = String(idOrDoc).trim();
-    const list = doctorsData.concat((typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : []);
     doc = list.find(d => 
       (d.id && String(d.id) === searchKey) || 
       (d.docId && String(d.docId) === searchKey) || 
@@ -2410,6 +2437,7 @@ function openDoctorProfile(idOrDoc) {
     console.log('[Dera Care] 🩺 Doctor profile modal opened for:', doc.name);
   }
 }
+window.openDoctorProfile = openDoctorProfile;
 
 function closeDoctorProfile() {
   const doctorProfileModal = document.getElementById('doctor-profile-modal');
@@ -2582,12 +2610,13 @@ if (btnBannerBook) {
 let selectedDoctorBooking = "";
 let selectedSpecialtyBooking = "";
 function triggerSpecificBooking(docName, specialty) {
-  if (currentSession.isGuest) {
+  if (currentSession && currentSession.isGuest) {
     openGuestRegisterModal();
     return;
   }
-  selectedDoctorBooking = docName;
-  selectedSpecialtyBooking = specialty;
+  selectedDoctorBooking = docName || "Doctor Specialist";
+  selectedSpecialtyBooking = specialty || "General Physician";
+
   const docNameEl = document.getElementById('booking-doc-name');
   const docSpecEl = document.getElementById('booking-doc-spec');
   const patientNameEl = document.getElementById('booking-patient-name');
@@ -2596,16 +2625,24 @@ function triggerSpecificBooking(docName, specialty) {
   const timeEl = document.getElementById('booking-time');
   const notesEl = document.getElementById('booking-notes');
 
-  if (docNameEl) docNameEl.textContent = docName;
-  if (docSpecEl) docSpecEl.textContent = specialty + " Specialist";
-  if (patientNameEl) patientNameEl.value = currentSession.name !== "Guest User" ? currentSession.name : "";
+  if (docNameEl) docNameEl.textContent = selectedDoctorBooking;
+  if (docSpecEl) docSpecEl.textContent = selectedSpecialtyBooking.includes('Specialist') ? selectedSpecialtyBooking : selectedSpecialtyBooking + " Specialist";
+  if (patientNameEl) patientNameEl.value = (currentSession && currentSession.name && currentSession.name !== "Guest User") ? currentSession.name : "";
   if (patientPhoneEl) patientPhoneEl.value = "";
   if (dateEl) dateEl.value = "";
   if (timeEl) timeEl.value = "";
   if (notesEl) notesEl.value = "";
 
-  if (bookingModal) bookingModal.classList.remove('hidden', 'translate-y-full');
+  const bookingModal = document.getElementById('booking-modal');
+  if (bookingModal) {
+    bookingModal.style.setProperty('display', 'flex', 'important');
+    bookingModal.classList.remove('hidden');
+    void bookingModal.offsetWidth;
+    bookingModal.classList.remove('translate-y-full');
+    console.log('[Dera Care] 📅 Booking modal opened for:', selectedDoctorBooking);
+  }
 }
+window.triggerSpecificBooking = triggerSpecificBooking;
 
 if (closeBookingBtn) {
   closeBookingBtn.addEventListener('click', () => {
