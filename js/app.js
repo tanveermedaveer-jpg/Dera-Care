@@ -1425,7 +1425,7 @@ function renderUpgradedAdminDashboard(mainFrame) {
           <button onclick="toggleAppTheme()" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;" title="Toggle Light / Dark Mode">
             ${icon}
           </button>
-          <button onclick="window.location.reload()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+          <button onclick="logoutToLogin()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
             🚪 Logout
           </button>
         </div>
@@ -1625,21 +1625,29 @@ function logoutToLogin() {
   currentSession = null;
   try {
     localStorage.removeItem('dc_session');
+    localStorage.removeItem('dc_user_session');
   } catch(e) {}
 
   const loginContainer = document.getElementById('login-container');
 
-  document.querySelectorAll('.app-view, #login-container, #home-container, #doctor-dashboard, #admin-panel').forEach(el => {
-    el.style.setProperty('display', 'none', 'important');
-    el.classList.add('translate-x-full','opacity-0','pointer-events-none','hidden');
-    el.classList.remove('translate-x-0','opacity-100');
+  if (!loginContainer) {
+    window.location.reload();
+    return;
+  }
+
+  // Hide all dashboard screens & views
+  document.querySelectorAll('.app-view, #home-container, #doctor-dashboard, #admin-panel').forEach(el => {
+    if (el) {
+      el.style.setProperty('display', 'none', 'important');
+      el.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+      el.classList.remove('translate-x-0', 'opacity-100');
+    }
   });
 
-  if (loginContainer) {
-    loginContainer.style.setProperty('display', 'flex', 'important');
-    loginContainer.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
-    loginContainer.classList.add('translate-x-0', 'opacity-100');
-  }
+  // Explicitly unhide & display login-container
+  loginContainer.style.setProperty('display', 'flex', 'important');
+  loginContainer.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+  loginContainer.classList.add('translate-x-0', 'opacity-100');
 
   if (typeof closeRegisterView === 'function') closeRegisterView();
   if (typeof window.carouselGoToSlide === 'function') {
@@ -1651,10 +1659,6 @@ function logoutToLogin() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-
-  if (typeof switchPatientTab === 'function') {
-    switchPatientTab('login');
-  }
 
   if (typeof showToast === 'function') {
     showToast('Logged Out', 'You have been logged out successfully.', 'info');
