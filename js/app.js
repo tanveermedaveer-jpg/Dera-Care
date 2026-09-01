@@ -35,7 +35,64 @@ updateClock();
 
 
 // Dynamic Doctor dataset (populated via Doctor Portal submissions and backend API)
-let doctorsData = [];
+let doctorsData = [
+  {
+    id: "doc_101",
+    docId: "doc_101",
+    name: "Dr. Saifullah Khan",
+    specialty: "Cardiology",
+    hospital: "DHQ Hospital D.I. Khan",
+    fee: 1500,
+    avatar: "SK",
+    rating: 4.9,
+    credentials: "MBBS, FCPS - Cardiology",
+    timings: "Mon - Sat: 04:00 PM - 09:00 PM",
+    about: "Dr. Saifullah is a leading cardiovascular expert in KP, specializing in non-invasive cardiology, heart valve therapies, and advanced hypertensive care.",
+    phone: "923001234561"
+  },
+  {
+    id: "doc_102",
+    docId: "doc_102",
+    name: "Dr. Ayesha Malik",
+    specialty: "Gynecology",
+    hospital: "Mufti Mahmood Memorial Hospital",
+    fee: 2000,
+    avatar: "AM",
+    rating: 4.8,
+    credentials: "MBBS, MCPS, FCPS - Obstetrics & Gynecology",
+    timings: "Mon - Fri: 03:00 PM - 08:00 PM",
+    about: "Dr. Ayesha is a highly renowned obstetrician and gynecologist with over 12 years of clinical experience in maternal-fetal medicine and high-risk pregnancy care.",
+    phone: "923001234562"
+  },
+  {
+    id: "doc_103",
+    docId: "doc_103",
+    name: "Dr. Tariq Mahmood",
+    specialty: "Pediatrics",
+    hospital: "Zubaida Medical Centre D.I. Khan",
+    fee: 1200,
+    avatar: "TM",
+    rating: 4.9,
+    credentials: "MBBS, DCH, FCPS - Pediatrics",
+    timings: "Mon - Sat: 05:00 PM - 10:00 PM",
+    about: "Dr. Tariq is a dedicated pediatric specialist providing comprehensive neonatal, child healthcare, vaccination guidance, and developmental assessments.",
+    phone: "923001234563"
+  },
+  {
+    id: "doc_104",
+    docId: "doc_104",
+    name: "Dr. Bilal Ahmed",
+    specialty: "Orthopedics",
+    hospital: "DHQ Hospital D.I. Khan",
+    fee: 1800,
+    avatar: "BA",
+    rating: 4.7,
+    credentials: "MBBS, MS - Orthopedic Surgery",
+    timings: "Mon - Sat: 02:00 PM - 07:00 PM",
+    about: "Dr. Bilal specializes in joint replacement, trauma surgery, sports injuries, and complex spinal alignment procedures.",
+    phone: "923001234564"
+  }
+];
 
 // Scheduled slot dataset containing detailed booking info
 let appointmentsData = [];
@@ -641,6 +698,32 @@ document.addEventListener('DOMContentLoaded', function() {
       handlePatientSignup(e);
     });
     console.log('[Dera Care] ✅ register-btn event listener attached via DOMContentLoaded');
+  }
+
+  const docContainer = document.getElementById('doctors-list-container');
+  if (docContainer && !docContainer.dataset.delegationAttached) {
+    docContainer.dataset.delegationAttached = 'true';
+    docContainer.addEventListener('click', function(e) {
+      const profileBtn = e.target.closest('.btn-doc-profile');
+      const bookBtn = e.target.closest('.btn-doc-book');
+
+      if (profileBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const docName = profileBtn.dataset.docName || profileBtn.getAttribute('data-doc-name');
+        const docId = profileBtn.dataset.docId || profileBtn.getAttribute('data-doc-id');
+        console.log('[Dera Care] Event delegation profile clicked for:', docName || docId);
+        openDoctorProfile(docId || docName);
+      } else if (bookBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const docName = bookBtn.dataset.docName || bookBtn.getAttribute('data-doc-name');
+        const docSpec = bookBtn.dataset.docSpec || bookBtn.getAttribute('data-doc-spec');
+        console.log('[Dera Care] Event delegation book clicked for:', docName, docSpec);
+        triggerSpecificBooking(docName, docSpec);
+      }
+    });
+    console.log('[Dera Care] ✅ doctors-list-container event delegation attached');
   }
 });
 
@@ -2250,15 +2333,15 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
     container.innerHTML = `
       <div class="glass-card p-6 text-center rounded-2xl text-[var(--text-muted)] space-y-1.5 border border-white/5">
         <div class="text-3xl mb-1">👨‍⚕️</div>
-        <p class="text-xs font-bold text-[var(--text-color)]">No Doctors Published Yet</p>
-        <p class="text-[10.5px]">Doctor profiles submitted and published via the Doctor Portal will appear here dynamically.</p>
+        <p class="text-xs font-bold text-[var(--text-color)]">No Doctors Found</p>
+        <p class="text-[10.5px]">No doctors match your selected search or specialty filter.</p>
       </div>
     `;
     return;
   }
 
   list.forEach(doc => {
-    const docId = String(doc.id || doc.docId || 'doc_' + Date.now());
+    const docId = String(doc.id || doc.docId || 'doc_' + Math.random().toString(36).substr(2, 9));
     const dName = doc.name || 'Doctor Specialist';
     const dSpec = doc.specialty || 'General Physician';
     const dHosp = doc.hospital || 'DHQ Hospital D.I. Khan';
@@ -2281,8 +2364,8 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
         </div>
       </div>
       <div class="flex flex-col space-y-1.5 flex-shrink-0 ml-2">
-        <button type="button" class="btn-doc-profile h-7 px-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:bg-[var(--accent-color)]/10 text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-all cursor-pointer">Profile</button>
-        <button type="button" class="btn-doc-book h-7 px-3 rounded-lg bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-slate-900 text-[9px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all shadow-sm cursor-pointer">Book</button>
+        <button type="button" data-doc-id="${docId}" data-doc-name="${dName.replace(/"/g, '&quot;')}" class="btn-doc-profile h-7 px-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:bg-[var(--accent-color)]/10 text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-all cursor-pointer">Profile</button>
+        <button type="button" data-doc-name="${dName.replace(/"/g, '&quot;')}" data-doc-spec="${dSpec.replace(/"/g, '&quot;')}" class="btn-doc-book h-7 px-3 rounded-lg bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-slate-900 text-[9px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all shadow-sm cursor-pointer">Book</button>
       </div>
     `;
 
@@ -2291,14 +2374,18 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
 
     if (profileBtn) {
       profileBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
-        openDoctorProfile(docId);
+        console.log('[Dera Care] 🩺 Profile button clicked for doctor:', dName);
+        openDoctorProfile(doc);
       });
     }
 
     if (bookBtn) {
       bookBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
+        console.log('[Dera Care] 📅 Book button clicked for doctor:', dName, dSpec);
         triggerSpecificBooking(dName, dSpec);
       });
     }
@@ -2331,9 +2418,21 @@ function clearDoctorsFilter() {
 }
 
 let selectedProfileDoc = null;
-function openDoctorProfile(id) {
-  const list = doctorsData.concat((typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : []);
-  const doc = list.find(d => String(d.id) === String(id) || String(d.docId) === String(id) || d.name === id);
+function openDoctorProfile(idOrDoc) {
+  let doc = null;
+  if (typeof idOrDoc === 'object' && idOrDoc !== null) {
+    doc = idOrDoc;
+  } else if (idOrDoc) {
+    const searchKey = String(idOrDoc).trim();
+    const list = doctorsData.concat((typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : []);
+    doc = list.find(d => 
+      (d.id && String(d.id) === searchKey) || 
+      (d.docId && String(d.docId) === searchKey) || 
+      (d.name && d.name === searchKey) ||
+      (d.name && String(d.name).toLowerCase() === searchKey.toLowerCase())
+    );
+  }
+
   if (!doc) {
     showToast("Profile Unavailable", "Doctor profile details could not be found.", "error");
     return;
@@ -2352,7 +2451,7 @@ function openDoctorProfile(id) {
 
   if (avatarEl) avatarEl.textContent = initials;
   if (nameEl) nameEl.textContent = doc.name || "Doctor Specialist";
-  if (specEl) specEl.textContent = (doc.specialty || "General Physician") + " Specialist";
+  if (specEl) specEl.textContent = doc.specialty ? (doc.specialty.includes('Specialist') ? doc.specialty : doc.specialty + " Specialist") : "General Physician Specialist";
   if (credEl) credEl.textContent = doc.credentials || `MBBS, Specialist in ${doc.specialty || 'Medicine'}`;
   if (hospEl) hospEl.textContent = doc.hospital || "DHQ Hospital D.I. Khan";
   if (timeEl) timeEl.textContent = doc.timings || "Mon - Sat: 04:00 PM - 08:00 PM";
@@ -2360,14 +2459,23 @@ function openDoctorProfile(id) {
   if (aboutEl) aboutEl.textContent = doc.about || `${doc.name} is a verified specialist in ${doc.specialty || 'Healthcare'} serving at ${doc.hospital || 'DHQ Hospital D.I. Khan'}.`;
 
   const doctorProfileModal = document.getElementById('doctor-profile-modal');
-  if (doctorProfileModal) doctorProfileModal.classList.remove('hidden', 'translate-y-full');
+  if (doctorProfileModal) {
+    doctorProfileModal.style.setProperty('display', 'flex', 'important');
+    doctorProfileModal.classList.remove('hidden');
+    void doctorProfileModal.offsetWidth;
+    doctorProfileModal.classList.remove('translate-y-full');
+    console.log('[Dera Care] 🩺 Doctor profile modal opened for:', doc.name);
+  }
 }
 
 function closeDoctorProfile() {
   const doctorProfileModal = document.getElementById('doctor-profile-modal');
   if (doctorProfileModal) {
     doctorProfileModal.classList.add('translate-y-full');
-    setTimeout(() => doctorProfileModal.classList.add('hidden'), 300);
+    setTimeout(() => {
+      doctorProfileModal.classList.add('hidden');
+      doctorProfileModal.style.removeProperty('display');
+    }, 300);
   }
   selectedProfileDoc = null;
 }
