@@ -772,10 +772,21 @@ function closeDocAvailabilityModal() {
 }
 
 function saveDoctorAvailability() {
-  const days = document.getElementById('doc-avail-days').value;
-  const morning = document.getElementById('doc-avail-morning').value;
+  const daysEl = document.getElementById('doc-avail-days');
+  const morningEl = document.getElementById('doc-avail-morning');
+  const eveningEl = document.getElementById('doc-avail-evening');
+  const leaveEl = document.getElementById('doc-avail-leave');
+
+  const days = daysEl ? daysEl.value : "";
+  const morning = morningEl ? morningEl.value.trim() : "";
+  const evening = eveningEl ? eveningEl.value.trim() : "";
+  const leave = leaveEl ? leaveEl.value.trim() : "";
+
   closeDocAvailabilityModal();
-  showToast("Hours Saved ✓", `Working slots updated: ${days} (${morning})`, "success");
+  let msg = `Working slots saved: ${days}`;
+  if (morning || evening) msg += ` (${morning || evening})`;
+  if (leave) msg += ` · Off Days: ${leave}`;
+  showToast("Hours & Leave Saved ✓", msg, "success");
 }
 
 function openDocPrescriptionModal() {
@@ -792,16 +803,34 @@ function closeDocPrescriptionModal() {
 }
 
 function issueDigitalPrescription() {
-  const patient = document.getElementById('doc-rx-patient').value.trim();
-  const meds = document.getElementById('doc-rx-meds').value.trim();
-  if (!patient || !meds) {
-    showToast("Missing Parameters", "Please enter patient name and medication details.", "error");
+  const patientEl = document.getElementById('doc-rx-patient');
+  const diagEl = document.getElementById('doc-rx-diagnosis');
+  const medNameEl = document.getElementById('doc-rx-med-name');
+  const dosageEl = document.getElementById('doc-rx-dosage');
+  const durationEl = document.getElementById('doc-rx-duration');
+
+  const patient = patientEl ? patientEl.value.trim() : "";
+  const diagnosis = diagEl ? diagEl.value.trim() : "";
+  const medName = medNameEl ? medNameEl.value.trim() : "";
+  const dosage = dosageEl ? dosageEl.value.trim() : "";
+  const duration = durationEl ? durationEl.value.trim() : "";
+
+  if (!patient || !medName) {
+    showToast("Missing Parameters", "Please enter patient full name and medicine name.", "error");
     return;
   }
+
   closeDocPrescriptionModal();
-  showToast("Rx Issued ✓", `Digital prescription dispatched to ${patient}.`, "success");
-  document.getElementById('doc-rx-diagnosis').value = '';
-  document.getElementById('doc-rx-meds').value = '';
+  let rxSummary = `${medName}`;
+  if (dosage) rxSummary += ` (${dosage})`;
+  if (duration) rxSummary += ` for ${duration}`;
+  showToast("Rx Issued ✓", `Digital Rx dispatched to ${patient}: ${rxSummary}`, "success");
+
+  if (patientEl) patientEl.value = '';
+  if (diagEl) diagEl.value = '';
+  if (medNameEl) medNameEl.value = '';
+  if (dosageEl) dosageEl.value = '';
+  if (durationEl) durationEl.value = '';
 }
 
 function renderDoctorPatientChat() {

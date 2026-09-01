@@ -1215,8 +1215,8 @@
         <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-base font-extrabold text-[var(--text-color)]">Set Working Hours</h3>
-            <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Configure Doctor Clinic Slots</p>
+            <h3 class="text-base font-extrabold text-[var(--text-color)]">Set Working Hours &amp; Off Days</h3>
+            <p class="text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Configure Doctor Clinic Slots &amp; Leave</p>
           </div>
           <button onclick="closeDocAvailabilityModal()" class="text-slate-400 hover:text-white p-1 focus:outline-none">✕</button>
         </div>
@@ -1232,12 +1232,16 @@
           <div class="grid grid-cols-2 gap-2.5">
             <div>
               <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Morning Shift</label>
-              <input id="doc-avail-morning" type="text" value="09:00 AM - 01:00 PM" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+              <input id="doc-avail-morning" type="text" placeholder="e.g. 09:00 AM - 01:00 PM" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
             </div>
             <div>
               <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Evening Shift</label>
-              <input id="doc-avail-evening" type="text" value="05:00 PM - 09:00 PM" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+              <input id="doc-avail-evening" type="text" placeholder="e.g. 05:00 PM - 09:00 PM" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
             </div>
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Off Days / Leave Status</label>
+            <input id="doc-avail-leave" type="text" placeholder="Enter off days or leave dates (e.g., Sunday / 15th - 18th Oct)" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
           </div>
           <div>
             <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Slot Duration</label>
@@ -1248,7 +1252,7 @@
             </select>
           </div>
           <button onclick="saveDoctorAvailability()" class="btn-primary w-full h-12 rounded-xl text-xs font-extrabold tracking-wider uppercase flex items-center justify-center transition-all mt-2 focus:outline-none shadow-md">
-            💾 SAVE WORKING HOURS
+            💾 SAVE WORKING HOURS &amp; LEAVE
           </button>
         </div>
       </div>
@@ -1271,15 +1275,25 @@
         <div class="space-y-3 pt-1">
           <div>
             <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Patient Name</label>
-            <input id="doc-rx-patient" type="text" placeholder="Select or enter patient full name" value="Ahmed Raza" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            <input id="doc-rx-patient" type="text" placeholder="Enter patient full name" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
           </div>
           <div>
-            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Diagnosis &amp; Notes</label>
-            <input id="doc-rx-diagnosis" type="text" placeholder="e.g. Mild Hypertension, Routine Follow-up" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Diagnosis &amp; Clinical Notes</label>
+            <input id="doc-rx-diagnosis" type="text" placeholder="Enter diagnosis &amp; notes" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
           </div>
           <div>
-            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Medication Details &amp; Dosage</label>
-            <textarea id="doc-rx-meds" rows="3" placeholder="1. Tab. Panadol 500mg - 1+0+1 after meals&#10;2. Cap. Omeprazole 20mg - Before breakfast" class="w-full mt-1.5 p-3.5 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all no-scrollbar resize-none"></textarea>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Medicine Name</label>
+            <input id="doc-rx-med-name" type="text" placeholder="Enter medicine name (e.g., Tab. Panadol 500mg)" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+          </div>
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Dosage</label>
+              <input id="doc-rx-dosage" type="text" placeholder="e.g., 1+0+1" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            </div>
+            <div>
+              <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Duration</label>
+              <input id="doc-rx-duration" type="text" placeholder="e.g., 5 days" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            </div>
           </div>
           <button onclick="issueDigitalPrescription()" class="btn-primary w-full h-12 rounded-xl text-xs font-extrabold tracking-wider uppercase flex items-center justify-center transition-all mt-1 focus:outline-none shadow-md">
             📤 ISSUE DIGITAL PRESCRIPTION &rarr;
