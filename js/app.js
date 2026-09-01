@@ -32,56 +32,7 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Scoped Theme Management
-function toggleAppTheme() {
-  const mf = document.getElementById('mobile-frame');
-  const docContainer = document.getElementById('doctor-dashboard');
 
-  let targetContainer = mf;
-  if (docContainer && docContainer.style.display !== 'none' && !docContainer.classList.contains('hidden')) {
-    targetContainer = docContainer;
-  }
-
-  if (targetContainer) {
-    targetContainer.classList.toggle('theme-dark');
-    targetContainer.classList.toggle('dark-mode');
-    const isDark = targetContainer.classList.contains('theme-dark') || targetContainer.classList.contains('dark-mode');
-    try {
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    } catch(e) {}
-  }
-
-  if (typeof updateThemeIcons === 'function') updateThemeIcons();
-
-  if (typeof currentSession !== 'undefined' && currentSession && currentSession.role === 'admin' && typeof renderUpgradedAdminDashboard === 'function') {
-    renderUpgradedAdminDashboard(mf || document.body);
-  }
-}
-window.toggleAppTheme = toggleAppTheme;
-
-function loadSavedThemePreference() {
-  try {
-    const savedTheme = localStorage.getItem('theme');
-    const mf = document.getElementById('mobile-frame');
-    const docContainer = document.getElementById('doctor-dashboard');
-
-    if (savedTheme === 'dark') {
-      if (mf) mf.classList.add('theme-dark', 'dark-mode');
-      if (docContainer) docContainer.classList.add('theme-dark', 'dark-mode');
-    } else if (savedTheme === 'light') {
-      if (mf) mf.classList.remove('theme-dark', 'dark-mode');
-      if (docContainer) docContainer.classList.remove('theme-dark', 'dark-mode');
-    }
-  } catch(e) {}
-  if (typeof updateThemeIcons === 'function') updateThemeIcons();
-}
-window.loadSavedThemePreference = loadSavedThemePreference;
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadSavedThemePreference);
-} else {
-  loadSavedThemePreference();
-}
 
 // Doctor specialist static dataset with advanced profile fields
 const doctorsData = [
@@ -1351,16 +1302,13 @@ function toggleDoctorPassVis(id) {
 function renderUpgradedAdminDashboard(mainFrame) {
   if (!mainFrame) return;
 
-  const isDark = mainFrame.classList.contains('theme-dark');
-
-  const bg = isDark ? '#121826' : '#ffffff';
-  const text = isDark ? '#f8fafc' : '#000000';
-  const cardBg = isDark ? '#1e293b' : '#f8fafc';
-  const border = isDark ? '#334155' : '#cbd5e1';
-  const inputBg = isDark ? '#0f172a' : '#ffffff';
-  const textMuted = isDark ? '#94a3b8' : '#64748b';
-  const formBg = isDark ? '#1e293b' : '#ffffff';
-  const icon = isDark ? '☀️' : '🌙';
+  const bg = '#ffffff';
+  const text = '#000000';
+  const cardBg = '#f8fafc';
+  const border = '#cbd5e1';
+  const inputBg = '#ffffff';
+  const textMuted = '#64748b';
+  const formBg = '#ffffff';
 
   const doctors = getAdminDoctorsList();
   const docCount = doctors ? doctors.length : 0;
@@ -1425,20 +1373,15 @@ function renderUpgradedAdminDashboard(mainFrame) {
   mainFrame.innerHTML = `
     <div style="background: ${bg}; color: ${text}; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; height: 100%; overflow-y: auto; box-sizing: border-box;">
       
-      <!-- Top Bar Header & Logout & Theme Toggle -->
+      <!-- Top Bar Header & Logout -->
       <div style="background: #059669; color: #ffffff; padding: 14px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(5,150,105,0.2);">
         <div>
           <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff;">Admin Panel</h2>
           <p style="margin: 2px 0 0 0; font-size: 10px; color: #e6fffa;">muhammadsadaf010@gmail.com</p>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button onclick="toggleAppTheme()" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;" title="Toggle Light / Dark Mode">
-            ${icon}
-          </button>
-          <button onclick="logoutToLogin()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
-            🚪 Logout
-          </button>
-        </div>
+        <button onclick="logoutToLogin()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+          🚪 Logout
+        </button>
       </div>
 
       <!-- Overview Stats Cards Grid -->

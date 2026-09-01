@@ -36,35 +36,7 @@ html, body {
   --wa-bubble-sent-text: #000000;
 }
 
-/* Scoped Dark Mode Palette */
-.theme-dark, .dark-mode {
-  --bg-color: #121212;
-  --text-color: #ffffff;
-  --accent-color: #00E5FF;
-  --card-bg: #1e1e1e;
-  --input-bg: #2d2d2d;
-  --border-color: #333333;
-  --primary-btn-bg: #00E5FF;
-  --primary-btn-text: #121212;
-  --google-btn-bg: #2d2d2d;
-  --google-btn-text: #ffffff;
-  --modal-bg: #1e1e1e;
-  --text-muted: #a0a0a0;
-  --toggle-bg: #2d2d2d;
-  --toggle-border: #00E5FF;
-  --toggle-icon-color: #00E5FF;
-  --wa-chat-bg: #121212;
-  --wa-bubble-sent-bg: #005c4b;
-  --wa-bubble-sent-text: #ffffff;
-}
 
-#doctor-dashboard.theme-dark,
-#doctor-dashboard.dark-mode,
-#admin-panel.theme-dark,
-#admin-panel.dark-mode {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-}
 
 #mobile-frame {
   position: relative !important;

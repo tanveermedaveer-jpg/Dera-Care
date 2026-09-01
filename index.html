@@ -62,13 +62,8 @@
         <!-- Scrollable inner wrapper -->
         <div class="flex flex-col h-full justify-between px-6 pt-3 pb-4 space-y-0">
 
-          <!-- Top Action Row (Theme Switcher Only) -->
-          <div class="flex justify-between items-center pt-1 select-none flex-shrink-0">
-            <button type="button" onclick="toggleAppTheme()" class="btn-theme-toggle p-2 rounded-xl bg-[var(--toggle-bg)] border border-[var(--toggle-border)] text-[var(--toggle-icon-color)] shadow-sm hover:border-[var(--accent-color)]/50 transition-colors flex items-center justify-center focus:outline-none cursor-pointer" title="Toggle Theme">
-              <svg class="w-4 h-4 text-[var(--toggle-icon-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-              </svg>
-            </button>
+          <!-- Top Action Row -->
+          <div class="flex justify-end items-center pt-1 select-none flex-shrink-0">
             <span class="text-[10px] font-bold text-[var(--accent-color)] uppercase tracking-wider bg-[var(--toggle-bg)] px-2.5 py-1 rounded-full border border-[var(--toggle-border)]">Unified Portal</span>
           </div>
 
@@ -308,19 +303,13 @@
               </div>
             </div>
             
-            <!-- Right Controls (Bell & Toggle button) -->
+            <!-- Right Controls (Bell) -->
             <div class="flex items-center space-x-2">
               <button id="btn-bell" onclick="showToast('Notifications', 'No new security flags currently.', 'success')" class="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-[var(--text-color)] relative transition-colors focus:outline-none">
                 <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
                 <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-500 border border-[var(--bg-color)]"></span>
-              </button>
-
-              <button type="button" onclick="toggleAppTheme()" class="btn-theme-toggle p-2 rounded-xl bg-[var(--toggle-bg)] border border-[var(--toggle-border)] text-[var(--toggle-icon-color)] shadow-sm hover:border-[var(--accent-color)]/50 transition-colors flex items-center justify-center focus:outline-none cursor-pointer" title="Toggle Theme">
-                <svg class="w-4.5 h-4.5 text-[var(--toggle-icon-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                </svg>
               </button>
             </div>
           </div>
@@ -690,11 +679,6 @@
             </div>
           </div>
           <div class="flex items-center space-x-2">
-            <button type="button" id="btn-doc-theme-toggle" onclick="toggleAppTheme()" class="btn-theme-toggle w-8 h-8 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] transition-all focus:outline-none flex items-center justify-center cursor-pointer" title="Toggle Light / Dark Mode">
-              <svg class="w-4 h-4 text-[var(--toggle-icon-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-              </svg>
-            </button>
             <button type="button" onclick="toggleDoctorDutyStatus(this)" id="btn-doc-duty-status" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 focus:outline-none transition-all" title="Click to toggle duty status">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span class="text-[9px] font-extrabold uppercase tracking-wider">ON DUTY</span>
