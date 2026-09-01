@@ -36,25 +36,30 @@ html, body {
   --wa-bubble-sent-text: #000000;
 }
 
-.theme-dark {
-  --bg-color: #0A1128;
-  --text-color: #F8FAFC;
+.theme-dark, body.dark-mode #mobile-frame, .dark-mode {
+  --bg-color: #121212;
+  --text-color: #ffffff;
   --accent-color: #00E5FF;
-  --card-bg: rgba(17, 28, 48, 0.85);
-  --input-bg: #0B132B;
-  --border-color: rgba(255, 255, 255, 0.12);
+  --card-bg: #1e1e1e;
+  --input-bg: #2d2d2d;
+  --border-color: #333333;
   --primary-btn-bg: #00E5FF;
-  --primary-btn-text: #0A1128;
-  --google-btn-bg: #0B132B;
-  --google-btn-text: #F8FAFC;
-  --modal-bg: rgba(10, 17, 40, 0.96);
-  --text-muted: #94A3B8;
-  --toggle-bg: #111a36;
+  --primary-btn-text: #121212;
+  --google-btn-bg: #2d2d2d;
+  --google-btn-text: #ffffff;
+  --modal-bg: #1e1e1e;
+  --text-muted: #a0a0a0;
+  --toggle-bg: #2d2d2d;
   --toggle-border: #00E5FF;
   --toggle-icon-color: #00E5FF;
-  --wa-chat-bg: #0b141a;
+  --wa-chat-bg: #121212;
   --wa-bubble-sent-bg: #005c4b;
-  --wa-bubble-sent-text: #e9edef;
+  --wa-bubble-sent-text: #ffffff;
+}
+
+body.dark-mode {
+  background: #121212 !important;
+  color: #ffffff !important;
 }
 
 #mobile-frame {
