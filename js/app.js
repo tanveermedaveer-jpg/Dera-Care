@@ -1622,27 +1622,45 @@ window.handleDoctorLogin = handleUniversalLogin;
 window.handlePatientLogin = handleUniversalLogin;
 
 function logoutToLogin() {
+  currentSession = null;
+  try {
+    localStorage.removeItem('dc_session');
+  } catch(e) {}
+
+  const loginContainer = document.getElementById('login-container');
+
   document.querySelectorAll('.app-view, #login-container, #home-container, #doctor-dashboard, #admin-panel').forEach(el => {
     el.style.setProperty('display', 'none', 'important');
     el.classList.add('translate-x-full','opacity-0','pointer-events-none','hidden');
     el.classList.remove('translate-x-0','opacity-100');
   });
+
   if (loginContainer) {
     loginContainer.style.setProperty('display', 'flex', 'important');
     loginContainer.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
     loginContainer.classList.add('translate-x-0', 'opacity-100');
   }
-  closeRegisterView();
+
+  if (typeof closeRegisterView === 'function') closeRegisterView();
   if (typeof window.carouselGoToSlide === 'function') {
     window.carouselGoToSlide(0);
   }
+
   ['doctor-id-input','doctor-pin-input','admin-user-input','admin-pass-input',
-   'patient-login-email','patient-login-pass'].forEach(id => {
+   'patient-login-email','patient-login-pass','universal-user-input','universal-pass-input'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  switchPatientTab('login');
+
+  if (typeof switchPatientTab === 'function') {
+    switchPatientTab('login');
+  }
+
+  if (typeof showToast === 'function') {
+    showToast('Logged Out', 'You have been logged out successfully.', 'info');
+  }
 }
+window.logoutToLogin = logoutToLogin;
 
 function switchAdminTab(tab) {
   try {
