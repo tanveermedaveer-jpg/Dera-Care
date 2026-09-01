@@ -1300,6 +1300,17 @@ function toggleDoctorPassVis(id) {
 function renderUpgradedAdminDashboard(mainFrame) {
   if (!mainFrame) return;
 
+  const isDark = mainFrame.classList.contains('theme-dark');
+
+  const bg = isDark ? '#121826' : '#ffffff';
+  const text = isDark ? '#f8fafc' : '#000000';
+  const cardBg = isDark ? '#1e293b' : '#f8fafc';
+  const border = isDark ? '#334155' : '#cbd5e1';
+  const inputBg = isDark ? '#0f172a' : '#ffffff';
+  const textMuted = isDark ? '#94a3b8' : '#64748b';
+  const formBg = isDark ? '#1e293b' : '#ffffff';
+  const icon = isDark ? '☀️' : '🌙';
+
   const doctors = getAdminDoctorsList();
   const docCount = doctors ? doctors.length : 0;
 
@@ -1314,34 +1325,34 @@ function renderUpgradedAdminDashboard(mainFrame) {
   let doctorsCardsHtml = '';
   if (!doctors || doctors.length === 0) {
     doctorsCardsHtml = `
-      <div style="text-align: center; color: #64748b; font-size: 12px; padding: 24px 16px; background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; margin-bottom: 10px;">
+      <div style="text-align: center; color: ${textMuted}; font-size: 12px; padding: 24px 16px; background: ${cardBg}; border: 1.5px dashed ${border}; border-radius: 12px; margin-bottom: 10px;">
         <div style="font-size: 22px; margin-bottom: 4px;">🩺</div>
-        <div style="font-weight: 800; color: #334155;">No Doctors Registered Yet</div>
-        <div style="font-size: 11px; margin-top: 2px; color: #64748b;">Add a new doctor using the form above.</div>
+        <div style="font-weight: 800; color: ${text};">No Doctors Registered Yet</div>
+        <div style="font-size: 11px; margin-top: 2px; color: ${textMuted};">Add a new doctor using the form above.</div>
       </div>
     `;
   } else {
     doctors.forEach((d, idx) => {
       const passInputId = `doc-pass-view-${idx}`;
       doctorsCardsHtml += `
-        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="background: ${cardBg}; border: 1.5px solid ${border}; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div>
-              <div style="font-weight: 800; font-size: 14px; color: #0f172a;">${d.name || 'Doctor'}</div>
-              <div style="font-size: 11px; color: #64748b; margin-top: 1px;">${d.specialty || 'General Practice'} · ${d.hospital || 'DHQ Hospital'}</div>
+              <div style="font-weight: 800; font-size: 14px; color: ${text};">${d.name || 'Doctor'}</div>
+              <div style="font-size: 11px; color: ${textMuted}; margin-top: 1px;">${d.specialty || 'General Practice'} · ${d.hospital || 'DHQ Hospital'}</div>
             </div>
             <span style="background: #dcfce7; color: #15803d; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">Active</span>
           </div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 10px; font-size: 11px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 6px 10px; font-size: 11px;">
             <div>
-              <span style="color: #64748b; font-weight: bold;">ID/Email:</span>
-              <span style="color: #0f172a; font-weight: bold; margin-left: 4px;">${d.docId || 'N/A'}</span>
+              <span style="color: ${textMuted}; font-weight: bold;">ID/Email:</span>
+              <span style="color: ${text}; font-weight: bold; margin-left: 4px;">${d.docId || 'N/A'}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 4px;">
-              <span style="color: #64748b; font-weight: bold;">PIN:</span>
+              <span style="color: ${textMuted}; font-weight: bold;">PIN:</span>
               <input id="${passInputId}" type="password" value="${d.pin || ''}" readonly style="width: 60px; border: none; background: transparent; font-weight: bold; color: #059669; outline: none; font-size: 11px;">
-              <button type="button" onclick="toggleDoctorPassVis('${passInputId}')" style="background: none; border: none; cursor: pointer; padding: 2px; color: #64748b; font-size: 13px;" title="Toggle Password Visibility">
+              <button type="button" onclick="toggleDoctorPassVis('${passInputId}')" style="background: none; border: none; cursor: pointer; padding: 2px; color: ${textMuted}; font-size: 13px;" title="Toggle Password Visibility">
                 👁️
               </button>
             </div>
@@ -1361,59 +1372,64 @@ function renderUpgradedAdminDashboard(mainFrame) {
   }
 
   mainFrame.innerHTML = `
-    <div style="background: #ffffff; color: #000000; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; height: 100%; overflow-y: auto; box-sizing: border-box;">
+    <div style="background: ${bg}; color: ${text}; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; height: 100%; overflow-y: auto; box-sizing: border-box;">
       
-      <!-- Top Bar Header & Logout -->
+      <!-- Top Bar Header & Logout & Theme Toggle -->
       <div style="background: #059669; color: #ffffff; padding: 14px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(5,150,105,0.2);">
         <div>
           <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff;">Admin Panel</h2>
           <p style="margin: 2px 0 0 0; font-size: 10px; color: #e6fffa;">muhammadsadaf010@gmail.com</p>
         </div>
-        <button onclick="window.location.reload()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
-          🚪 Logout
-        </button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button onclick="toggleAppTheme()" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;" title="Toggle Light / Dark Mode">
+            ${icon}
+          </button>
+          <button onclick="window.location.reload()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+            🚪 Logout
+          </button>
+        </div>
       </div>
 
       <!-- Overview Stats Cards Grid -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-        <div style="background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 12px; padding: 12px; text-align: center;">
+        <div style="background: ${cardBg}; border: 2px solid ${border}; border-radius: 12px; padding: 12px; text-align: center;">
           <div style="font-size: 24px; font-weight: 900; color: #2563eb;">${patientCount}</div>
-          <div style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Total Patients</div>
+          <div style="font-size: 10px; font-weight: 800; color: ${textMuted}; text-transform: uppercase;">Total Patients</div>
         </div>
-        <div style="background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 12px; padding: 12px; text-align: center;">
+        <div style="background: ${cardBg}; border: 2px solid ${border}; border-radius: 12px; padding: 12px; text-align: center;">
           <div style="font-size: 24px; font-weight: 900; color: #16a34a;">${docCount}</div>
-          <div style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Active Doctors</div>
+          <div style="font-size: 10px; font-weight: 800; color: ${textMuted}; text-transform: uppercase;">Active Doctors</div>
         </div>
       </div>
 
       <!-- FEATURE 1: ADD NEW DOCTOR FORM -->
-      <div id="admin-doctor-form-section" style="background: #ffffff; border: 2px solid #00a86b; border-radius: 14px; padding: 14px; margin-bottom: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.05);">
-        <h3 id="admin-doc-form-title" style="margin: 0 0 12px 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;">
+      <div id="admin-doctor-form-section" style="background: ${formBg}; border: 2px solid #00a86b; border-radius: 14px; padding: 14px; margin-bottom: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.05);">
+        <h3 id="admin-doc-form-title" style="margin: 0 0 12px 0; font-size: 13px; font-weight: 800; color: ${text}; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid ${border}; padding-bottom: 6px;">
           ➕ Add New Doctor
         </h3>
         <form onsubmit="saveAdminDoctor(event); return false;" style="display: flex; flex-direction: column; gap: 10px;">
           <div>
             <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Doctor Full Name</label>
             <input id="admin-add-doc-name" type="text" placeholder="Enter doctor's name" required
-              style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
+              style="width: 100%; margin-top: 4px; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
           </div>
           <div>
             <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Specialization</label>
             <input id="admin-add-doc-spec" type="text" placeholder="Enter specialization (e.g., Cardiology)" required
-              style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
+              style="width: 100%; margin-top: 4px; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div>
               <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Email / Login ID</label>
               <input id="admin-add-doc-id" type="text" placeholder="Enter email or login ID" required
-                style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
+                style="width: 100%; margin-top: 4px; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
             </div>
             <div>
               <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Password / Pin</label>
               <div style="position: relative; margin-top: 4px;">
                 <input id="admin-add-doc-pin" type="password" placeholder="Enter password or PIN" required
-                  style="width: 100%; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 32px 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
-                <button type="button" onclick="toggleDoctorPassVis('admin-add-doc-pin')" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748b; font-size: 12px;" title="Toggle Visibility">
+                  style="width: 100%; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 32px 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
+                <button type="button" onclick="toggleDoctorPassVis('admin-add-doc-pin')" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: ${textMuted}; font-size: 12px;" title="Toggle Visibility">
                   👁️
                 </button>
               </div>
@@ -1428,7 +1444,7 @@ function renderUpgradedAdminDashboard(mainFrame) {
       <!-- FEATURE 3 & 4: DOCTOR DIRECTORY & ACTIONS LIST -->
       <div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin: 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">
+          <h3 style="margin: 0; font-size: 13px; font-weight: 800; color: ${text}; text-transform: uppercase; letter-spacing: 0.5px;">
             🩺 Doctor Directory (${docCount})
           </h3>
           <span style="font-size: 10px; color: #00a86b; font-weight: bold;">Pre-Approved Only</span>
@@ -1809,10 +1825,20 @@ function saveAdminProfile() {
   showToast('Settings Saved ✓', 'Admin credentials updated successfully.', 'success');
 }
 
+function toggleAppTheme() {
+  const mf = document.getElementById('mobile-frame') || document.body;
+  mf.classList.toggle('theme-dark');
+  if (typeof updateThemeIcons === 'function') updateThemeIcons();
+
+  if (currentSession && currentSession.role === 'admin' && typeof renderUpgradedAdminDashboard === 'function') {
+    renderUpgradedAdminDashboard(mf);
+  }
+}
+window.toggleAppTheme = toggleAppTheme;
+
 themeToggles.forEach(btn => {
   btn.addEventListener('click', () => {
-    mobileFrame.classList.toggle('theme-dark');
-    updateThemeIcons();
+    toggleAppTheme();
   });
 });
 
