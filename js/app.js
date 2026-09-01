@@ -34,102 +34,11 @@ updateClock();
 
 
 
-// Doctor specialist static dataset with advanced profile fields
-const doctorsData = [
-  { 
-    id: 0, 
-    name: "Dr. Test Specialist", 
-    specialty: "General Physician & Heart Specialist", 
-    hospital: "Dera Care Testing Clinic, D.I. Khan", 
-    fee: 1000, 
-    avatar: "TS", 
-    rating: 5.0,
-    credentials: "MBBS, FCPS - Family Medicine & Cardiology",
-    timings: "Mon - Sat: 10:00 AM - 05:00 PM",
-    about: "Dr. Test Specialist is a dedicated testing profile set up for validating the live WhatsApp booking redirection and support routing mechanisms of Dera Care.",
-    phone: "923103716116"
-  },
-  { 
-    id: 1, 
-    name: "Dr. Saifullah Khan", 
-    specialty: "Heart", 
-    hospital: "DHQ Hospital D.I. Khan", 
-    fee: 1500, 
-    avatar: "SK", 
-    rating: 4.9,
-    credentials: "MBBS, FCPS - Cardiology",
-    timings: "Mon - Sat: 04:00 PM - 09:00 PM",
-    about: "Dr. Saifullah Khan is a premier cardiologist in D.I. Khan with 12+ years of experience in managing cardiac emergencies, hypertension, coronary diseases, and heart failure.",
-    phone: "923001234561"
-  },
-  { 
-    id: 2, 
-    name: "Dr. Ayesha Malik", 
-    specialty: "Children", 
-    hospital: "Mufti Mahmood Hospital", 
-    fee: 1200, 
-    avatar: "AM", 
-    rating: 4.8,
-    credentials: "MBBS, FCPS - Pediatrics",
-    timings: "Mon - Fri: 02:00 PM - 06:00 PM",
-    about: "Dr. Ayesha Malik provides complete child development checkups, pediatric critical care, immunization counseling, and diagnostic workups for neonatal disorders.",
-    phone: "923001234562"
-  },
-  { 
-    id: 3, 
-    name: "Dr. Zafar Iqbal", 
-    specialty: "Bones", 
-    hospital: "City Hospital D.I. Khan", 
-    fee: 1000, 
-    avatar: "ZI", 
-    rating: 4.7,
-    credentials: "MBBS, MS - Orthopedic Surgery",
-    timings: "Mon - Sat: 05:00 PM - 09:00 PM",
-    about: "Dr. Zafar Iqbal specializes in orthopedic trauma, joint replacements, complex fractures, bone density assessments, and athletic rehabilitation maps.",
-    phone: "923001234563"
-  },
-  { 
-    id: 4, 
-    name: "Dr. Farzana Rehman", 
-    specialty: "Eyes", 
-    hospital: "DHQ Hospital D.I. Khan", 
-    fee: 1100, 
-    avatar: "FR", 
-    rating: 4.8,
-    credentials: "MBBS, FCPS - Ophthalmology",
-    timings: "Mon - Fri: 09:00 AM - 01:00 PM",
-    about: "Dr. Farzana Rehman is a leading eye surgeon providing premium laser eye surgery, cataract procedures, glaucoma treatment, and routine vision evaluations.",
-    phone: "923001234564"
-  },
-  { 
-    id: 5, 
-    name: "Dr. Kamran Lodhi", 
-    specialty: "Dental", 
-    hospital: "Mufti Mahmood Hospital", 
-    fee: 1200, 
-    avatar: "KL", 
-    rating: 4.6,
-    credentials: "BDS, FCPS - Oral & Dental Surgery",
-    timings: "Mon - Sat: 03:00 PM - 08:00 PM",
-    about: "Dr. Kamran Lodhi specializes in aesthetic dentistry, root canals, oral surgeries, implantology, and premium teeth alignments.",
-    phone: "923001234565"
-  }
-];
+// Dynamic Doctor dataset (populated via Doctor Portal submissions and backend API)
+let doctorsData = [];
 
 // Scheduled slot dataset containing detailed booking info
-let appointmentsData = [
-  { 
-    id: 1, 
-    doctor: "Dr. Saifullah Khan", 
-    hospital: "DHQ Hospital", 
-    specialty: "Cardiology", 
-    date: "2026-08-31", 
-    time: "10:30 AM", 
-    avatar: "SK",
-    patientName: "Rizwan Khan",
-    patientPhone: "0300 9876543"
-  }
-];
+let appointmentsData = [];
 
 // DOM selectors
 const skipBtn = document.getElementById('btn-skip');
@@ -1240,20 +1149,8 @@ function renderGuaranteedAdminDashboard(adminPanel) {
   let doctorsHtml = '';
   if (!doctors || doctors.length === 0) {
     doctorsHtml = `
-      <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 8px;">
-        <div style="font-weight: bold; font-size: 14px; color: #0f172a;">Dr. Saifullah Khan</div>
-        <div style="font-size: 12px; color: #475569;">Cardiology · DHQ Hospital D.I. Khan</div>
-        <div style="font-size: 11px; color: #008000; font-weight: bold; margin-top: 4px;">ID: 03001234561 | PIN: 1234</div>
-      </div>
-      <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 8px;">
-        <div style="font-weight: bold; font-size: 14px; color: #0f172a;">Dr. Ayesha Malik</div>
-        <div style="font-size: 12px; color: #475569;">Pediatrics · Mufti Mahmood Hospital</div>
-        <div style="font-size: 11px; color: #008000; font-weight: bold; margin-top: 4px;">ID: 03001234562 | PIN: 1234</div>
-      </div>
-      <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 8px;">
-        <div style="font-weight: bold; font-size: 14px; color: #0f172a;">Dr. Zafar Iqbal</div>
-        <div style="font-size: 12px; color: #475569;">Orthopedics · City Hospital D.I. Khan</div>
-        <div style="font-size: 11px; color: #008000; font-weight: bold; margin-top: 4px;">ID: 03001234563 | PIN: 1234</div>
+      <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 14px; text-align: center; color: #64748b; font-size: 12px; font-weight: 600;">
+        No doctors registered yet. Submissions via Doctor Portal will appear here.
       </div>
     `;
   } else {
@@ -2272,10 +2169,19 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
   if (!container) return;
   container.innerHTML = "";
 
-  let list = doctorsData;
-  
+  // Combine live doctorsData and DC stored doctors dynamically
+  let list = doctorsData.slice();
+  try {
+    const stored = (typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : [];
+    stored.forEach(d => {
+      if (d && !list.some(existing => String(existing.id) === String(d.id) || String(existing.docId) === String(d.docId))) {
+        list.push(d);
+      }
+    });
+  } catch(e) {}
+
   if (filterSpec !== "") {
-    list = list.filter(d => d.specialty.toLowerCase().includes(filterSpec.toLowerCase()) || filterSpec.toLowerCase().includes(d.specialty.toLowerCase()));
+    list = list.filter(d => d.specialty && d.specialty.toLowerCase().includes(filterSpec.toLowerCase()));
     if (clearFilterBtn) clearFilterBtn.classList.remove('hidden');
   } else {
     if (clearFilterBtn) clearFilterBtn.classList.add('hidden');
@@ -2283,35 +2189,45 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
 
   if (searchQuery !== "") {
     const query = searchQuery.toLowerCase();
-    list = list.filter(d => d.name.toLowerCase().includes(query) || d.specialty.toLowerCase().includes(query));
+    list = list.filter(d => (d.name && d.name.toLowerCase().includes(query)) || (d.specialty && d.specialty.toLowerCase().includes(query)));
   }
 
-  if (list.length === 0) {
+  if (!list || list.length === 0) {
     container.innerHTML = `
-      <div class="glass-card p-6 text-center rounded-2xl text-[var(--text-muted)] text-xs font-semibold">
-        No doctors found matching filters in D.I. Khan.
+      <div class="glass-card p-6 text-center rounded-2xl text-[var(--text-muted)] space-y-1.5 border border-white/5">
+        <div class="text-3xl mb-1">👨‍⚕️</div>
+        <p class="text-xs font-bold text-[var(--text-color)]">No Doctors Published Yet</p>
+        <p class="text-[10.5px]">Doctor profiles submitted and published via the Doctor Portal will appear here dynamically.</p>
       </div>
     `;
     return;
   }
 
   list.forEach(doc => {
+    const docId = doc.id || doc.docId || 'doc_' + Date.now();
+    const dName = doc.name || 'Doctor Specialist';
+    const dSpec = doc.specialty || 'General Physician';
+    const dHosp = doc.hospital || 'DHQ Hospital D.I. Khan';
+    const dFee = doc.fee ? parseInt(doc.fee) : 1500;
+    const dRating = doc.rating || 5.0;
+    const initials = doc.avatar || dName.replace('Dr.', '').trim().split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'DR';
+
     container.innerHTML += `
-      <div class="glass-card p-4 rounded-2xl flex items-center justify-between border border-white/5">
+      <div class="glass-card p-4 rounded-2xl flex items-center justify-between border border-white/5 shadow-sm">
         <div class="flex items-center space-x-3.5">
-          <div class="w-11 h-11 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg font-bold">${doc.avatar}</div>
+          <div class="w-11 h-11 rounded-full bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/20 text-[var(--accent-color)] flex items-center justify-center text-sm font-extrabold flex-shrink-0">${initials}</div>
           <div class="space-y-0.5">
-            <h4 class="text-[12px] font-bold text-[var(--text-color)]">${doc.name}</h4>
-            <p class="text-[9px] text-[var(--text-muted)] font-semibold">${doc.specialty} Specialist | ${doc.hospital}</p>
+            <h4 class="text-[12px] font-extrabold text-[var(--text-color)]">${dName}</h4>
+            <p class="text-[9px] text-[var(--text-muted)] font-semibold">${dSpec} Specialist | ${dHosp}</p>
             <div class="flex items-center space-x-2 text-[9px] font-semibold">
-              <span class="text-amber-400 flex items-center">⭐ ${doc.rating}</span>
-              <span class="text-[var(--text-muted)]">Rs. ${doc.fee} Fee</span>
+              <span class="text-amber-400 flex items-center font-bold">⭐ ${dRating}</span>
+              <span class="text-[var(--text-muted)]">PKR ${dFee.toLocaleString()} Fee</span>
             </div>
           </div>
         </div>
-        <div class="flex flex-col space-y-1.5 flex-shrink-0">
-          <button onclick="openDoctorProfile(${doc.id})" class="h-6 px-2.5 rounded-md border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] text-[8px] font-bold focus:outline-none transition-colors">Profile</button>
-          <button onclick="triggerSpecificBooking('${doc.name}', '${doc.specialty}')" class="h-6 px-2.5 rounded-md bg-[var(--accent-color)] text-[var(--bg-color)] text-[8px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all">Book</button>
+        <div class="flex flex-col space-y-1.5 flex-shrink-0 ml-2">
+          <button onclick="openDoctorProfile('${docId}')" class="h-7 px-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:bg-[var(--accent-color)]/10 text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-all cursor-pointer">Profile</button>
+          <button onclick="triggerSpecificBooking('${dName.replace(/'/g, "\\'")}', '${dSpec.replace(/'/g, "\\'")}')" class="h-7 px-3 rounded-lg bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-slate-900 text-[9px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all shadow-sm cursor-pointer">Book</button>
         </div>
       </div>
     `;
@@ -2343,23 +2259,39 @@ function clearDoctorsFilter() {
 
 let selectedProfileDoc = null;
 function openDoctorProfile(id) {
-  const doc = doctorsData.find(d => d.id === id);
-  if (!doc) return;
+  const list = doctorsData.concat((typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : []);
+  const doc = list.find(d => String(d.id) === String(id) || String(d.docId) === String(id) || d.name === id);
+  if (!doc) {
+    showToast("Profile Unavailable", "Doctor profile details could not be found.", "error");
+    return;
+  }
   selectedProfileDoc = doc;
 
-  document.getElementById('profile-avatar').textContent = doc.avatar;
-  document.getElementById('profile-name').textContent = doc.name;
-  document.getElementById('profile-spec').textContent = doc.specialty + " Specialist";
-  document.getElementById('profile-credentials').textContent = doc.credentials;
-  document.getElementById('profile-hospital').textContent = doc.hospital;
-  document.getElementById('profile-timings').textContent = doc.timings;
-  document.getElementById('profile-fee').textContent = `PKR ${doc.fee.toLocaleString()}`;
-  document.getElementById('profile-about').textContent = doc.about;
+  const initials = doc.avatar || (doc.name ? doc.name.replace('Dr.', '').trim().split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'DR');
+  const avatarEl = document.getElementById('profile-avatar');
+  const nameEl = document.getElementById('profile-name');
+  const specEl = document.getElementById('profile-spec');
+  const credEl = document.getElementById('profile-credentials');
+  const hospEl = document.getElementById('profile-hospital');
+  const timeEl = document.getElementById('profile-timings');
+  const feeEl = document.getElementById('profile-fee');
+  const aboutEl = document.getElementById('profile-about');
 
+  if (avatarEl) avatarEl.textContent = initials;
+  if (nameEl) nameEl.textContent = doc.name || "Doctor Specialist";
+  if (specEl) specEl.textContent = (doc.specialty || "General Physician") + " Specialist";
+  if (credEl) credEl.textContent = doc.credentials || `MBBS, Specialist in ${doc.specialty || 'Medicine'}`;
+  if (hospEl) hospEl.textContent = doc.hospital || "DHQ Hospital D.I. Khan";
+  if (timeEl) timeEl.textContent = doc.timings || "Mon - Sat: 04:00 PM - 08:00 PM";
+  if (feeEl) feeEl.textContent = `PKR ${doc.fee ? parseInt(doc.fee).toLocaleString() : '1,500'}`;
+  if (aboutEl) aboutEl.textContent = doc.about || `${doc.name} is a verified specialist in ${doc.specialty || 'Healthcare'} serving at ${doc.hospital || 'DHQ Hospital D.I. Khan'}.`;
+
+  const doctorProfileModal = document.getElementById('doctor-profile-modal');
   if (doctorProfileModal) doctorProfileModal.classList.remove('hidden', 'translate-y-full');
 }
 
 function closeDoctorProfile() {
+  const doctorProfileModal = document.getElementById('doctor-profile-modal');
   if (doctorProfileModal) {
     doctorProfileModal.classList.add('translate-y-full');
     setTimeout(() => doctorProfileModal.classList.add('hidden'), 300);
@@ -2898,23 +2830,35 @@ if (logoutConfirmBtn) {
   });
 }
 
-function loadSelfSubmittedDoctors() {
+async function loadSelfSubmittedDoctors() {
   try {
-    const saved = localStorage.getItem('dc_self_doctors');
-    if (saved) {
-      const list = JSON.parse(saved);
-      if (Array.isArray(list)) {
-        list.forEach(doc => {
-          if (!doctorsData.some(d => d.id === doc.id)) {
-            doctorsData.unshift(doc);
-          }
-        });
-      }
+    const res = await fetch('http://localhost:5000/api/doctors');
+    const data = await res.json();
+    if (data.success && Array.isArray(data.doctors)) {
+      data.doctors.forEach(doc => {
+        if (!doctorsData.some(d => String(d.id) === String(doc.id))) {
+          doctorsData.push(doc);
+        }
+      });
     }
+  } catch(err) {
+    console.log("Backend offline, using local doctor records.");
+  }
+
+  try {
+    const stored = (typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : [];
+    stored.forEach(doc => {
+      if (!doctorsData.some(d => String(d.id) === String(doc.id))) {
+        doctorsData.push(doc);
+      }
+    });
   } catch(e) {}
+
+  renderDoctorsList();
+  if (typeof renderWhatsAppDoctorList === 'function') renderWhatsAppDoctorList();
 }
 
-function submitDoctorSelfProfile() {
+async function submitDoctorSelfProfile() {
   const nameInput = document.getElementById('doc-self-name');
   const specInput = document.getElementById('doc-self-specialty');
   const feeInput = document.getElementById('doc-self-fee');
@@ -2937,6 +2881,7 @@ function submitDoctorSelfProfile() {
 
   const newDoc = {
     id: Date.now(),
+    docId: 'doc_' + Date.now(),
     name: name,
     specialty: specialty,
     hospital: hospital,
@@ -2947,19 +2892,29 @@ function submitDoctorSelfProfile() {
     timings: timings,
     about: `${name} is a verified clinical specialist in ${specialty} serving at ${hospital}. Registered via Doctor Portal.`,
     phone: "923001234567",
-    isSelfSubmitted: true
+    isSelfSubmitted: true,
+    createdAt: new Date().toISOString()
   };
 
-  doctorsData.unshift(newDoc);
-
   try {
-    const saved = JSON.parse(localStorage.getItem('dc_self_doctors') || '[]');
-    saved.unshift(newDoc);
-    localStorage.setItem('dc_self_doctors', JSON.stringify(saved));
+    await fetch('http://localhost:5000/api/doctors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newDoc)
+    });
+  } catch(err) {
+    console.log("Backend offline, saving doctor profile locally.");
+  }
+
+  doctorsData.unshift(newDoc);
+  try {
+    const list = (typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : [];
+    list.unshift(newDoc);
+    if (typeof DC !== 'undefined' && DC.saveDoctors) DC.saveDoctors(list);
   } catch(e) {}
 
   renderDoctorsList();
-  renderWhatsAppDoctorList();
+  if (typeof renderWhatsAppDoctorList === 'function') renderWhatsAppDoctorList();
 
   const docDashName = document.getElementById('doc-dashboard-name');
   if (docDashName) docDashName.textContent = newDoc.name;
