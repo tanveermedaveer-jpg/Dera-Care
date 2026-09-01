@@ -1223,11 +1223,36 @@
         <div class="space-y-3 pt-1">
           <div>
             <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Active Clinic Days</label>
-            <select id="doc-avail-days" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] focus:outline-none transition-all">
-              <option value="Monday - Saturday">Monday - Saturday (Daily)</option>
-              <option value="Monday - Friday">Monday - Friday (Weekdays)</option>
-              <option value="Weekend (Sat - Sun)">Weekend (Saturday - Sunday)</option>
-            </select>
+            <div class="grid grid-cols-4 gap-1.5 mt-1.5" id="doc-days-selection">
+              <label class="flex items-center space-x-1.5 p-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] text-[11px] font-bold cursor-pointer hover:border-[var(--accent-color)] transition-all">
+                <input type="checkbox" name="doc-day" value="Mon" checked class="accent-[#00A86B]">
+                <span>Mon</span>
+              </label>
+              <label class="flex items-center space-x-1.5 p-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] text-[11px] font-bold cursor-pointer hover:border-[var(--accent-color)] transition-all">
+                <input type="checkbox" name="doc-day" value="Tue" checked class="accent-[#00A86B]">
+                <span>Tue</span>
+              </label>
+              <label class="flex items-center space-x-1.5 p-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] text-[11px] font-bold cursor-pointer hover:border-[var(--accent-color)] transition-all">
+                <input type="checkbox" name="doc-day" value="Wed" checked class="accent-[#00A86B]">
+                <span>Wed</span>
+              </label>
+              <label class="flex items-center space-x-1.5 p-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] text-[11px] font-bold cursor-pointer hover:border-[var(--accent-color)] transition-all">
+                <input type="checkbox" name="doc-day" value="Thu" checked class="accent-[#00A86B]">
+                <span>Thu</span>
+              </label>
+              <label class="flex items-center space-x-1.5 p-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] text-[11px] font-bold cursor-pointer hover:border-[var(--accent-color)] transition-all">
+                <input type="checkbox" name="doc-day" value="Fri" checked class="accent-[#00A86B]">
+                <span>Fri</span>
+              </label>
+              <label class="flex items-center space-x-1.5 p-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] text-[11px] font-bold cursor-pointer hover:border-[var(--accent-color)] transition-all">
+                <input type="checkbox" name="doc-day" value="Sat" checked class="accent-[#00A86B]">
+                <span>Sat</span>
+              </label>
+              <label class="flex items-center space-x-1.5 p-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] text-[11px] font-bold cursor-pointer hover:border-[var(--accent-color)] transition-all col-span-2">
+                <input type="checkbox" name="doc-day" value="Sun" class="accent-[#00A86B]">
+                <span>Sun</span>
+              </label>
+            </div>
           </div>
           <div class="grid grid-cols-2 gap-2.5">
             <div>
@@ -1244,12 +1269,8 @@
             <input id="doc-avail-leave" type="text" placeholder="Enter off days or leave dates (e.g., Sunday / 15th - 18th Oct)" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
           </div>
           <div>
-            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Slot Duration</label>
-            <select id="doc-avail-duration" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] focus:outline-none transition-all">
-              <option value="15 mins per patient">15 Minutes per Patient</option>
-              <option value="20 mins per patient" selected>20 Minutes per Patient</option>
-              <option value="30 mins per patient">30 Minutes per Patient</option>
-            </select>
+            <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Custom Slot Duration (Minutes Per Patient)</label>
+            <input id="doc-avail-duration-num" type="number" min="5" max="120" placeholder="Enter duration in minutes (e.g. 15, 20, 30)" value="20" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
           </div>
           <button onclick="saveDoctorAvailability()" class="btn-primary w-full h-12 rounded-xl text-xs font-extrabold tracking-wider uppercase flex items-center justify-center transition-all mt-2 focus:outline-none shadow-md">
             💾 SAVE WORKING HOURS &amp; LEAVE

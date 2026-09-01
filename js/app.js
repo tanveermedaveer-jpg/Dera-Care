@@ -772,20 +772,23 @@ function closeDocAvailabilityModal() {
 }
 
 function saveDoctorAvailability() {
-  const daysEl = document.getElementById('doc-avail-days');
+  const selectedDays = Array.from(document.querySelectorAll('input[name="doc-day"]:checked')).map(cb => cb.value);
+  const daysString = selectedDays.length > 0 ? selectedDays.join(', ') : 'No active days selected';
+
   const morningEl = document.getElementById('doc-avail-morning');
   const eveningEl = document.getElementById('doc-avail-evening');
   const leaveEl = document.getElementById('doc-avail-leave');
+  const durationInput = document.getElementById('doc-avail-duration-num');
 
-  const days = daysEl ? daysEl.value : "";
   const morning = morningEl ? morningEl.value.trim() : "";
   const evening = eveningEl ? eveningEl.value.trim() : "";
   const leave = leaveEl ? leaveEl.value.trim() : "";
+  const duration = durationInput && durationInput.value ? durationInput.value.trim() : "20";
 
   closeDocAvailabilityModal();
-  let msg = `Working slots saved: ${days}`;
-  if (morning || evening) msg += ` (${morning || evening})`;
-  if (leave) msg += ` · Off Days: ${leave}`;
+  let msg = `Working days: ${daysString} (${duration} mins/patient)`;
+  if (morning || evening) msg += ` · Shifts: ${morning || evening}`;
+  if (leave) msg += ` · Off: ${leave}`;
   showToast("Hours & Leave Saved ✓", msg, "success");
 }
 
