@@ -1284,8 +1284,15 @@ function renderUpgradedAdminDashboard(mainFrame) {
   if (!mainFrame) return;
 
   const doctors = getAdminDoctorsList();
-  const docCount = doctors.length;
-  const patientCount = 247;
+  const docCount = doctors ? doctors.length : 0;
+
+  let patients = [];
+  try {
+    patients = (typeof DC !== 'undefined' && DC.getPatients) ? (DC.getPatients() || []) : [];
+  } catch(e) {
+    patients = [];
+  }
+  const patientCount = patients ? patients.length : 0;
 
   let doctorsCardsHtml = '';
   if (!doctors || doctors.length === 0) {
