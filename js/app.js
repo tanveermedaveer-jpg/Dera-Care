@@ -1429,6 +1429,9 @@ function handleUniversalLogin(e) {
     window.event.preventDefault();
   }
 
+  const adminEmail = "muhammadsadaf010@gmail.com";
+  const adminPass = "Sadaf@9099";
+
   try {
     const idEl = document.getElementById('universal-login-id') || document.getElementById('admin-user-input') || document.getElementById('patient-login-email') || document.getElementById('doctor-id-input');
     const passEl = document.getElementById('universal-login-pass') || document.getElementById('admin-pass-input') || document.getElementById('patient-login-pass') || document.getElementById('doctor-pin-input');
@@ -1444,18 +1447,18 @@ function handleUniversalLogin(e) {
     const cleanId = rawId.toLowerCase().trim();
     const cleanPhone = rawId.replace(/[\s\-\(\)\+]/g, '');
 
-    // 1. CHECK SUPER ADMIN CREDENTIALS
-    const isAdminEmail = (cleanId === 'muhammadsadaf010@gmail.com');
+    // 1. HARDCODED SUPER ADMIN CREDENTIALS CHECK
+    const isAdminEmail = (cleanId === adminEmail);
     const isAdminPhone = (cleanPhone === '03103716116' || cleanPhone === '923103716116' || cleanPhone === '3103716116' || rawId === '03103716116');
     const isAdminUser = (cleanId === 'msadaf');
 
-    if ((isAdminEmail || isAdminPhone || isAdminUser) && rawPass === 'Sadaf@9099') {
+    if ((isAdminEmail || isAdminPhone || isAdminUser) && rawPass === adminPass) {
       currentSession = {
         isGuest: false,
         role: 'admin',
-        name: "Super Admin (muhammadsadaf010@gmail.com)",
+        name: `Super Admin (${adminEmail})`,
         phone: "03103716116",
-        email: "muhammadsadaf010@gmail.com"
+        email: adminEmail
       };
 
       const loginCard = document.getElementById('login-container');
@@ -1467,7 +1470,7 @@ function handleUniversalLogin(e) {
       renderUpgradedAdminDashboard(mainFrame);
 
       if (typeof showToast === 'function') {
-        showToast('Admin Access Granted ✓', `Welcome Admin: muhammadsadaf010@gmail.com`, 'success');
+        showToast('Admin Access Granted ✓', `Welcome Admin: ${adminEmail}`, 'success');
       }
       return false;
     }
