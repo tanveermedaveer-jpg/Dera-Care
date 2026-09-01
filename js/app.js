@@ -696,14 +696,11 @@ function closeDoctorLogoutModal() {
 }
 function confirmDoctorExit() {
   closeDoctorLogoutModal();
-  setTimeout(() => {
-    ['doctor-id-input', 'doctor-pin-input'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    logoutToLogin();
-    showToast("Doctor Session Closed", "Successfully logged out of Doctor Portal.", "success");
-  }, 350);
+  ['doctor-id-input', 'doctor-pin-input'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  logoutToLogin();
 }
 
 let isDoctorOnDuty = true;
@@ -1581,6 +1578,9 @@ function logoutToLogin() {
     localStorage.removeItem('dc_user_session');
   } catch(e) {}
 
+  const docDash = document.getElementById('doctor-dashboard');
+  const adminPanel = document.getElementById('admin-panel');
+  const homeContainer = document.getElementById('home-container');
   const loginContainer = document.getElementById('login-container');
 
   if (!loginContainer) {
@@ -1588,17 +1588,49 @@ function logoutToLogin() {
     return;
   }
 
-  // Hide all dashboard screens & views
-  document.querySelectorAll('.app-view, #home-container, #doctor-dashboard, #admin-panel').forEach(el => {
+  // Explicitly hide doctor-dashboard
+  if (docDash) {
+    docDash.style.setProperty('display', 'none', 'important');
+    docDash.style.setProperty('opacity', '0', 'important');
+    docDash.style.setProperty('pointer-events', 'none', 'important');
+    docDash.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+    docDash.classList.remove('translate-x-0', 'opacity-100');
+  }
+
+  // Explicitly hide admin-panel
+  if (adminPanel) {
+    adminPanel.style.setProperty('display', 'none', 'important');
+    adminPanel.style.setProperty('opacity', '0', 'important');
+    adminPanel.style.setProperty('pointer-events', 'none', 'important');
+    adminPanel.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+    adminPanel.classList.remove('translate-x-0', 'opacity-100');
+  }
+
+  // Explicitly hide home-container
+  if (homeContainer) {
+    homeContainer.style.setProperty('display', 'none', 'important');
+    homeContainer.style.setProperty('opacity', '0', 'important');
+    homeContainer.style.setProperty('pointer-events', 'none', 'important');
+    homeContainer.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
+    homeContainer.classList.remove('translate-x-0', 'opacity-100');
+  }
+
+  // Hide all app-view elements
+  document.querySelectorAll('.app-view').forEach(el => {
     if (el) {
       el.style.setProperty('display', 'none', 'important');
+      el.style.setProperty('opacity', '0', 'important');
+      el.style.setProperty('pointer-events', 'none', 'important');
       el.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
       el.classList.remove('translate-x-0', 'opacity-100');
     }
   });
 
-  // Explicitly unhide & display login-container
+  // Explicitly unhide & display main Login Page container
   loginContainer.style.setProperty('display', 'flex', 'important');
+  loginContainer.style.setProperty('opacity', '1', 'important');
+  loginContainer.style.setProperty('visibility', 'visible', 'important');
+  loginContainer.style.setProperty('pointer-events', 'auto', 'important');
   loginContainer.classList.remove('translate-x-full', '-translate-x-full', 'opacity-0', 'pointer-events-none', 'hidden');
   loginContainer.classList.add('translate-x-0', 'opacity-100');
 
@@ -1614,7 +1646,7 @@ function logoutToLogin() {
   });
 
   if (typeof showToast === 'function') {
-    showToast('Logged Out', 'You have been logged out successfully.', 'info');
+    showToast('Logged Out', 'Successfully returned to Login Page.', 'info');
   }
 }
 window.logoutToLogin = logoutToLogin;
