@@ -544,6 +544,8 @@ async function handlePatientSignup(e) {
   const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
   const pass = passEl ? passEl.value.trim() : "";
 
+  console.log('[Dera Care] handlePatientSignup triggered — Name:', name, '| Email:', email, '| Pass length:', pass.length);
+
   if (!name || !email || !pass) {
     showToast("Missing Fields", "Please enter your full name, email address, and password.", "error");
     return false;
@@ -594,14 +596,27 @@ async function handlePatientSignup(e) {
     } catch(err) {}
   }
 
+  // Determine API base URL: works for localhost dev and Vercel/production deployment
+  const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : '';
+
+  console.log('[Dera Care] POSTing registration to:', API_BASE + '/api/register');
+
   // Connect to Node.js Express Backend for Real Email OTP Generation
+  let backendSuccess = false;
   try {
-    const res = await fetch('http://localhost:5000/api/register', {
+    const res = await fetch(API_BASE + '/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password: pass })
     });
+
+    console.log('[Dera Care] /api/register HTTP status:', res.status);
+
     const data = await res.json();
+    console.log('[Dera Care] /api/register response data:', JSON.stringify(data));
+
     if (btn) btn.innerText = "CREATE ACCOUNT →";
 
     if (!data.success && data.message && data.message.includes("already exists")) {
@@ -611,16 +626,55 @@ async function handlePatientSignup(e) {
       if (loginEmailEl) loginEmailEl.value = email;
       return false;
     }
+
+    if (!data.success) {
+      // Backend returned a non-success response — surface the error and stop
+      console.error('[Dera Care] Backend registration error:', data.message);
+      showToast("Registration Error", data.message || "Something went wrong. Please try again.", "error");
+      return false;
+    }
+
+    backendSuccess = true;
+    console.log('[Dera Care] ✅ Backend confirmed OTP dispatched to:', email);
+
   } catch(err) {
-    console.log("Backend offline, using client-side OTP fallback.");
+    // Network error or backend offline
+    console.error('[Dera Care] ❌ fetch /api/register network error:', err);
     if (btn) btn.innerText = "CREATE ACCOUNT →";
+    console.warn('[Dera Care] Backend offline — using client-side OTP fallback for dev/testing.');
+    backendSuccess = true; // allow offline fallback so local dev still works
   }
 
+  if (!backendSuccess) return false;
+
   showToast("OTP Dispatched ✓", `Verification code sent to ${email}`, "success");
-  openOtpModal(email);
+
+  // Slide out the registration form BEFORE showing the OTP modal
+  closeRegisterView();
+  console.log('[Dera Care] Register view closed — opening OTP modal for:', email);
+
+  // Brief delay lets the slide-out animation start before the OTP sheet appears
+  setTimeout(() => {
+    openOtpModal(email);
+    console.log('[Dera Care] OTP modal opened for:', email);
+  }, 200);
+
   return false;
 }
 window.handlePatientSignup = handlePatientSignup;
+
+// Backup programmatic event listener — ensures the button works even if inline onclick is stripped
+document.addEventListener('DOMContentLoaded', function() {
+  const regBtn = document.getElementById('register-btn');
+  if (regBtn && !regBtn.dataset.listenerAttached) {
+    regBtn.dataset.listenerAttached = 'true';
+    regBtn.addEventListener('click', function(e) {
+      console.log('[Dera Care] register-btn click captured via DOMContentLoaded listener');
+      handlePatientSignup(e);
+    });
+    console.log('[Dera Care] ✅ register-btn event listener attached via DOMContentLoaded');
+  }
+});
 
 function loadSavedUserSession() {
   try {
