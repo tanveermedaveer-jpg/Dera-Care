@@ -1613,12 +1613,67 @@ function handleUniversalLogin(e) {
       return false;
     }
 
-    // 3. STANDARD USER / PATIENT LOGIN
+    // 3. REGISTERED PATIENT / USER LOGIN VALIDATION
+    let registeredPatients = [];
+    try {
+      if (typeof DC !== 'undefined' && DC.getPatients) {
+        registeredPatients = DC.getPatients() || [];
+      }
+    } catch(e) {}
+
+    try {
+      const rawStored = localStorage.getItem('dc_patients') || localStorage.getItem('registered_users');
+      if (rawStored) {
+        const parsed = JSON.parse(rawStored);
+        if (Array.isArray(parsed)) {
+          parsed.forEach(p => {
+            if (!registeredPatients.some(existing => (existing.email && p.email && existing.email.toLowerCase() === p.email.toLowerCase()) || (existing.phone && p.phone && existing.phone === p.phone))) {
+              registeredPatients.push(p);
+            }
+          });
+        }
+      }
+    } catch(e) {}
+
+    try {
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        const p = JSON.parse(currentUser);
+        if (p && p.email && !registeredPatients.some(existing => existing.email && existing.email.toLowerCase() === p.email.toLowerCase())) {
+          registeredPatients.push(p);
+        }
+      }
+    } catch(e) {}
+
+    const patientMatch = registeredPatients.find(p => {
+      const pEmail = p.email ? p.email.toLowerCase().trim() : "";
+      const pPhone = p.phone ? p.phone.replace(/[\s\-\(\)\+]/g, '') : "";
+      const pName = p.name ? p.name.toLowerCase().trim() : "";
+      return (pEmail === cleanId || (cleanPhone && pPhone === cleanPhone) || pName === cleanId);
+    });
+
+    if (!patientMatch) {
+      if (typeof showToast === 'function') {
+        showToast('Account Not Found', 'Account not found. Please register first.', 'error');
+      }
+      return false;
+    }
+
+    // Verify stored password if defined
+    const expectedPass = patientMatch.pass || patientMatch.password;
+    if (expectedPass && expectedPass !== rawPass) {
+      if (typeof showToast === 'function') {
+        showToast('Login Failed', 'Incorrect password. Please try again.', 'error');
+      }
+      return false;
+    }
+
     currentSession = {
       isGuest: false,
       role: 'patient',
-      name: rawId.split('@')[0] || "User",
-      email: rawId
+      name: patientMatch.name || rawId.split('@')[0] || "User",
+      email: patientMatch.email || rawId,
+      phone: patientMatch.phone || ""
     };
 
     if (typeof updateProfileUI === 'function') updateProfileUI();
