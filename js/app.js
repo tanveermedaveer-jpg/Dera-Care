@@ -1044,8 +1044,8 @@ function renderGuaranteedAdminDashboard(adminPanel) {
     doctors = (typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : [];
   } catch(e) {}
 
-  const docCount = (doctors && doctors.length > 0) ? doctors.length : 3;
-  const patientCount = 247;
+  const docCount = (doctors && doctors.length > 0) ? doctors.length : 0;
+  const patientCount = (typeof DC !== 'undefined' && DC.getPatients) ? (DC.getPatients() || []).length : 0;
   const apptCount = 18;
 
   let doctorsHtml = '';
@@ -1743,7 +1743,7 @@ function renderAdminDoctorList() {
 function updateAdminStats() {
   try {
     const docCount = (DC.getDoctors() || []).length;
-    const patientCount = Math.max(247, (DC.getPatients() || []).length);
+    const patientCount = (DC.getPatients() || []).length;
     const docEl = document.getElementById('admin-stat-doctors');
     const patientEl = document.getElementById('admin-stat-patients');
     if (docEl) docEl.textContent = docCount;
