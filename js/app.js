@@ -2204,7 +2204,7 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
   }
 
   list.forEach(doc => {
-    const docId = doc.id || doc.docId || 'doc_' + Date.now();
+    const docId = String(doc.id || doc.docId || 'doc_' + Date.now());
     const dName = doc.name || 'Doctor Specialist';
     const dSpec = doc.specialty || 'General Physician';
     const dHosp = doc.hospital || 'DHQ Hospital D.I. Khan';
@@ -2212,25 +2212,44 @@ function renderDoctorsList(filterSpec = "", searchQuery = "") {
     const dRating = doc.rating || 5.0;
     const initials = doc.avatar || dName.replace('Dr.', '').trim().split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'DR';
 
-    container.innerHTML += `
-      <div class="glass-card p-4 rounded-2xl flex items-center justify-between border border-white/5 shadow-sm">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-11 h-11 rounded-full bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/20 text-[var(--accent-color)] flex items-center justify-center text-sm font-extrabold flex-shrink-0">${initials}</div>
-          <div class="space-y-0.5">
-            <h4 class="text-[12px] font-extrabold text-[var(--text-color)]">${dName}</h4>
-            <p class="text-[9px] text-[var(--text-muted)] font-semibold">${dSpec} Specialist | ${dHosp}</p>
-            <div class="flex items-center space-x-2 text-[9px] font-semibold">
-              <span class="text-amber-400 flex items-center font-bold">⭐ ${dRating}</span>
-              <span class="text-[var(--text-muted)]">PKR ${dFee.toLocaleString()} Fee</span>
-            </div>
+    const card = document.createElement('div');
+    card.className = "glass-card p-4 rounded-2xl flex items-center justify-between border border-white/5 shadow-sm";
+    card.innerHTML = `
+      <div class="flex items-center space-x-3.5">
+        <div class="w-11 h-11 rounded-full bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/20 text-[var(--accent-color)] flex items-center justify-center text-sm font-extrabold flex-shrink-0">${initials}</div>
+        <div class="space-y-0.5">
+          <h4 class="text-[12px] font-extrabold text-[var(--text-color)]">${dName}</h4>
+          <p class="text-[9px] text-[var(--text-muted)] font-semibold">${dSpec} Specialist | ${dHosp}</p>
+          <div class="flex items-center space-x-2 text-[9px] font-semibold">
+            <span class="text-amber-400 flex items-center font-bold">⭐ ${dRating}</span>
+            <span class="text-[var(--text-muted)]">PKR ${dFee.toLocaleString()} Fee</span>
           </div>
         </div>
-        <div class="flex flex-col space-y-1.5 flex-shrink-0 ml-2">
-          <button onclick="openDoctorProfile('${docId}')" class="h-7 px-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:bg-[var(--accent-color)]/10 text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-all cursor-pointer">Profile</button>
-          <button onclick="triggerSpecificBooking('${dName.replace(/'/g, "\\'")}', '${dSpec.replace(/'/g, "\\'")}')" class="h-7 px-3 rounded-lg bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-slate-900 text-[9px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all shadow-sm cursor-pointer">Book</button>
-        </div>
+      </div>
+      <div class="flex flex-col space-y-1.5 flex-shrink-0 ml-2">
+        <button type="button" class="btn-doc-profile h-7 px-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:bg-[var(--accent-color)]/10 text-[var(--text-color)] text-[9px] font-bold focus:outline-none transition-all cursor-pointer">Profile</button>
+        <button type="button" class="btn-doc-book h-7 px-3 rounded-lg bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-slate-900 text-[9px] font-extrabold uppercase focus:outline-none active:scale-95 transition-all shadow-sm cursor-pointer">Book</button>
       </div>
     `;
+
+    const profileBtn = card.querySelector('.btn-doc-profile');
+    const bookBtn = card.querySelector('.btn-doc-book');
+
+    if (profileBtn) {
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openDoctorProfile(docId);
+      });
+    }
+
+    if (bookBtn) {
+      bookBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        triggerSpecificBooking(dName, dSpec);
+      });
+    }
+
+    container.appendChild(card);
   });
 }
 
@@ -2446,7 +2465,12 @@ function confirmLabBooking() {
 const btnBannerBook = document.getElementById('btn-banner-book');
 if (btnBannerBook) {
   btnBannerBook.addEventListener('click', () => {
-    triggerSpecificBooking("Dr. Saifullah Khan", "Heart");
+    const list = doctorsData.concat((typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : []);
+    if (list && list.length > 0) {
+      triggerSpecificBooking(list[0].name, list[0].specialty);
+    } else {
+      triggerSpecificBooking("Doctor Specialist", "General Medicine");
+    }
   });
 }
 
