@@ -792,6 +792,49 @@ function saveDoctorAvailability() {
   showToast("Hours & Leave Saved ✓", msg, "success");
 }
 
+function showSpecialtyDropdown() {
+  const dd = document.getElementById('doc-specialties-dropdown');
+  if (dd) dd.classList.remove('hidden');
+}
+
+function filterSpecialtyDropdown() {
+  const input = document.getElementById('doc-self-specialty');
+  const dd = document.getElementById('doc-specialties-dropdown');
+  if (!input || !dd) return;
+
+  const q = input.value.toLowerCase().trim();
+  dd.classList.remove('hidden');
+
+  const items = dd.querySelectorAll('div');
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    if (!q || text.includes(q)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function selectSpecialtyOption(val) {
+  const input = document.getElementById('doc-self-specialty');
+  const dd = document.getElementById('doc-specialties-dropdown');
+  if (input) input.value = val;
+  if (dd) dd.classList.add('hidden');
+}
+
+window.showSpecialtyDropdown = showSpecialtyDropdown;
+window.filterSpecialtyDropdown = filterSpecialtyDropdown;
+window.selectSpecialtyOption = selectSpecialtyOption;
+
+document.addEventListener('click', function(e) {
+  const input = document.getElementById('doc-self-specialty');
+  const dd = document.getElementById('doc-specialties-dropdown');
+  if (dd && input && !input.contains(e.target) && !dd.contains(e.target)) {
+    dd.classList.add('hidden');
+  }
+});
+
 function openDocPrescriptionModal() {
   const modal = document.getElementById('doc-prescription-modal');
   if (modal) modal.classList.remove('hidden', 'translate-y-full');

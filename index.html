@@ -751,22 +751,22 @@
                 <input id="doc-self-name" type="text" placeholder="Enter your full name" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
               </div>
               <div class="grid grid-cols-2 gap-2.5">
-                <div>
+                <div class="relative">
                   <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Specialty</label>
-                  <input id="doc-self-specialty" type="text" list="doc-specialties-list" placeholder="Enter or select specialty" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                  <datalist id="doc-specialties-list">
-                    <option value="Cardiology"></option>
-                    <option value="Neurology"></option>
-                    <option value="Pediatrics"></option>
-                    <option value="Orthopedics"></option>
-                    <option value="Ophthalmology"></option>
-                    <option value="Dentistry"></option>
-                    <option value="General Physician"></option>
-                    <option value="Dermatology"></option>
-                    <option value="Gynecology"></option>
-                    <option value="ENT Specialist"></option>
-                    <option value="Urology"></option>
-                  </datalist>
+                  <input id="doc-self-specialty" type="text" placeholder="Enter or select specialty" autocomplete="off" onfocus="showSpecialtyDropdown()" oninput="filterSpecialtyDropdown()" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <div id="doc-specialties-dropdown" class="specialty-dropdown-container absolute left-0 right-0 top-full mt-1 w-full bg-[var(--card-bg)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-40 overflow-y-auto hidden">
+                    <div onclick="selectSpecialtyOption('Cardiology')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Cardiology</div>
+                    <div onclick="selectSpecialtyOption('Neurology')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Neurology</div>
+                    <div onclick="selectSpecialtyOption('Pediatrics')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Pediatrics</div>
+                    <div onclick="selectSpecialtyOption('Orthopedics')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Orthopedics</div>
+                    <div onclick="selectSpecialtyOption('Ophthalmology')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Ophthalmology</div>
+                    <div onclick="selectSpecialtyOption('Dentistry')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Dentistry</div>
+                    <div onclick="selectSpecialtyOption('General Physician')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">General Physician</div>
+                    <div onclick="selectSpecialtyOption('Dermatology')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Dermatology</div>
+                    <div onclick="selectSpecialtyOption('Gynecology')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">Gynecology</div>
+                    <div onclick="selectSpecialtyOption('ENT Specialist')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors border-b border-[var(--border-color)]/30">ENT Specialist</div>
+                    <div onclick="selectSpecialtyOption('Urology')" class="px-3 py-2 text-xs text-[var(--text-color)] hover:bg-[var(--accent-color)]/10 cursor-pointer transition-colors">Urology</div>
+                  </div>
                 </div>
                 <div>
                   <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Fee (PKR)</label>

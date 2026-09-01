@@ -71,6 +71,24 @@ html, body {
   border: 1px solid var(--border-color);
 }
 
+/* Specialty Dropdown Bounds Enforcer */
+.specialty-dropdown-container {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  z-index: 99 !important;
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  max-height: 160px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
 /* Fixed size dropdown selector styling */
 #country-select {
   background-color: transparent;
