@@ -2714,62 +2714,69 @@ function getCurrentTimeString() {
 }
 
 function startInAppChat(name, avatar, phone) {
-  activeChatName = name;
-  activeChatAvatar = avatar;
-  activeChatPhone = phone;
+  activeChatName = name || "Support Helpline";
+  activeChatAvatar = avatar || "💬";
+  activeChatPhone = phone || "0300 1234567";
 
-  document.getElementById('chat-header-avatar').textContent = avatar;
-  document.getElementById('chat-header-name').textContent = name;
-
+  const avatarEl = document.getElementById('chat-header-avatar');
+  const nameEl = document.getElementById('chat-header-name');
   const messagesContainer = document.getElementById('in-app-chat-messages');
-  messagesContainer.innerHTML = `
-    <div class="flex justify-center my-2">
-      <span class="px-3 py-1 bg-black/20 text-slate-300 text-[8px] font-bold rounded-lg uppercase tracking-wider">🔒 End-to-end encrypted chat with Dera Care</span>
-    </div>
-  `;
 
-  if (!chatHistories[name]) {
-    const timeStr = getCurrentTimeString();
-    chatHistories[name] = [
-      {
-        sender: "them",
-        text: name === 'Support Helpline' ? 
-          'Hello! How can Dera Care support desk assist your health today?' : 
-          `Hello! ${name}'s clinical assistant here. Please send details of your health condition or prescription queries.`,
-        time: timeStr
-      }
-    ];
-  }
+  if (avatarEl) avatarEl.textContent = activeChatAvatar;
+  if (nameEl) nameEl.textContent = activeChatName;
 
-  chatHistories[name].forEach(msg => {
-    if (msg.sender === "me") {
-      messagesContainer.innerHTML += `
-        <div class="flex justify-end">
-          <div class="bg-[var(--wa-bubble-sent-bg)] text-[var(--wa-bubble-sent-text)] self-end rounded-2xl rounded-tr-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-semibold leading-relaxed flex flex-col items-end whitespace-pre-line">
-            <span>${msg.text}</span>
-            <span class="text-[8px] opacity-60 mt-0.5">${msg.time} ✓✓</span>
-          </div>
-        </div>
-      `;
-    } else {
-      messagesContainer.innerHTML += `
-        <div class="flex justify-start">
-          <div class="bg-[var(--card-bg)] text-[var(--text-color)] border border-[var(--border-color)] self-start rounded-2xl rounded-tl-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-medium leading-relaxed flex flex-col items-start whitespace-pre-line">
-            <span>${msg.text}</span>
-            <span class="text-[8px] text-[var(--text-muted)] mt-0.5">${msg.time}</span>
-          </div>
-        </div>
-      `;
+  if (messagesContainer) {
+    messagesContainer.innerHTML = `
+      <div class="flex justify-center my-2">
+        <span class="px-3 py-1 bg-black/20 text-slate-300 text-[8px] font-bold rounded-lg uppercase tracking-wider">🔒 End-to-end encrypted chat with Dera Care</span>
+      </div>
+    `;
+
+    if (!chatHistories[activeChatName]) {
+      const timeStr = getCurrentTimeString();
+      chatHistories[activeChatName] = [
+        {
+          sender: "them",
+          text: activeChatName === 'Support Helpline' ? 
+            'Hello! How can Dera Care support desk assist your health today?' : 
+            `Hello! ${activeChatName}'s clinical assistant here. Please send details of your health condition or prescription queries.`,
+          time: timeStr
+        }
+      ];
     }
-  });
+
+    chatHistories[activeChatName].forEach(msg => {
+      if (msg.sender === "me") {
+        messagesContainer.innerHTML += `
+          <div class="flex justify-end">
+            <div class="bg-[var(--wa-bubble-sent-bg)] text-[var(--wa-bubble-sent-text)] self-end rounded-2xl rounded-tr-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-semibold leading-relaxed flex flex-col items-end whitespace-pre-line">
+              <span>${msg.text}</span>
+              <span class="text-[8px] opacity-60 mt-0.5">${msg.time} ✓✓</span>
+            </div>
+          </div>
+        `;
+      } else {
+        messagesContainer.innerHTML += `
+          <div class="flex justify-start">
+            <div class="bg-[var(--card-bg)] text-[var(--text-color)] border border-[var(--border-color)] self-start rounded-2xl rounded-tl-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-medium leading-relaxed flex flex-col items-start whitespace-pre-line">
+              <span>${msg.text}</span>
+              <span class="text-[8px] text-[var(--text-muted)] mt-0.5">${msg.time}</span>
+            </div>
+          </div>
+        `;
+      }
+    });
+  }
 
   const windowEl = document.getElementById('in-app-chat-window');
   if (windowEl) {
+    windowEl.style.setProperty('display', 'flex', 'important');
     windowEl.classList.remove('hidden');
-    setTimeout(() => {
-      windowEl.classList.remove('translate-x-full');
+    void windowEl.offsetWidth;
+    windowEl.classList.remove('translate-x-full');
+    if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }, 50);
+    }
   }
 }
 
@@ -2779,6 +2786,7 @@ function exitInAppChat() {
     windowEl.classList.add('translate-x-full');
     setTimeout(() => {
       windowEl.classList.add('hidden');
+      windowEl.style.removeProperty('display');
     }, 300);
   }
   activeChatName = "";
@@ -2804,17 +2812,19 @@ function sendInAppChatMessage() {
     time: timeStr
   });
 
-  messagesContainer.innerHTML += `
-    <div class="flex justify-end">
-      <div class="bg-[var(--wa-bubble-sent-bg)] text-[var(--wa-bubble-sent-text)] self-end rounded-2xl rounded-tr-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-semibold leading-relaxed flex flex-col items-end whitespace-pre-line">
-        <span>${msg}</span>
-        <span class="text-[8px] opacity-60 mt-0.5">${timeStr} ✓✓</span>
+  if (messagesContainer) {
+    messagesContainer.innerHTML += `
+      <div class="flex justify-end">
+        <div class="bg-[var(--wa-bubble-sent-bg)] text-[var(--wa-bubble-sent-text)] self-end rounded-2xl rounded-tr-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-semibold leading-relaxed flex flex-col items-end whitespace-pre-line">
+          <span>${msg}</span>
+          <span class="text-[8px] opacity-60 mt-0.5">${timeStr} ✓✓</span>
+        </div>
       </div>
-    </div>
-  `;
+    `;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
 
   input.value = "";
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
   setTimeout(() => {
     let reply = "";
@@ -2825,21 +2835,24 @@ function sendInAppChatMessage() {
     }
 
     const replyTime = getCurrentTimeString();
+    if (!chatHistories[activeChatName]) chatHistories[activeChatName] = [];
     chatHistories[activeChatName].push({
       sender: "them",
       text: reply,
       time: replyTime
     });
 
-    messagesContainer.innerHTML += `
-      <div class="flex justify-start">
-        <div class="bg-[var(--card-bg)] text-[var(--text-color)] border border-[var(--border-color)] self-start rounded-2xl rounded-tl-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-medium leading-relaxed flex flex-col items-start whitespace-pre-line">
-          <span>${reply}</span>
-          <span class="text-[8px] text-[var(--text-muted)] mt-0.5">${replyTime}</span>
+    if (messagesContainer) {
+      messagesContainer.innerHTML += `
+        <div class="flex justify-start">
+          <div class="bg-[var(--card-bg)] text-[var(--text-color)] border border-[var(--border-color)] self-start rounded-2xl rounded-tl-none p-2.5 max-w-[80%] text-[11px] shadow-sm font-medium leading-relaxed flex flex-col items-start whitespace-pre-line">
+            <span>${reply}</span>
+            <span class="text-[8px] text-[var(--text-muted)] mt-0.5">${replyTime}</span>
+          </div>
         </div>
-      </div>
-    `;
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      `;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
     showToast("Consultation Update", "New clinical reply received.", "success");
   }, 1200);
 }
