@@ -718,8 +718,8 @@ function toggleDoctorDutyStatus(btn) {
   }
 }
 
-let docConfirmedCount = 8;
-let docPendingCount = 3;
+let docConfirmedCount = 0;
+let docPendingCount = 0;
 
 function acceptDoctorRequest(btn, patientName) {
   const card = btn.closest('.glass-card');
@@ -809,12 +809,29 @@ function renderDoctorPatientChat() {
   const select = document.getElementById('doc-chat-patient-select');
   const stream = document.getElementById('doc-chat-stream');
   if (!select || !stream) return;
-  const patientName = select.value;
+  const patientName = select.value ? select.value.trim() : "";
+
+  if (!patientName) {
+    stream.innerHTML = `
+      <div class="text-center p-6 text-[11px] text-[var(--text-muted)] flex flex-col items-center justify-center h-full">
+        <span>💬</span>
+        <span class="mt-1">No active patient consultation selected.</span>
+      </div>
+    `;
+    return;
+  }
 
   if (!chatHistories[patientName]) {
-    chatHistories[patientName] = [
-      { sender: "them", text: `Assalam-o-Alaikum Doctor, I have a query regarding my symptoms and medication schedule.`, time: getCurrentTimeString() }
-    ];
+    chatHistories[patientName] = [];
+  }
+
+  if (chatHistories[patientName].length === 0) {
+    stream.innerHTML = `
+      <div class="text-center p-4 text-[11px] text-[var(--text-muted)]">
+        No message history with ${patientName} yet.
+      </div>
+    `;
+    return;
   }
 
   stream.innerHTML = "";
@@ -2559,13 +2576,13 @@ function submitDoctorSelfProfile() {
   const timingsInput = document.getElementById('doc-self-timings');
 
   const rawName = nameInput ? nameInput.value.trim() : "";
-  const specialty = specInput ? specInput.value.trim() : "Cardiology";
-  const fee = feeInput && feeInput.value ? parseInt(feeInput.value) : 1500;
-  const hospital = hospitalInput && hospitalInput.value.trim() ? hospitalInput.value.trim() : "DHQ Hospital D.I. Khan";
-  const timings = timingsInput && timingsInput.value.trim() ? timingsInput.value.trim() : "Mon - Sat: 04:00 PM - 08:00 PM";
+  const specialty = specInput ? specInput.value.trim() : "";
+  const fee = feeInput && feeInput.value ? parseInt(feeInput.value) : 0;
+  const hospital = hospitalInput ? hospitalInput.value.trim() : "";
+  const timings = timingsInput ? timingsInput.value.trim() : "";
 
-  if (!rawName) {
-    showToast("Missing Parameters", "Please enter your doctor full name.", "error");
+  if (!rawName || !specialty || !fee || !hospital || !timings) {
+    showToast("Missing Parameters", "Please fill in all profile setup fields before publishing.", "error");
     return;
   }
 
@@ -2582,7 +2599,7 @@ function submitDoctorSelfProfile() {
     rating: 5.0,
     credentials: `MBBS, Specialist in ${specialty}`,
     timings: timings,
-    about: `${name} is a verified clinical specialist in ${specialty} serving at ${hospital}. Self-registered via Doctor Portal.`,
+    about: `${name} is a verified clinical specialist in ${specialty} serving at ${hospital}. Registered via Doctor Portal.`,
     phone: "923001234567",
     isSelfSubmitted: true
   };
@@ -2602,6 +2619,7 @@ function submitDoctorSelfProfile() {
   if (docDashName) docDashName.textContent = newDoc.name;
 
   if (nameInput) nameInput.value = '';
+  if (specInput) specInput.value = '';
   if (feeInput) feeInput.value = '';
   if (hospitalInput) hospitalInput.value = '';
   if (timingsInput) timingsInput.value = '';

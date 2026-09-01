@@ -707,15 +707,15 @@
         <!-- Stats row -->
         <div class="grid grid-cols-3 gap-3">
           <div class="glass-card rounded-2xl p-3 text-center border border-white/5">
-            <div class="text-xl font-extrabold text-[var(--accent-color)]" id="doc-stat-slots">12</div>
+            <div class="text-xl font-extrabold text-[var(--accent-color)]" id="doc-stat-slots">0</div>
             <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase mt-0.5">Today's Slots</div>
           </div>
           <div class="glass-card rounded-2xl p-3 text-center border border-white/5">
-            <div class="text-xl font-extrabold text-emerald-400" id="doc-stat-confirmed">8</div>
+            <div class="text-xl font-extrabold text-emerald-400" id="doc-stat-confirmed">0</div>
             <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase mt-0.5">Confirmed</div>
           </div>
           <div class="glass-card rounded-2xl p-3 text-center border border-white/5">
-            <div class="text-xl font-extrabold text-amber-400" id="doc-stat-pending">3</div>
+            <div class="text-xl font-extrabold text-amber-400" id="doc-stat-pending">0</div>
             <div class="text-[8px] text-[var(--text-muted)] font-bold uppercase mt-0.5">Pending</div>
           </div>
         </div>
@@ -723,45 +723,9 @@
         <!-- Appointment Requests -->
         <div class="space-y-2.5">
           <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Appointment Requests</h3>
-          <div class="space-y-3">
-            <div class="glass-card p-3.5 rounded-2xl border border-white/5 flex items-center justify-between transition-all">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 flex items-center justify-center text-xs font-extrabold">AR</div>
-                <div>
-                  <p class="text-[11px] font-bold text-[var(--text-color)]">Ahmed Raza</p>
-                  <p class="text-[9px] text-[var(--text-muted)]">09:00 AM · Chest Pain</p>
-                </div>
-              </div>
-              <div class="flex space-x-1.5">
-                <button onclick="acceptDoctorRequest(this, 'Ahmed Raza')" class="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors focus:outline-none">✓ Accept</button>
-                <button onclick="rejectDoctorRequest(this, 'Ahmed Raza')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">✕ Decline</button>
-              </div>
-            </div>
-            <div class="glass-card p-3.5 rounded-2xl border border-white/5 flex items-center justify-between transition-all">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 flex items-center justify-center text-xs font-extrabold">SK</div>
-                <div>
-                  <p class="text-[11px] font-bold text-[var(--text-color)]">Sara Khan</p>
-                  <p class="text-[9px] text-[var(--text-muted)]">10:30 AM · Routine Checkup</p>
-                </div>
-              </div>
-              <div class="flex space-x-1.5">
-                <button onclick="acceptDoctorRequest(this, 'Sara Khan')" class="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors focus:outline-none">✓ Accept</button>
-                <button onclick="rejectDoctorRequest(this, 'Sara Khan')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">✕ Decline</button>
-              </div>
-            </div>
-            <div class="glass-card p-3.5 rounded-2xl border border-white/5 flex items-center justify-between transition-all">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/20 flex items-center justify-center text-xs font-extrabold">MH</div>
-                <div>
-                  <p class="text-[11px] font-bold text-[var(--text-color)]">Muhammad Hamza</p>
-                  <p class="text-[9px] text-[var(--text-muted)]">02:00 PM · Diabetes Follow-up</p>
-                </div>
-              </div>
-              <div class="flex space-x-1.5">
-                <button onclick="acceptDoctorRequest(this, 'Muhammad Hamza')" class="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors focus:outline-none">✓ Accept</button>
-                <button onclick="rejectDoctorRequest(this, 'Muhammad Hamza')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">✕ Decline</button>
-              </div>
+          <div id="doc-requests-container" class="space-y-3">
+            <div class="glass-card p-4 rounded-2xl border border-white/5 text-center text-[11px] text-[var(--text-muted)]">
+              No pending appointment requests yet.
             </div>
           </div>
         </div>
@@ -795,34 +759,38 @@
             <div class="space-y-2.5 pt-1">
               <div>
                 <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Full Doctor Name</label>
-                <input id="doc-self-name" type="text" placeholder="e.g. Dr. High Specialist" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="doc-self-name" type="text" placeholder="Enter your full name" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
               </div>
               <div class="grid grid-cols-2 gap-2.5">
                 <div>
                   <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Specialty</label>
-                  <select id="doc-self-specialty" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3 text-xs text-[var(--text-color)] focus:outline-none transition-all">
-                    <option value="Cardiology">Cardiology (Heart)</option>
-                    <option value="Neurology">Neurology (Brain/Nerves)</option>
-                    <option value="Pediatrics">Pediatrics (Children)</option>
-                    <option value="Orthopedics">Orthopedics (Bones)</option>
-                    <option value="Ophthalmology">Ophthalmology (Eyes)</option>
-                    <option value="Dentistry">Dentistry (Dental)</option>
-                    <option value="General Physician">General Physician</option>
-                    <option value="Dermatology">Dermatology (Skin)</option>
-                  </select>
+                  <input id="doc-self-specialty" type="text" list="doc-specialties-list" placeholder="Enter or select specialty" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <datalist id="doc-specialties-list">
+                    <option value="Cardiology"></option>
+                    <option value="Neurology"></option>
+                    <option value="Pediatrics"></option>
+                    <option value="Orthopedics"></option>
+                    <option value="Ophthalmology"></option>
+                    <option value="Dentistry"></option>
+                    <option value="General Physician"></option>
+                    <option value="Dermatology"></option>
+                    <option value="Gynecology"></option>
+                    <option value="ENT Specialist"></option>
+                    <option value="Urology"></option>
+                  </datalist>
                 </div>
                 <div>
                   <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Fee (PKR)</label>
-                  <input id="doc-self-fee" type="number" placeholder="1500" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <input id="doc-self-fee" type="number" placeholder="Enter consultation fee (e.g., 1000)" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
                 </div>
               </div>
               <div>
                 <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Hospital / Clinic Location</label>
-                <input id="doc-self-hospital" type="text" placeholder="e.g. DHQ Hospital D.I. Khan, Chishti Chowk" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="doc-self-hospital" type="text" placeholder="Enter hospital or clinic location" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
               </div>
               <div>
                 <label class="text-[9px] font-bold text-[var(--text-color)] uppercase tracking-wider px-1">Available Timings &amp; Days</label>
-                <input id="doc-self-timings" type="text" placeholder="e.g. Mon - Sat: 04:00 PM - 08:00 PM" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="doc-self-timings" type="text" placeholder="Enter available timings &amp; days" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
               </div>
               <button onclick="submitDoctorSelfProfile()" class="w-full py-3.5 rounded-xl bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] text-[#0D1B2A] text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none shadow-lg active:scale-[0.98]">
                 🚀 Submit &amp; Publish Profile to Home
@@ -842,9 +810,7 @@
               </span>
             </div>
             <select id="doc-chat-patient-select" onchange="renderDoctorPatientChat()" class="w-full h-10 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3 text-xs text-[var(--text-color)] focus:outline-none transition-all">
-              <option value="Ahmed Raza">Ahmed Raza (Chest Pain Patient)</option>
-              <option value="Sara Khan">Sara Khan (Routine Checkup)</option>
-              <option value="Muhammad Hamza">Muhammad Hamza (Diabetes Follow-up)</option>
+              <option value="">No Active Patient Consultations</option>
             </select>
 
             <!-- Chat Stream Box -->
