@@ -154,15 +154,20 @@ app.post('/api/register', async (req, res) => {
 
   writeDB(db);
 
+  // Print generated OTP clearly in server log for testing
+  console.log(`===================================================`);
+  console.log(`🔑 GENERATED OTP CODE FOR ${cleanEmail}: ${otp}`);
+  console.log(`===================================================`);
+
   try {
     await sendOTPEmail(cleanEmail, otp);
   } catch (mailErr) {
-    console.error("sendOTPEmail unexpected error:", mailErr);
+    console.error("⚠️ sendOTPEmail dispatch issue (using console OTP fallback):", mailErr.message || mailErr);
   }
 
   return res.status(200).json({
     success: true,
-    message: `Verification OTP sent to ${cleanEmail}. Please verify code to complete registration.`,
+    message: "OTP generated successfully",
     email: cleanEmail,
     otp: otp
   });
