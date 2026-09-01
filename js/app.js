@@ -1172,7 +1172,253 @@ function renderGuaranteedAdminDashboard(adminPanel) {
   `;
 }
 
-window.renderGuaranteedAdminDashboard = renderGuaranteedAdminDashboard;
+let adminEditingDocId = null;
+
+function getAdminDoctorsList() {
+  let list = [];
+  try {
+    list = (typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : [];
+  } catch(e) {}
+  if (!list || list.length === 0) {
+    list = [
+      { docId: "03001234561", name: "Dr. Saifullah Khan", specialty: "Cardiology", hospital: "DHQ Hospital D.I. Khan", pin: "1234" },
+      { docId: "03001234562", name: "Dr. Ayesha Malik", specialty: "Pediatrics", hospital: "Mufti Mahmood Hospital", pin: "1234" },
+      { docId: "03001234563", name: "Dr. Zafar Iqbal", specialty: "Orthopedics", hospital: "City Hospital D.I. Khan", pin: "1234" }
+    ];
+    try { if (typeof DC !== 'undefined' && DC.saveDoctors) DC.saveDoctors(list); } catch(e) {}
+  }
+  return list;
+}
+
+function saveAdminDoctor(e) {
+  if (e && typeof e.preventDefault === 'function') e.preventDefault();
+  const nameEl = document.getElementById('admin-add-doc-name');
+  const specEl = document.getElementById('admin-add-doc-spec');
+  const idEl = document.getElementById('admin-add-doc-id');
+  const pinEl = document.getElementById('admin-add-doc-pin');
+
+  const name = nameEl ? nameEl.value.trim() : "";
+  const specialty = specEl ? specEl.value.trim() : "";
+  const docId = idEl ? idEl.value.trim() : "";
+  const pin = pinEl ? pinEl.value.trim() : "";
+
+  if (!name || !specialty || !docId || !pin) {
+    if (typeof showToast === 'function') showToast('Missing Fields', 'Please fill out Name, Specialty, ID/Email, and Password/PIN.', 'error');
+    return false;
+  }
+
+  let list = getAdminDoctorsList();
+
+  if (adminEditingDocId) {
+    const idx = list.findIndex(d => (d.docId === adminEditingDocId || d.id === adminEditingDocId));
+    if (idx !== -1) {
+      list[idx].name = name;
+      list[idx].specialty = specialty;
+      list[idx].docId = docId;
+      list[idx].pin = pin;
+    } else {
+      list.push({ docId, name, specialty, pin, hospital: "DHQ Hospital D.I. Khan" });
+    }
+    adminEditingDocId = null;
+    if (typeof showToast === 'function') showToast('Doctor Updated ✓', `${name}'s credentials saved.`, 'success');
+  } else {
+    if (list.some(d => d.docId === docId)) {
+      if (typeof showToast === 'function') showToast('Duplicate ID', 'A doctor with this ID/Email already exists.', 'error');
+      return false;
+    }
+    list.unshift({ docId, name, specialty, pin, hospital: "DHQ Hospital D.I. Khan" });
+    if (typeof showToast === 'function') showToast('Doctor Added ✓', `${name} registered successfully.`, 'success');
+  }
+
+  try { if (typeof DC !== 'undefined' && DC.saveDoctors) DC.saveDoctors(list); } catch(err) {}
+
+  if (nameEl) nameEl.value = '';
+  if (specEl) specEl.value = '';
+  if (idEl) idEl.value = '';
+  if (pinEl) pinEl.value = '';
+
+  const mainFrame = document.getElementById('mobile-frame') || document.body;
+  renderUpgradedAdminDashboard(mainFrame);
+  return false;
+}
+
+function editAdminDoctor(docId) {
+  const list = getAdminDoctorsList();
+  const doc = list.find(d => (d.docId === docId || d.id === docId));
+  if (!doc) return;
+
+  adminEditingDocId = docId;
+  const nameEl = document.getElementById('admin-add-doc-name');
+  const specEl = document.getElementById('admin-add-doc-spec');
+  const idEl = document.getElementById('admin-add-doc-id');
+  const pinEl = document.getElementById('admin-add-doc-pin');
+  const titleEl = document.getElementById('admin-doc-form-title');
+  const btnEl = document.getElementById('admin-doc-save-btn');
+
+  if (nameEl) nameEl.value = doc.name || '';
+  if (specEl) specEl.value = doc.specialty || '';
+  if (idEl) idEl.value = doc.docId || '';
+  if (pinEl) pinEl.value = doc.pin || '';
+  if (titleEl) titleEl.textContent = "✏️ Edit Doctor Details & Password";
+  if (btnEl) btnEl.textContent = "💾 UPDATE DOCTOR";
+
+  const formSection = document.getElementById('admin-doctor-form-section');
+  if (formSection && typeof formSection.scrollIntoView === 'function') {
+    formSection.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function deleteAdminDoctor(docId) {
+  if (!confirm("Are you sure you want to remove this doctor from the system?")) return;
+  let list = getAdminDoctorsList();
+  list = list.filter(d => (d.docId !== docId && d.id !== docId));
+  try { if (typeof DC !== 'undefined' && DC.saveDoctors) DC.saveDoctors(list); } catch(err) {}
+  if (typeof showToast === 'function') showToast('Doctor Removed', 'Doctor deleted from database.', 'info');
+  const mainFrame = document.getElementById('mobile-frame') || document.body;
+  renderUpgradedAdminDashboard(mainFrame);
+}
+
+function toggleDoctorPassVis(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (el.type === 'password') {
+    el.type = 'text';
+  } else {
+    el.type = 'password';
+  }
+}
+
+function renderUpgradedAdminDashboard(mainFrame) {
+  if (!mainFrame) return;
+
+  const doctors = getAdminDoctorsList();
+  const docCount = doctors.length;
+  const patientCount = 247;
+
+  let doctorsCardsHtml = '';
+  doctors.forEach((d, idx) => {
+    const passInputId = `doc-pass-view-${idx}`;
+    doctorsCardsHtml += `
+      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="font-weight: 800; font-size: 14px; color: #0f172a;">${d.name || 'Doctor'}</div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 1px;">${d.specialty || 'General Practice'} · ${d.hospital || 'DHQ Hospital'}</div>
+          </div>
+          <span style="background: #dcfce7; color: #15803d; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">Active</span>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 10px; font-size: 11px;">
+          <div>
+            <span style="color: #64748b; font-weight: bold;">ID/Email:</span>
+            <span style="color: #0f172a; font-weight: bold; margin-left: 4px;">${d.docId || 'N/A'}</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span style="color: #64748b; font-weight: bold;">PIN:</span>
+            <input id="${passInputId}" type="password" value="${d.pin || ''}" readonly style="width: 60px; border: none; background: transparent; font-weight: bold; color: #059669; outline: none; font-size: 11px;">
+            <button type="button" onclick="toggleDoctorPassVis('${passInputId}')" style="background: none; border: none; cursor: pointer; padding: 2px; color: #64748b; font-size: 13px;" title="Toggle Password Visibility">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 2px;">
+          <button onclick="editAdminDoctor('${d.docId}')" style="flex: 1; background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 8px; padding: 6px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+            ✏️ Change Password / Edit
+          </button>
+          <button onclick="deleteAdminDoctor('${d.docId}')" style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  mainFrame.innerHTML = `
+    <div style="background: #ffffff; color: #000000; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; height: 100%; overflow-y: auto; box-sizing: border-box;">
+      
+      <!-- Top Bar Header & Logout -->
+      <div style="background: #059669; color: #ffffff; padding: 14px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(5,150,105,0.2);">
+        <div>
+          <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff;">Admin Panel</h2>
+          <p style="margin: 2px 0 0 0; font-size: 10px; color: #e6fffa;">muhammadsadaf010@gmail.com</p>
+        </div>
+        <button onclick="window.location.reload()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+          🚪 Logout
+        </button>
+      </div>
+
+      <!-- Overview Stats Cards Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+        <div style="background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 24px; font-weight: 900; color: #2563eb;">${patientCount}</div>
+          <div style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Total Patients</div>
+        </div>
+        <div style="background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 24px; font-weight: 900; color: #16a34a;">${docCount}</div>
+          <div style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Active Doctors</div>
+        </div>
+      </div>
+
+      <!-- FEATURE 1: ADD NEW DOCTOR FORM -->
+      <div id="admin-doctor-form-section" style="background: #ffffff; border: 2px solid #00a86b; border-radius: 14px; padding: 14px; margin-bottom: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.05);">
+        <h3 id="admin-doc-form-title" style="margin: 0 0 12px 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;">
+          ➕ Add New Doctor
+        </h3>
+        <form onsubmit="saveAdminDoctor(event); return false;" style="display: flex; flex-direction: column; gap: 10px;">
+          <div>
+            <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Doctor Full Name</label>
+            <input id="admin-add-doc-name" type="text" placeholder="e.g. Dr. Saifullah Khan" required
+              style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
+          </div>
+          <div>
+            <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Specialization</label>
+            <input id="admin-add-doc-spec" type="text" placeholder="e.g. Cardiology, Pediatrics" required
+              style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Email / Login ID</label>
+              <input id="admin-add-doc-id" type="text" placeholder="03001234561" required
+                style="width: 100%; margin-top: 4px; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
+            </div>
+            <div>
+              <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Password / Pin</label>
+              <div style="position: relative; margin-top: 4px;">
+                <input id="admin-add-doc-pin" type="password" placeholder="1234" required
+                  style="width: 100%; height: 38px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 32px 0 10px; font-size: 12px; color: #0f172a; box-sizing: border-box; outline: none;">
+                <button type="button" onclick="toggleDoctorPassVis('admin-add-doc-pin')" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748b; font-size: 12px;" title="Toggle Visibility">
+                  👁️
+                </button>
+              </div>
+            </div>
+          </div>
+          <button id="admin-doc-save-btn" type="submit" style="margin-top: 4px; height: 40px; background: #00a86b; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px;">
+            💾 SAVE DOCTOR
+          </button>
+        </form>
+      </div>
+
+      <!-- FEATURE 3 & 4: DOCTOR DIRECTORY & ACTIONS LIST -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="margin: 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">
+            🩺 Doctor Directory (${docCount})
+          </h3>
+          <span style="font-size: 10px; color: #00a86b; font-weight: bold;">Pre-Approved Only</span>
+        </div>
+        ${doctorsCardsHtml}
+      </div>
+
+    </div>
+  `;
+}
+
+window.saveAdminDoctor = saveAdminDoctor;
+window.editAdminDoctor = editAdminDoctor;
+window.deleteAdminDoctor = deleteAdminDoctor;
+window.toggleDoctorPassVis = toggleDoctorPassVis;
+window.renderUpgradedAdminDashboard = renderUpgradedAdminDashboard;
 
 function handleUniversalLogin(e) {
   if (e) {
@@ -1218,28 +1464,7 @@ function handleUniversalLogin(e) {
       }
 
       const mainFrame = document.getElementById('mobile-frame') || document.body;
-      mainFrame.innerHTML = `
-        <div style="background:#ffffff; color:#000000; padding:20px; font-family:sans-serif; height:100%; overflow-y:auto; box-sizing:border-box;">
-          <div style="background:#059669; color:white; padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="margin:0; font-size:16px;">Admin Panel (muhammadsadaf010@gmail.com)</h2>
-            <button onclick="window.location.reload()" style="background:#dc2626; color:white; border:none; padding:8px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">Logout</button>
-          </div>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
-            <div style="background:#f3f4f6; padding:15px; border-radius:8px;"><h3 style="margin:0; font-size:14px; color:#4b5563;">Patients</h3><p style="font-size:22px; font-weight:bold; margin:5px 0 0; color:#2563eb;">247</p></div>
-            <div style="background:#f3f4f6; padding:15px; border-radius:8px;"><h3 style="margin:0; font-size:14px; color:#4b5563;">Doctors</h3><p style="font-size:22px; font-weight:bold; margin:5px 0 0; color:#16a34a;">3</p></div>
-          </div>
-          <h3 style="margin-top:25px; color:#1f2937;">System Control & Directory</h3>
-          <p style="color:#4b5563; font-size:14px;">Welcome Super Admin. All systems operational.</p>
-          <div style="margin-top:15px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px;">
-            <div style="font-weight:bold; font-size:13px; color:#0f172a;">Dr. Saifullah Khan</div>
-            <div style="font-size:11px; color:#475569;">Cardiology · DHQ Hospital D.I. Khan</div>
-          </div>
-          <div style="margin-top:8px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px;">
-            <div style="font-weight:bold; font-size:13px; color:#0f172a;">Dr. Ayesha Malik</div>
-            <div style="font-size:11px; color:#475569;">Pediatrics · Mufti Mahmood Hospital</div>
-          </div>
-        </div>
-      `;
+      renderUpgradedAdminDashboard(mainFrame);
 
       if (typeof showToast === 'function') {
         showToast('Admin Access Granted ✓', `Welcome Admin: muhammadsadaf010@gmail.com`, 'success');
