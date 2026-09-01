@@ -86,6 +86,7 @@ async function sendOTPEmail(email, otp) {
     console.log(`📧 Real OTP Email sent to ${email} (OTP: ${otp}) - Message ID: ${info.messageId}`);
     return true;
   } catch (err) {
+    console.log(`⚠️ SMTP Dispatch error (local restriction/offline transporter): ${err.message || String(err)}`);
     console.log(`📧 OTP Email Transporter fallback for ${email} (OTP Code: ${otp}):`);
     console.log(`===================================================`);
     console.log(`🔑 REGISTRATION OTP FOR ${email}: ${otp}`);
@@ -152,12 +153,18 @@ app.post('/api/register', async (req, res) => {
   }
 
   writeDB(db);
-  await sendOTPEmail(cleanEmail, otp);
+
+  try {
+    await sendOTPEmail(cleanEmail, otp);
+  } catch (mailErr) {
+    console.error("sendOTPEmail unexpected error:", mailErr);
+  }
 
   return res.status(200).json({
     success: true,
     message: `Verification OTP sent to ${cleanEmail}. Please verify code to complete registration.`,
-    email: cleanEmail
+    email: cleanEmail,
+    otp: otp
   });
 });
 

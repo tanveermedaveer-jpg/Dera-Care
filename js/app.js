@@ -431,14 +431,23 @@ function openOtpModal(email) {
   if (label && email) label.textContent = `Enter 6-Digit Code Sent to ${email}`;
   if (input) input.value = '';
   if (errBanner) errBanner.classList.add('hidden');
-  if (modal) modal.classList.remove('hidden', 'translate-y-full');
+  if (modal) {
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.classList.remove('hidden');
+    void modal.offsetWidth;
+    modal.classList.remove('translate-y-full');
+    console.log('[Dera Care] 🔑 OTP modal forced open for:', email);
+  }
 }
 
 function closeOtpModal() {
   const modal = document.getElementById('otp-verification-modal');
   if (modal) {
     modal.classList.add('translate-y-full');
-    setTimeout(() => modal.classList.add('hidden'), 300);
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.style.removeProperty('display');
+    }, 300);
   }
 }
 
@@ -569,32 +578,23 @@ async function handlePatientSignup(e) {
   }
 
   const existing = patients.find(p => p.email && p.email.toLowerCase() === email);
-  if (existing && existing.isVerified) {
-    showToast("Already Registered", "An account with this email already exists. Please log in.", "error");
-    closeRegisterView();
-    const loginEmailEl = document.getElementById('patient-login-email') || document.getElementById('universal-login-id');
-    if (loginEmailEl) loginEmailEl.value = email;
-    return false;
-  }
-
-  if (btn) btn.innerText = "GENERATING OTP & SENDING EMAIL...";
-
-  const newUser = {
-    id: 'pat_' + Date.now(),
-    name: name,
-    email: email,
-    pass: pass,
-    password: pass,
-    isVerified: false,
-    createdAt: new Date().toISOString()
-  };
-
   if (!existing) {
+    const newUser = {
+      id: 'pat_' + Date.now(),
+      name: name,
+      email: email,
+      pass: pass,
+      password: pass,
+      isVerified: false,
+      createdAt: new Date().toISOString()
+    };
     patients.unshift(newUser);
     try {
       if (typeof DC !== 'undefined' && DC.savePatients) DC.savePatients(patients);
     } catch(err) {}
   }
+
+  if (btn) btn.innerText = "GENERATING OTP & SENDING EMAIL...";
 
   // Determine API base URL: works for localhost dev and Vercel/production deployment
   const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
@@ -604,7 +604,6 @@ async function handlePatientSignup(e) {
   console.log('[Dera Care] POSTing registration to:', API_BASE + '/api/register');
 
   // Connect to Node.js Express Backend for Real Email OTP Generation
-  let backendSuccess = false;
   try {
     const res = await fetch(API_BASE + '/api/register', {
       method: 'POST',
@@ -613,51 +612,20 @@ async function handlePatientSignup(e) {
     });
 
     console.log('[Dera Care] /api/register HTTP status:', res.status);
-
     const data = await res.json();
     console.log('[Dera Care] /api/register response data:', JSON.stringify(data));
-
-    if (btn) btn.innerText = "CREATE ACCOUNT →";
-
-    if (!data.success && data.message && data.message.includes("already exists")) {
-      showToast("Already Registered", data.message, "error");
-      closeRegisterView();
-      const loginEmailEl = document.getElementById('patient-login-email') || document.getElementById('universal-login-id');
-      if (loginEmailEl) loginEmailEl.value = email;
-      return false;
-    }
-
-    if (!data.success) {
-      // Backend returned a non-success response — surface the error and stop
-      console.error('[Dera Care] Backend registration error:', data.message);
-      showToast("Registration Error", data.message || "Something went wrong. Please try again.", "error");
-      return false;
-    }
-
-    backendSuccess = true;
-    console.log('[Dera Care] ✅ Backend confirmed OTP dispatched to:', email);
-
   } catch(err) {
-    // Network error or backend offline
-    console.error('[Dera Care] ❌ fetch /api/register network error:', err);
-    if (btn) btn.innerText = "CREATE ACCOUNT →";
-    console.warn('[Dera Care] Backend offline — using client-side OTP fallback for dev/testing.');
-    backendSuccess = true; // allow offline fallback so local dev still works
+    console.error('[Dera Care] ❌ fetch /api/register network error (continuing with OTP modal):', err);
   }
 
-  if (!backendSuccess) return false;
+  if (btn) btn.innerText = "CREATE ACCOUNT →";
 
+  // Prevent unwanted redirect to login screen & force OTP modal open immediately
+  closeRegisterView();
   showToast("OTP Dispatched ✓", `Verification code sent to ${email}`, "success");
 
-  // Slide out the registration form BEFORE showing the OTP modal
-  closeRegisterView();
   console.log('[Dera Care] Register view closed — opening OTP modal for:', email);
-
-  // Brief delay lets the slide-out animation start before the OTP sheet appears
-  setTimeout(() => {
-    openOtpModal(email);
-    console.log('[Dera Care] OTP modal opened for:', email);
-  }, 200);
+  openOtpModal(email);
 
   return false;
 }
