@@ -36,7 +36,8 @@ html, body {
   --wa-bubble-sent-text: #000000;
 }
 
-.theme-dark, body.dark-mode #mobile-frame, .dark-mode {
+/* Scoped Dark Mode Palette */
+.theme-dark, .dark-mode {
   --bg-color: #121212;
   --text-color: #ffffff;
   --accent-color: #00E5FF;
@@ -57,8 +58,11 @@ html, body {
   --wa-bubble-sent-text: #ffffff;
 }
 
-body.dark-mode {
-  background: #121212 !important;
+#doctor-dashboard.theme-dark,
+#doctor-dashboard.dark-mode,
+#admin-panel.theme-dark,
+#admin-panel.dark-mode {
+  background-color: #121212 !important;
   color: #ffffff !important;
 }
 

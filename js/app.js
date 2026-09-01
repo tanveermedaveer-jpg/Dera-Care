@@ -32,21 +32,29 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Global Theme Management
+// Scoped Theme Management
 function toggleAppTheme() {
-  const mf = document.getElementById('mobile-frame') || document.body;
-  document.body.classList.toggle('dark-mode');
-  if (mf) mf.classList.toggle('theme-dark');
+  const mf = document.getElementById('mobile-frame');
+  const docContainer = document.getElementById('doctor-dashboard');
 
-  const isDark = document.body.classList.contains('dark-mode') || (mf && mf.classList.contains('theme-dark'));
-  try {
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  } catch(e) {}
+  let targetContainer = mf;
+  if (docContainer && docContainer.style.display !== 'none' && !docContainer.classList.contains('hidden')) {
+    targetContainer = docContainer;
+  }
+
+  if (targetContainer) {
+    targetContainer.classList.toggle('theme-dark');
+    targetContainer.classList.toggle('dark-mode');
+    const isDark = targetContainer.classList.contains('theme-dark') || targetContainer.classList.contains('dark-mode');
+    try {
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    } catch(e) {}
+  }
 
   if (typeof updateThemeIcons === 'function') updateThemeIcons();
 
   if (typeof currentSession !== 'undefined' && currentSession && currentSession.role === 'admin' && typeof renderUpgradedAdminDashboard === 'function') {
-    renderUpgradedAdminDashboard(mf);
+    renderUpgradedAdminDashboard(mf || document.body);
   }
 }
 window.toggleAppTheme = toggleAppTheme;
@@ -54,13 +62,15 @@ window.toggleAppTheme = toggleAppTheme;
 function loadSavedThemePreference() {
   try {
     const savedTheme = localStorage.getItem('theme');
-    const mf = document.getElementById('mobile-frame') || document.body;
+    const mf = document.getElementById('mobile-frame');
+    const docContainer = document.getElementById('doctor-dashboard');
+
     if (savedTheme === 'dark') {
-      document.body.classList.add('dark-mode');
-      if (mf) mf.classList.add('theme-dark');
+      if (mf) mf.classList.add('theme-dark', 'dark-mode');
+      if (docContainer) docContainer.classList.add('theme-dark', 'dark-mode');
     } else if (savedTheme === 'light') {
-      document.body.classList.remove('dark-mode');
-      if (mf) mf.classList.remove('theme-dark');
+      if (mf) mf.classList.remove('theme-dark', 'dark-mode');
+      if (docContainer) docContainer.classList.remove('theme-dark', 'dark-mode');
     }
   } catch(e) {}
   if (typeof updateThemeIcons === 'function') updateThemeIcons();
