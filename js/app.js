@@ -1195,18 +1195,21 @@ function handleUniversalLogin(e) {
       return false;
     }
 
+    const cleanId = rawId.toLowerCase().trim();
     const cleanPhone = rawId.replace(/[\s\-\(\)\+]/g, '');
 
     // 1. CHECK SUPER ADMIN CREDENTIALS
+    const isAdminEmail = (cleanId === 'muhammadsadaf010@gmail.com');
     const isAdminPhone = (cleanPhone === '03103716116' || cleanPhone === '923103716116' || cleanPhone === '3103716116' || rawId === '03103716116');
-    const isAdminUser = (rawId.toLowerCase() === 'msadaf' || cleanPhone === '03103716116');
-    if ((isAdminPhone || isAdminUser) && rawPass === 'Sadaf@9099') {
+    const isAdminUser = (cleanId === 'msadaf');
+
+    if ((isAdminEmail || isAdminPhone || isAdminUser) && rawPass === 'Sadaf@9099') {
       currentSession = {
         isGuest: false,
         role: 'admin',
-        name: "Admin (03103716116)",
+        name: "Super Admin (muhammadsadaf010@gmail.com)",
         phone: "03103716116",
-        email: "msadaf.admin@deracare.pk"
+        email: "muhammadsadaf010@gmail.com"
       };
 
       const loginCard = document.getElementById('login-container');
@@ -1218,7 +1221,7 @@ function handleUniversalLogin(e) {
       mainFrame.innerHTML = `
         <div style="background:#ffffff; color:#000000; padding:20px; font-family:sans-serif; height:100%; overflow-y:auto; box-sizing:border-box;">
           <div style="background:#059669; color:white; padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="margin:0; font-size:18px;">Admin Panel (03103716116)</h2>
+            <h2 style="margin:0; font-size:16px;">Admin Panel (muhammadsadaf010@gmail.com)</h2>
             <button onclick="window.location.reload()" style="background:#dc2626; color:white; border:none; padding:8px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">Logout</button>
           </div>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
@@ -1239,7 +1242,7 @@ function handleUniversalLogin(e) {
       `;
 
       if (typeof showToast === 'function') {
-        showToast('Admin Access Granted ✓', `Welcome Admin: 03103716116`, 'success');
+        showToast('Admin Access Granted ✓', `Welcome Admin: muhammadsadaf010@gmail.com`, 'success');
       }
       return false;
     }
