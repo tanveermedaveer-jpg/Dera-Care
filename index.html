@@ -39,7 +39,7 @@
   <!-- External stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-[#0b0f19] h-screen w-screen flex items-center justify-center p-2 sm:p-4 antialiased overflow-hidden m-0">
+<body class="bg-[#f1f5f9] h-screen w-screen flex items-center justify-center p-2 sm:p-4 antialiased overflow-hidden m-0">
 
   <!-- Background glowing ambient blobs -->
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -48,7 +48,7 @@
   </div>
 
   <!-- Main Viewport Container -->
-  <div id="mobile-frame" class="relative w-[430px] max-w-full h-[844px] max-h-[95vh] my-auto mx-auto bg-[var(--bg-color)] text-[var(--text-color)] sm:rounded-[32px] rounded-none shadow-[0_25px_65px_-10px_rgba(0,0,0,0.8)] border border-[var(--border-color)] flex flex-col justify-between overflow-hidden z-10 transition-all duration-500 ease-in-out">
+  <div id="mobile-frame" class="relative w-[430px] max-w-full h-[844px] max-h-[95vh] my-auto mx-auto bg-[var(--bg-color)] text-[var(--text-color)] sm:rounded-[32px] rounded-none shadow-[0_25px_65px_-10px_rgba(0,0,0,0.15)] border border-[var(--border-color)] flex flex-col justify-between overflow-hidden z-10 transition-all duration-500 ease-in-out">
     
     <!-- Screen Accent Blobs -->
     <div class="absolute -top-[15%] -right-[15%] w-[250px] h-[250px] rounded-full bg-[#00E5FF]/10 blur-[50px] pointer-events-none"></div>
@@ -62,24 +62,22 @@
         <!-- Scrollable inner wrapper -->
         <div class="flex flex-col h-full justify-between px-6 pt-3 pb-4 space-y-0">
 
-          <!-- Top Action Row (Theme Switcher + Skip Button) -->
+          <!-- Top Action Row (Theme Switcher Only) -->
           <div class="flex justify-between items-center pt-1 select-none flex-shrink-0">
-            <button class="btn-theme-toggle p-2 rounded-xl bg-[var(--toggle-bg)] border border-[var(--toggle-border)] text-[var(--toggle-icon-color)] shadow-sm hover:border-[var(--accent-color)]/50 transition-colors flex items-center justify-center focus:outline-none">
+            <button class="btn-theme-toggle p-2 rounded-xl bg-[var(--toggle-bg)] border border-[var(--toggle-border)] text-[var(--toggle-icon-color)] shadow-sm hover:border-[var(--accent-color)]/50 transition-colors flex items-center justify-center focus:outline-none" title="Toggle Theme">
               <svg class="w-4 h-4 text-[var(--toggle-icon-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
               </svg>
             </button>
-            <button id="btn-skip" class="text-[var(--text-muted)] hover:text-[var(--text-color)] text-[13px] font-semibold transition-colors hover:underline flex items-center focus:outline-none">
-              Skip &rarr;
-            </button>
+            <span class="text-[10px] font-bold text-[var(--accent-color)] uppercase tracking-wider bg-[var(--toggle-bg)] px-2.5 py-1 rounded-full border border-[var(--toggle-border)]">Unified Portal</span>
           </div>
 
           <!-- Header & Branding Section -->
           <div class="flex flex-col items-center text-center space-y-3 pt-4 flex-shrink-0">
             <!-- Logo Emblem Frame -->
             <div class="relative w-[68px] h-[68px] flex items-center justify-center">
-              <div class="absolute -inset-1.5 rounded-2xl bg-cyan-500/20 pulse-ring-element"></div>
-              <div class="w-[68px] h-[68px] rounded-2xl bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] p-[2px] shadow-[0_0_20px_rgba(0,229,255,0.25)] flex items-center justify-center relative z-10">
+              <div class="absolute -inset-1.5 rounded-2xl bg-emerald-500/20 pulse-ring-element"></div>
+              <div class="w-[68px] h-[68px] rounded-2xl bg-gradient-to-tr from-[#00A86B] to-[#00E5FF] p-[2px] shadow-[0_0_20px_rgba(0,168,107,0.25)] flex items-center justify-center relative z-10">
                 <div class="w-full h-full rounded-[14px] bg-[var(--bg-color)] flex items-center justify-center">
                   <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -108,142 +106,47 @@
             </div>
           </div>
 
-          <!-- ════════════════════════════════════════════════════
-               SWIPE CAROUSEL: Patient · Doctor · Admin
-          ════════════════════════════════════════════════════ -->
-          <div id="login-carousel-clip" class="mt-5 overflow-hidden rounded-[24px] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] flex-shrink-0" style="touch-action:pan-y;">
-            <div id="login-carousel-track" class="flex will-change-transform" style="transform:translateX(0%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);">
-
-              <!-- ── SLIDE 0: PATIENT (Login only by default) ──── -->
-              <div class="flex-shrink-0 w-full glass-card rounded-[24px] p-5">
-                <div class="space-y-4">
-                  <!-- Header row with dots -->
-                  <div class="flex items-center justify-between">
-                    <h2 class="text-[17px] font-bold text-[var(--text-color)] tracking-tight">Welcome Back 👋</h2>
-                    <div class="flex items-center space-x-1.5 cursor-pointer">
-                      <div onclick="window.carouselGoToSlide(0)" class="w-4 h-1.5 rounded-full transition-all duration-300 cursor-pointer" id="dot-0" style="background:var(--accent-color);" title="Patient Login"></div>
-                      <div onclick="window.carouselGoToSlide(1)" class="w-1.5 h-1.5 rounded-full transition-all duration-300 bg-[var(--text-muted)]/40 cursor-pointer" id="dot-1" title="Doctor Portal"></div>
-                      <div onclick="window.carouselGoToSlide(2)" class="w-1.5 h-1.5 rounded-full transition-all duration-300 bg-[var(--text-muted)]/40 cursor-pointer" id="dot-2" title="Admin Access"></div>
-                    </div>
-                  </div>
-                  <p class="text-[10px] text-[var(--text-muted)] -mt-2 leading-relaxed">Sign in to your Dera Care account</p>
-
-                  <!-- LOGIN fields -->
-                  <div class="space-y-2.5">
-                    <input type="email" id="patient-login-email" placeholder="Enter your email or username" autocomplete="username"
-                      class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                    <div class="relative">
-                      <input type="password" id="patient-login-pass" placeholder="Enter your password" autocomplete="current-password"
-                        class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                      <button type="button" onclick="togglePasswordVisibility('patient-login-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      </button>
-                    </div>
-                    <button onclick="handlePatientLogin()" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none">
-                      LOGIN &rarr;
-                    </button>
-                  </div>
-
-                  <!-- Register link -->
-                  <p class="text-center text-[11px] text-[var(--text-muted)] pt-0.5">
-                    Don't have an account?
-                    <button onclick="openRegisterView()" class="font-extrabold text-[var(--accent-color)] hover:underline focus:outline-none ml-0.5 transition-colors">Register here</button>
-                  </p>
-                </div>
+          <!-- UNIFIED SINGLE LOGIN PORTAL CARD -->
+          <div class="mt-4 rounded-[24px] glass-card p-5 shadow-[0_8px_32px_0_rgba(0,0,0,0.06)] border border-[var(--border-color)] flex-shrink-0">
+            <form id="universal-login-form" onsubmit="handleUniversalLogin(event); return false;" class="space-y-3.5">
+              
+              <div class="space-y-0.5">
+                <h2 class="text-[17px] font-extrabold text-[var(--text-color)] tracking-tight">Welcome Back 👋</h2>
+                <p class="text-[10.5px] text-[var(--text-muted)] leading-relaxed">Sign in with your Email, Phone Number, or Doctor ID</p>
               </div>
 
-              <!-- ── SLIDE 1: DOCTOR ─────────────────────────── -->
-              <div class="flex-shrink-0 w-full glass-card rounded-[24px] p-5">
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-2.5">
-                      <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#00A86B,#00E5FF);">🩺</div>
-                      <div>
-                        <h2 class="text-base font-bold text-[var(--text-color)] leading-tight">Doctor Portal</h2>
-                        <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Credentials by Admin only</p>
-                      </div>
-                    </div>
-                    <div class="flex items-center space-x-1.5 cursor-pointer">
-                      <div onclick="window.carouselGoToSlide(0)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Patient Login"></div>
-                      <div onclick="window.carouselGoToSlide(1)" class="w-4 h-1.5 rounded-full bg-[var(--accent-color)] cursor-pointer" title="Doctor Portal"></div>
-                      <div onclick="window.carouselGoToSlide(2)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Admin Access"></div>
-                    </div>
-                  </div>
-                  <p class="text-[10px] text-[var(--text-muted)]">Swipe left for Admin · Swipe right to go back</p>
-                  <div class="space-y-2.5">
-                    <div>
-                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Doctor ID / Phone</label>
-                      <input type="tel" id="doctor-id-input" placeholder="Enter your phone number" autocomplete="username"
-                        class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                    </div>
-                    <div>
-                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">PIN Code</label>
-                      <div class="relative mt-1.5">
-                        <input type="password" id="doctor-pin-input" placeholder="Enter your 4-digit PIN" autocomplete="current-password"
-                          class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                        <button type="button" onclick="togglePasswordVisibility('doctor-pin-input', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle PIN Visibility">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <button onclick="handleDoctorLogin()" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none">
-                      🩺 LOGIN AS DOCTOR
+              <div class="space-y-2.5">
+                <div>
+                  <label class="text-[9.5px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Email / Phone / Doctor ID</label>
+                  <input type="text" id="universal-login-id" placeholder="Enter Email, Phone (03103716116), or ID" autocomplete="username" required
+                    class="w-full mt-1 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                </div>
+
+                <div>
+                  <label class="text-[9.5px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Password / PIN Code</label>
+                  <div class="relative mt-1">
+                    <input type="password" id="universal-login-pass" placeholder="Enter your password or PIN" autocomplete="current-password" required
+                      class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-3.5 pr-10 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                    <button type="button" onclick="togglePasswordVisibility('universal-login-pass', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
                     </button>
                   </div>
                 </div>
+
+                <button type="submit" id="btn-universal-login" class="btn-primary w-full h-11 rounded-xl text-[12px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all shadow-md active:scale-[0.99] focus:outline-none cursor-pointer">
+                  LOGIN &rarr;
+                </button>
               </div>
 
-              <!-- ── SLIDE 2: ADMIN ──────────────────────────── -->
-              <div class="flex-shrink-0 w-full glass-card rounded-[24px] p-5">
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-2.5">
-                      <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#00A86B,#00E5FF);">🔐</div>
-                      <div>
-                        <h2 class="text-base font-bold text-[var(--text-color)] leading-tight">Admin Access</h2>
-                        <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider">Restricted · Authorized Only</p>
-                      </div>
-                    </div>
-                    <div class="flex items-center space-x-1.5 cursor-pointer">
-                      <div onclick="window.carouselGoToSlide(0)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Patient Login"></div>
-                      <div onclick="window.carouselGoToSlide(1)" class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]/40 cursor-pointer" title="Doctor Portal"></div>
-                      <div onclick="window.carouselGoToSlide(2)" class="w-4 h-1.5 rounded-full bg-[var(--accent-color)] cursor-pointer" title="Admin Access"></div>
-                    </div>
-                  </div>
-                  <p class="text-[10px] text-[var(--text-muted)]">Swipe right to go back to Patient login</p>
-                  <form id="admin-login-form" onsubmit="handleAdminLogin(event); return false;" class="space-y-2.5">
-                    <div>
-                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Admin Phone Number</label>
-                      <input type="tel" id="admin-user-input" placeholder="Enter Phone Number (03103716116)" autocomplete="tel"
-                        class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                    </div>
-                    <div>
-                      <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Master Password</label>
-                      <div class="relative mt-1.5">
-                        <input type="password" id="admin-pass-input" placeholder="Enter master password" autocomplete="current-password"
-                          class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                        <button type="button" onclick="togglePasswordVisibility('admin-pass-input', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <button type="submit" id="btn-admin-login" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none cursor-pointer">
-                      🔐 ADMIN LOGIN
-                    </button>
-                  </form>
-                </div>
-              </div>
-
-            </div>
+              <!-- Register link -->
+              <p class="text-center text-[11px] text-[var(--text-muted)] pt-0.5">
+                Don't have an account?
+                <button type="button" onclick="openRegisterView()" class="font-extrabold text-[var(--accent-color)] hover:underline focus:outline-none ml-0.5 transition-colors">Register here</button>
+              </p>
+            </form>
           </div>
           <!-- End Swipe Carousel -->
 

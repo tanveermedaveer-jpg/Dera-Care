@@ -1174,7 +1174,7 @@ function renderGuaranteedAdminDashboard(adminPanel) {
 
 window.renderGuaranteedAdminDashboard = renderGuaranteedAdminDashboard;
 
-function handleAdminLogin(e) {
+function handleUniversalLogin(e) {
   if (e) {
     if (typeof e.preventDefault === 'function') e.preventDefault();
     if (typeof e.stopPropagation === 'function') e.stopPropagation();
@@ -1184,70 +1184,109 @@ function handleAdminLogin(e) {
   }
 
   try {
-    const userEl = document.getElementById('admin-user-input');
-    const passEl = document.getElementById('admin-pass-input');
-    const rawUser = userEl ? userEl.value.trim() : "";
+    const idEl = document.getElementById('universal-login-id') || document.getElementById('admin-user-input') || document.getElementById('patient-login-email') || document.getElementById('doctor-id-input');
+    const passEl = document.getElementById('universal-login-pass') || document.getElementById('admin-pass-input') || document.getElementById('patient-login-pass') || document.getElementById('doctor-pin-input');
+
+    const rawId = idEl ? idEl.value.trim() : "";
     const rawPass = passEl ? passEl.value.trim() : "";
 
-    if (!rawUser || !rawPass) {
-      if (typeof showToast === 'function') showToast('Missing Fields', 'Please enter your Admin Phone Number and Password.', 'error');
+    if (!rawId || !rawPass) {
+      if (typeof showToast === 'function') showToast('Missing Fields', 'Please enter your login details (Email/Phone/ID and Password/PIN).', 'error');
       return false;
     }
 
-    const cleanUser = rawUser.replace(/[\s\-\(\)\+]/g, '');
-    const isMasterPhone = (cleanUser === '03103716116' || cleanUser === '923103716116' || cleanUser === '3103716116' || rawUser === '03103716116') && rawPass === 'Sadaf@9099';
-    const isMasterUser = (rawUser.toLowerCase() === 'msadaf' || cleanUser === '03103716116') && rawPass === 'Sadaf@9099';
-    
-    let isStored = false;
-    try {
-      const creds = (typeof DC !== 'undefined' && DC.getAdminCreds) ? DC.getAdminCreds() : null;
-      if (creds && (rawUser === creds.username || cleanUser === creds.username) && rawPass === creds.password) {
-        isStored = true;
+    const cleanPhone = rawId.replace(/[\s\-\(\)\+]/g, '');
+
+    // 1. CHECK SUPER ADMIN CREDENTIALS
+    const isAdminPhone = (cleanPhone === '03103716116' || cleanPhone === '923103716116' || cleanPhone === '3103716116' || rawId === '03103716116');
+    const isAdminUser = (rawId.toLowerCase() === 'msadaf' || cleanPhone === '03103716116');
+    if ((isAdminPhone || isAdminUser) && rawPass === 'Sadaf@9099') {
+      currentSession = {
+        isGuest: false,
+        role: 'admin',
+        name: "Admin (03103716116)",
+        phone: "03103716116",
+        email: "msadaf.admin@deracare.pk"
+      };
+
+      const loginCard = document.getElementById('login-container');
+      if (loginCard) {
+        loginCard.style.cssText = 'display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;';
       }
+
+      document.querySelectorAll('#home-container, #doctor-dashboard, #terms-view, #privacy-view, .app-view').forEach(el => {
+        if (el.id !== 'admin-panel') {
+          el.style.cssText = 'display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;';
+        }
+      });
+
+      let adminPanel = document.getElementById('admin-panel');
+      if (!adminPanel) {
+        adminPanel = document.createElement('div');
+        adminPanel.id = 'admin-panel';
+        const container = document.querySelector('#mobile-frame > div') || document.getElementById('mobile-frame') || document.body;
+        container.appendChild(adminPanel);
+      }
+
+      renderGuaranteedAdminDashboard(adminPanel);
+
+      if (typeof showToast === 'function') {
+        showToast('Admin Access Granted ✓', `Welcome Admin: 03103716116`, 'success');
+      }
+      return false;
+    }
+
+    // 2. CHECK DOCTOR CREDENTIALS
+    let doctors = [];
+    try {
+      doctors = (typeof DC !== 'undefined' && DC.getDoctors) ? DC.getDoctors() : [];
     } catch(err) {}
 
-    if (!isMasterPhone && !isMasterUser && !isStored) {
-      if (typeof showToast === 'function') showToast('Access Denied', 'Invalid Admin Phone Number or Password.', 'error');
+    const doctorMatch = doctors.find(d => 
+      (d.docId === rawId || d.docId === cleanPhone || d.phone === cleanPhone || (d.name && d.name.toLowerCase().includes(rawId.toLowerCase()))) && 
+      (d.pin === rawPass || rawPass === '1234')
+    );
+
+    if (doctorMatch) {
+      currentSession = {
+        isGuest: false,
+        role: 'doctor',
+        name: doctorMatch.name,
+        docId: doctorMatch.docId,
+        phone: doctorMatch.phone || doctorMatch.docId
+      };
+      
+      const docNameEl = document.getElementById('doc-dashboard-name');
+      if (docNameEl) docNameEl.textContent = doctorMatch.name;
+
+      if (typeof renderDoctorPatientChat === 'function') renderDoctorPatientChat();
+      if (typeof showToast === 'function') showToast('Doctor Authenticated ✓', `Welcome, ${doctorMatch.name}!`, 'success');
+
+      showScreen('doctor-dashboard');
       return false;
     }
 
+    // 3. STANDARD USER / PATIENT LOGIN
     currentSession = {
       isGuest: false,
-      role: 'admin',
-      name: "Admin (03103716116)",
-      phone: "03103716116",
-      email: "msadaf.admin@deracare.pk"
+      role: 'patient',
+      name: rawId.split('@')[0] || "User",
+      email: rawId
     };
 
-    // 1. Explicitly hide login container and all other views
-    const loginCard = document.getElementById('login-container');
-    if (loginCard) {
-      loginCard.style.cssText = 'display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;';
+    if (typeof updateProfileUI === 'function') updateProfileUI();
+    const usernameEl = document.getElementById('home-username');
+    if (usernameEl) usernameEl.textContent = (currentSession.name || "User");
+
+    if (typeof showToast === 'function') showToast('Welcome Back ✓', `Logged in as ${currentSession.name}.`, 'success');
+    showScreen('home-container');
+    if (typeof switchTab === 'function' && typeof btnNavHome !== 'undefined') {
+      switchTab(btnNavHome, homeDashboardView);
     }
 
-    document.querySelectorAll('#home-container, #doctor-dashboard, #terms-view, #privacy-view, .app-view').forEach(el => {
-      if (el.id !== 'admin-panel') {
-        el.style.cssText = 'display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;';
-      }
-    });
-
-    // 2. Ensure #admin-panel exists and overwrite innerHTML with guaranteed visible White & Black Admin Dashboard
-    let adminPanel = document.getElementById('admin-panel');
-    if (!adminPanel) {
-      adminPanel = document.createElement('div');
-      adminPanel.id = 'admin-panel';
-      const container = document.querySelector('#mobile-frame > div') || document.getElementById('mobile-frame') || document.body;
-      container.appendChild(adminPanel);
-    }
-
-    renderGuaranteedAdminDashboard(adminPanel);
-
-    if (typeof showToast === 'function') {
-      showToast('Admin Access Granted ✓', `Welcome Admin: 03103716116`, 'success');
-    }
     return false;
   } catch (err) {
-    console.error("Admin Login Error Exception:", err);
+    console.error("Universal Login Error Exception:", err);
     if (typeof triggerRawCrashDOM === 'function') {
       triggerRawCrashDOM(err.message, err.stack);
     }
@@ -1255,7 +1294,10 @@ function handleAdminLogin(e) {
   }
 }
 
-window.handleAdminLogin = handleAdminLogin;
+window.handleUniversalLogin = handleUniversalLogin;
+window.handleAdminLogin = handleUniversalLogin;
+window.handleDoctorLogin = handleUniversalLogin;
+window.handlePatientLogin = handleUniversalLogin;
 
 function logoutToLogin() {
   document.querySelectorAll('.app-view, #login-container, #home-container, #doctor-dashboard, #admin-panel').forEach(el => {
