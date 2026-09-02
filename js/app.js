@@ -32,7 +32,66 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
+// Global Social Auth Handler (Facebook, Google, Apple)
+window.handleSocialLogin = function(provider = "Google") {
+  console.log('[Dera Care] 🌐 Social Auth bridge initiated via:', provider);
+  if (typeof showToast === 'function') {
+    showToast("Authenticating...", `Connecting to ${provider} OAuth...`, "info");
+  }
+  
+  setTimeout(() => {
+    currentSession = {
+      isGuest: false,
+      role: 'patient',
+      name: `Verified ${provider} User`,
+      email: `user.${provider.toLowerCase()}@deracare.pk`
+    };
+    if (typeof updateProfileUI === 'function') updateProfileUI();
+    const usernameHeader = document.getElementById('home-username');
+    if (usernameHeader) usernameHeader.textContent = `${provider} User`;
 
+    if (typeof showToast === 'function') {
+      showToast("Authenticated ✓", `Signed in successfully via ${provider}.`, "success");
+    }
+    if (typeof showScreen === 'function') {
+      showScreen('home-container');
+    }
+    if (typeof switchTab === 'function' && typeof btnNavHome !== 'undefined') {
+      switchTab(btnNavHome, homeDashboardView);
+    }
+  }, 400);
+};
+
+// Global Logout Handler
+window.handleUserLogout = function(e) {
+  if (e) {
+    if (typeof e.preventDefault === 'function') e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+  }
+
+  console.log('[Dera Care] 🚪 User Logout initiated...');
+  try {
+    localStorage.removeItem('dc_current_session');
+    localStorage.removeItem('currentUser');
+    sessionStorage.clear();
+  } catch(err) {}
+
+  currentSession = { isGuest: true, role: 'patient', name: 'Guest', email: '' };
+
+  const modal = document.getElementById('logout-modal');
+  if (modal) {
+    modal.classList.add('translate-y-full', 'hidden');
+    modal.style.removeProperty('display');
+  }
+
+  if (typeof showToast === 'function') {
+    showToast('Signed Out', 'You have been signed out safely.', 'info');
+  }
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 400);
+};
 
 // Dynamic Doctor dataset (populated via Doctor Portal submissions and backend API)
 let doctorsData = [];

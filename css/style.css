@@ -242,3 +242,26 @@ button, input, select, textarea, a, label {
 .social-icon-btn:active {
   transform: scale(0.95) !important;
 }
+
+/* Mobile Bottom Padding & Fixed Navigation Bar */
+.app-view,
+#home-container,
+#doctor-dashboard,
+#admin-panel,
+.mobile-scroll-body,
+.mobile-view-container {
+  padding-bottom: 90px !important;
+  box-sizing: border-box !important;
+}
+
+.bottom-nav-fixed,
+.glass-card.absolute.bottom-0 {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  margin: 0 auto !important;
+  z-index: 9999 !important;
+}

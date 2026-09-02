@@ -254,7 +254,7 @@
                   </div>
                 </div>
               </div>
-              <button id="register-btn" onclick="handlePatientSignup(event)" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none mt-1">
+              <button type="button" id="register-btn" onclick="handlePatientSignup(event)" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none mt-1">
                 CREATE ACCOUNT &rarr;
               </button>
             </div>
@@ -661,7 +661,7 @@
 
           <!-- Safe Sign Out Button -->
           <div class="pt-2">
-            <button id="btn-profile-signout" onclick="logoutModal.classList.remove('hidden', 'translate-y-full')" class="w-full py-3.5 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none flex items-center justify-center space-x-2">
+            <button id="btn-profile-signout" onclick="const m = document.getElementById('logout-modal'); if (m) { m.style.setProperty('display', 'flex', 'important'); m.classList.remove('hidden', 'translate-y-full'); }" class="w-full py-3.5 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-xs font-extrabold uppercase tracking-wider transition-all focus:outline-none flex items-center justify-center space-x-2">
               <span>🚪</span>
               <span>Sign Out of Account</span>
             </button>
@@ -669,7 +669,7 @@
         </div>
 
         <!-- 7. FIXED BOTTOM NAVIGATION BAR -->
-        <div class="glass-card absolute bottom-0 inset-x-0 h-16 border-t border-[var(--border-color)] flex items-center justify-around px-2 z-30 rounded-b-[36px]">
+        <div class="glass-card bottom-nav-fixed absolute bottom-0 inset-x-0 h-16 border-t border-[var(--border-color)] flex items-center justify-around px-2 z-30 rounded-b-[36px]">
           <button id="btn-nav-home" class="flex flex-col items-center justify-center w-14 h-full text-[var(--accent-color)] focus:outline-none">
             <span class="text-lg">🏠</span>
             <span class="text-[8px] font-bold mt-0.5 uppercase tracking-wide">Home</span>
@@ -1436,10 +1436,10 @@
           <p class="text-[11px] text-[var(--text-muted)]">Are you sure you want to end your active session?</p>
         </div>
         <div class="flex space-x-3.5">
-          <button id="btn-logout-confirm" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white text-xs font-bold uppercase transition-all shadow-md focus:outline-none">
+          <button id="btn-logout-confirm" onclick="handleUserLogout(event)" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white text-xs font-bold uppercase transition-all shadow-md focus:outline-none cursor-pointer">
             Yes, Sign Out
           </button>
-          <button id="btn-logout-cancel" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+          <button id="btn-logout-cancel" onclick="const m = document.getElementById('logout-modal'); if (m) { m.classList.add('translate-y-full', 'hidden'); m.style.removeProperty('display'); }" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none cursor-pointer">
             Cancel
           </button>
         </div>
