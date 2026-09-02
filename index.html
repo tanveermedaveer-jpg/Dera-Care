@@ -211,102 +211,101 @@
           </div>
 
         </div><!-- /scrollable inner -->
+      </div><!-- /login-container -->
 
-        <!-- ═══════════════════════════════════════════════════════
-             REGISTER OVERLAY — slides up from bottom on demand
-        ═══════════════════════════════════════════════════════ -->
-        <div id="register-overlay" class="app-view absolute inset-0 z-30 flex flex-col transition-transform duration-400 ease-out" style="position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; display: none !important; transform: translateY(100%); background: var(--bg-color) !important; z-index: 30 !important;">
-          <!-- Overlay scrollable body -->
-          <div class="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-8 flex flex-col space-y-6">
-            <!-- Back button row -->
-            <div class="flex items-center space-x-3">
-              <button onclick="closeRegisterView()" class="p-2.5 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] transition-all focus:outline-none flex items-center justify-center">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
-                </svg>
-              </button>
+      <!-- ═══════════════════════════════════════════════════════
+           REGISTER OVERLAY — slides up from bottom on demand
+      ═══════════════════════════════════════════════════════ -->
+      <div id="register-overlay" class="app-view absolute inset-0 z-30 flex flex-col transition-transform duration-400 ease-out" style="position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; display: none !important; transform: translateY(100%); background: var(--bg-color) !important; z-index: 30 !important;">
+        <!-- Overlay scrollable body -->
+        <div class="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-8 flex flex-col space-y-6">
+          <!-- Back button row -->
+          <div class="flex items-center space-x-3">
+            <button onclick="closeRegisterView()" class="p-2.5 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--accent-color)] text-[var(--text-color)] transition-all focus:outline-none flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <div>
+              <h2 class="text-[17px] font-bold text-[var(--text-color)] leading-tight">Create Account</h2>
+              <p class="text-[10px] text-[var(--text-muted)]">Join Dera Care — it's free</p>
+            </div>
+          </div>
+
+          <!-- Register form card -->
+          <form id="patient-signup-form" onsubmit="handlePatientSignup(event); return false;" class="glass-card rounded-[24px] p-5 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] space-y-3">
+            <div class="space-y-2.5">
               <div>
-                <h2 class="text-[17px] font-bold text-[var(--text-color)] leading-tight">Create Account</h2>
-                <p class="text-[10px] text-[var(--text-muted)]">Join Dera Care — it's free</p>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Full Name</label>
+                <input type="text" id="patient-signup-name" placeholder="Enter your name" autocomplete="name" required
+                  class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+              <div>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Email Address</label>
+                <input type="email" id="patient-signup-email" placeholder="Enter your email address" autocomplete="email" required
+                  class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+              <div>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Create Password</label>
+                <div class="relative mt-1.5">
+                  <input type="password" id="patient-signup-pass" placeholder="Enter your password" autocomplete="new-password" required
+                    class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <button type="button" onclick="togglePasswordVisibility('patient-signup-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
+            <button type="submit" id="register-btn" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none mt-1 cursor-pointer">
+              CREATE ACCOUNT &rarr;
+            </button>
+          </form>
 
-            <!-- Register form card -->
-            <form id="patient-signup-form" onsubmit="handlePatientSignup(event); return false;" class="glass-card rounded-[24px] p-5 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] space-y-3">
-              <div class="space-y-2.5">
-                <div>
-                  <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Full Name</label>
-                  <input type="text" id="patient-signup-name" placeholder="Enter your name" autocomplete="name" required
-                    class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                </div>
-                <div>
-                  <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Email Address</label>
-                  <input type="email" id="patient-signup-email" placeholder="Enter your email address" autocomplete="email" required
-                    class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                </div>
-                <div>
-                  <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Create Password</label>
-                  <div class="relative mt-1.5">
-                    <input type="password" id="patient-signup-pass" placeholder="Enter your password" autocomplete="new-password" required
-                      class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-sm text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                    <button type="button" onclick="togglePasswordVisibility('patient-signup-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-color)] p-1 focus:outline-none transition-colors" title="Toggle Password Visibility">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <button type="submit" id="register-btn" class="btn-primary w-full h-12 rounded-xl text-[13px] font-extrabold tracking-wider uppercase flex items-center justify-center transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] active:scale-[0.99] focus:outline-none mt-1 cursor-pointer">
-                CREATE ACCOUNT &rarr;
+          <!-- Already have account link -->
+          <p class="text-center text-[11px] text-[var(--text-muted)]">
+            Already have an account?
+            <button onclick="closeRegisterView()" class="font-extrabold text-[var(--accent-color)] hover:underline focus:outline-none ml-0.5">Back to Login</button>
+          </p>
+
+          <!-- Social sign up compact icons -->
+          <div class="space-y-2 pt-1">
+            <div class="flex items-center space-x-3">
+              <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
+              <span class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-widest">or sign up with</span>
+              <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
+            </div>
+            <div class="flex items-center justify-center space-x-4 py-1">
+              <!-- Facebook Button -->
+              <button type="button" onclick="handleSocialLogin('Facebook')" class="social-icon-btn" title="Sign up with Facebook">
+                <svg class="w-5 h-5 text-[#1877F2] fill-current" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
               </button>
-            </form>
 
-            <!-- Already have account link -->
-            <p class="text-center text-[11px] text-[var(--text-muted)]">
-              Already have an account?
-              <button onclick="closeRegisterView()" class="font-extrabold text-[var(--accent-color)] hover:underline focus:outline-none ml-0.5">Back to Login</button>
-            </p>
+              <!-- Google Button -->
+              <button type="button" onclick="handleSocialLogin('Google')" class="social-icon-btn" title="Sign up with Google">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+              </button>
 
-            <!-- Social sign up compact icons -->
-            <div class="space-y-2 pt-1">
-              <div class="flex items-center space-x-3">
-                <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
-                <span class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-widest">or sign up with</span>
-                <div class="h-[1px] flex-1 bg-[var(--border-color)]"></div>
-              </div>
-              <div class="flex items-center justify-center space-x-4 py-1">
-                <!-- Facebook Button -->
-                <button type="button" onclick="handleSocialLogin('Facebook')" class="social-icon-btn" title="Sign up with Facebook">
-                  <svg class="w-5 h-5 text-[#1877F2] fill-current" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </button>
-
-                <!-- Google Button -->
-                <button type="button" onclick="handleSocialLogin('Google')" class="social-icon-btn" title="Sign up with Google">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/>
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                  </svg>
-                </button>
-
-                <!-- Apple Button -->
-                <button type="button" onclick="handleSocialLogin('Apple')" class="social-icon-btn" title="Sign up with Apple">
-                  <svg class="w-5 h-5 text-black fill-current" viewBox="0 0 24 24">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                  </svg>
-                </button>
-              </div>
+              <!-- Apple Button -->
+              <button type="button" onclick="handleSocialLogin('Apple')" class="social-icon-btn" title="Sign up with Apple">
+                <svg class="w-5 h-5 text-black fill-current" viewBox="0 0 24 24">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
-        <!-- /Register Overlay -->
-
       </div>
+      <!-- /Register Overlay -->
 
 
       <!-- SCREEN 4: CONNECTED HOME SCREEN UI -->
