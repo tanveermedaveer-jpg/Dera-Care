@@ -763,6 +763,14 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('[Dera Care] 📝 Write Prescription clicked via dedicated listener');
     openPrescriptionModal(e);
   });
+
+  document.getElementById('srv-doctors')?.addEventListener('click', () => scrollToDoctorsSection());
+  document.getElementById('srv-hospitals')?.addEventListener('click', () => openHospitalsModal());
+  document.getElementById('srv-pharmacy')?.addEventListener('click', () => openMedicineModal());
+  document.getElementById('srv-labs')?.addEventListener('click', () => openLabModal());
+  document.getElementById('btn-bell')?.addEventListener('click', () => openNotificationsModal());
+  document.getElementById('btn-profile-signout')?.addEventListener('click', () => openModal('logout-modal'));
+  document.getElementById('btn-logout-confirm')?.addEventListener('click', (e) => handleUserLogout(e));
 });
 
 // Global fallback click delegation across document
@@ -771,6 +779,11 @@ document.addEventListener('click', function(e) {
   const availQuickBtn = e.target.closest('#set-availability-btn, #btn-set-availability, [onclick*="openDocAvailabilityModal"]');
   const profileBtn = e.target.closest('.btn-doc-profile');
   const bookBtn = e.target.closest('.btn-doc-book');
+  const srvDocBtn = e.target.closest('#srv-doctors');
+  const srvHospBtn = e.target.closest('#srv-hospitals');
+  const srvPharmBtn = e.target.closest('#srv-pharmacy');
+  const srvLabsBtn = e.target.closest('#srv-labs');
+  const bellBtn = e.target.closest('#btn-bell');
 
   if (rxQuickBtn) {
     e.preventDefault();
@@ -785,6 +798,27 @@ document.addEventListener('click', function(e) {
     e.stopPropagation();
     console.log('[Dera Care] 🌐 Global document delegation captured Set Availability click');
     openDocAvailabilityModal(e);
+    return;
+  }
+
+  if (srvDocBtn) {
+    scrollToDoctorsSection();
+    return;
+  }
+  if (srvHospBtn) {
+    openHospitalsModal();
+    return;
+  }
+  if (srvPharmBtn) {
+    openMedicineModal();
+    return;
+  }
+  if (srvLabsBtn) {
+    openLabModal();
+    return;
+  }
+  if (bellBtn) {
+    openNotificationsModal();
     return;
   }
 
