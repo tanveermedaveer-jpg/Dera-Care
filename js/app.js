@@ -1,24 +1,34 @@
-// RAW DOM OVERRIDE GLOBAL ERROR HANDLER
+// SAFE CONSOLE ERROR LOGGING (NEVER OVERWRITE DOCUMENT BODY)
 function triggerRawCrashDOM(msg, stack) {
-  try {
-    document.body.innerHTML = "<div style='background:red;color:white;padding:50px;font-size:25px;z-index:999999;position:fixed;inset:0;overflow:auto;word-break:break-all;'>CRASH REASON: " + (msg || 'Unknown Exception') + "<br><br>FILE/STACK: " + (stack || 'No stack trace') + "</div>";
-  } catch(e) {}
+  console.error("[Dera Care App Log]:", msg, stack);
 }
 
 window.onerror = function(message, source, lineno, colno, error) {
-  var errObj = error || {};
-  var msg = message || errObj.message || 'Script Error';
-  var stack = errObj.stack || (source + ":" + lineno + ":" + colno);
-  triggerRawCrashDOM(msg, stack);
-  return false;
+  console.error("[Window Error Captured]:", message, source, lineno, colno, error);
+  return true;
 };
 
 window.addEventListener('unhandledrejection', function(event) {
-  var reason = event.reason || {};
-  var msg = "Unhandled Rejection: " + (reason.message || String(reason));
-  var stack = reason.stack || 'Promise rejection stack unavailable';
-  triggerRawCrashDOM(msg, stack);
+  console.warn("[Unhandled Promise Rejection Captured]:", event ? event.reason : "Unknown Rejection");
 });
+
+// Safe API Fetch wrapper - prevents ERR_CONNECTION_REFUSED crashes when backend is offline
+async function safeApiFetch(url, options = {}) {
+  try {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 3000) : null;
+    const fetchOptions = controller ? { ...options, signal: controller.signal } : options;
+
+    const response = await fetch(url, fetchOptions);
+    if (timeoutId) clearTimeout(timeoutId);
+    if (!response || !response.ok) return null;
+    return await response.json();
+  } catch (err) {
+    console.log(`[Dera Care SafeFetch] API ${url} unreachable/offline. Utilizing local fallback.`);
+    return null;
+  }
+}
+window.safeApiFetch = safeApiFetch;
 
 // Live update phone clock
 function updateClock() {
@@ -3835,12 +3845,12 @@ function confirmBooking() {
 
   appointmentsData.unshift(newAppointment);
 
-  // Sync booking with Node.js backend
-  fetch('http://localhost:5000/api/appointments', {
+  // Sync booking with Node.js backend (with safe offline fallback)
+  safeApiFetch('http://localhost:5000/api/appointments', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newAppointment)
-  }).catch(err => console.log("Backend offline, logged locally"));
+  });
 
   showToast("Appointment Scheduled ✓", `Slot reserved with ${selectedDoctorBooking} on ${bDate} at ${bTime}`, "success");
 
