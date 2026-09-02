@@ -2351,50 +2351,44 @@ function switchAdminTab(tab) {
   try {
     const targetTab = (tab === 'menu' || tab === 'main' || !tab) ? 'stats' : tab;
 
+    // Hide all admin sub-views and deactivate top nav tab buttons
     ['stats', 'doctors', 'hospitals', 'stores', 'labs', 'profile'].forEach(t => {
       const sectionEl = document.getElementById('admin-tab-' + t);
       if (sectionEl) {
         sectionEl.classList.add('hidden');
         sectionEl.style.display = 'none';
       }
+      const navBtnKey = (t === 'stats') ? 'menu' : t;
+      const navBtn = document.getElementById('atab-' + navBtnKey);
+      if (navBtn) {
+        navBtn.classList.remove('bg-[var(--accent-color)]', 'text-white', 'shadow-sm');
+        navBtn.classList.add('text-[var(--text-muted)]');
+      }
     });
 
-    if (targetTab === 'doctors' || targetTab === 'hospitals' || targetTab === 'stores' || targetTab === 'labs') {
-      const masterSection = document.getElementById('admin-tab-doctors');
-      if (masterSection) {
-        masterSection.classList.remove('hidden');
-        masterSection.style.display = 'block';
-        masterSection.style.opacity = '1';
-        masterSection.style.visibility = 'visible';
-      }
-
-      if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
-      if (typeof renderAdminHospitals === 'function') renderAdminHospitals();
-      if (typeof renderAdminStores === 'function') renderAdminStores();
-      if (typeof renderAdminLabTests === 'function') renderAdminLabTests();
-
-      setTimeout(() => {
-        let scrollTarget = null;
-        if (targetTab === 'hospitals') scrollTarget = document.getElementById('admin-sec-hospitals');
-        else if (targetTab === 'stores') scrollTarget = document.getElementById('admin-sec-stores');
-        else if (targetTab === 'labs') scrollTarget = document.getElementById('admin-sec-labs');
-        else scrollTarget = document.getElementById('admin-sec-doctors') || masterSection;
-
-        if (scrollTarget) {
-          scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 50);
-    } else {
-      const activeSectionEl = document.getElementById('admin-tab-' + targetTab);
-      if (activeSectionEl) {
-        activeSectionEl.classList.remove('hidden');
-        activeSectionEl.style.display = 'block';
-        activeSectionEl.style.opacity = '1';
-        activeSectionEl.style.visibility = 'visible';
-      }
+    // Unhide target sub-view
+    const activeSectionEl = document.getElementById('admin-tab-' + targetTab);
+    if (activeSectionEl) {
+      activeSectionEl.classList.remove('hidden');
+      activeSectionEl.style.display = 'block';
+      activeSectionEl.style.opacity = '1';
+      activeSectionEl.style.visibility = 'visible';
     }
 
+    // Highlight active top nav tab button
+    const activeNavKey = (targetTab === 'stats') ? 'menu' : targetTab;
+    const activeNavBtn = document.getElementById('atab-' + activeNavKey);
+    if (activeNavBtn) {
+      activeNavBtn.classList.remove('text-[var(--text-muted)]');
+      activeNavBtn.classList.add('bg-[var(--accent-color)]', 'text-white', 'shadow-sm');
+    }
+
+    // Render fresh data for section
     if ((targetTab === 'stats' || targetTab === 'menu') && typeof updateAdminStats === 'function') updateAdminStats();
+    if (targetTab === 'doctors' && typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
+    if (targetTab === 'hospitals' && typeof renderAdminHospitals === 'function') renderAdminHospitals();
+    if (targetTab === 'stores' && typeof renderAdminStores === 'function') renderAdminStores();
+    if (targetTab === 'labs' && typeof renderAdminLabTests === 'function') renderAdminLabTests();
   } catch (err) {
     console.error("switchAdminTab exception:", err);
   }

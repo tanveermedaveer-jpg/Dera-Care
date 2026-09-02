@@ -853,51 +853,77 @@
         </div>
       </div>
 
-    <!-- SCREEN 6: ADMIN PANEL -->
+    <!-- SCREEN 6: REBUILT ADMIN PANEL (PLAN B) -->
     <div id="admin-panel" class="absolute inset-0 w-full h-full flex flex-col z-30 overflow-hidden bg-[#0b1120] text-white" style="display: none;">
-      <!-- Header -->
-      <div class="flex-shrink-0 px-5 pt-10 pb-4 border-b border-[var(--border-color)]" style="background: linear-gradient(135deg, rgba(0,168,107,0.15), rgba(0,229,255,0.10));">
-        <div class="flex items-center justify-between">
+      
+      <!-- Top Fixed Header Bar -->
+      <div class="flex-shrink-0 px-5 pt-10 pb-3 border-b border-[var(--border-color)] bg-gradient-to-r from-emerald-900/30 via-slate-900 to-cyan-900/30 shadow-lg">
+        <div class="flex items-center justify-between mb-3">
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 shadow-md" style="background: linear-gradient(135deg,#00A86B,#00E5FF);">🔐</div>
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 shadow-md bg-gradient-to-br from-emerald-500 to-cyan-500 text-white">🔐</div>
             <div>
-              <h2 class="text-sm font-extrabold text-[var(--text-color)]">Admin Control Center</h2>
+              <h2 class="text-sm font-extrabold text-[var(--text-color)] flex items-center space-x-1.5">
+                <span>Admin Master Dashboard</span>
+              </h2>
               <p class="text-[9px] text-[var(--accent-color)] font-bold uppercase tracking-wider" id="admin-logged-in-label">Logged in as Admin (03103716116)</p>
             </div>
           </div>
-          <div class="flex items-center space-x-2">
-            <button onclick="switchAdminTab('profile')" class="h-8 px-2.5 rounded-xl border border-[var(--border-color)] text-[9px] font-bold text-[var(--text-muted)] hover:text-white hover:border-[var(--accent-color)]/40 transition-colors focus:outline-none flex items-center space-x-1 cursor-pointer" title="Admin Credentials">
-              <span>👤 Profile</span>
-            </button>
-            <button onclick="openAdminLogoutModal()" class="h-8 px-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-[9px] font-bold text-rose-400 hover:bg-rose-500/20 transition-colors focus:outline-none flex items-center space-x-1 cursor-pointer">
-              <span>🚪 Logout</span>
-            </button>
-          </div>
+          
+          <!-- Direct Logout Button -->
+          <button onclick="logoutToLogin()" class="h-8 px-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-[9px] font-bold text-rose-400 hover:bg-rose-500/20 transition-all focus:outline-none flex items-center space-x-1 cursor-pointer" title="Log Out Admin">
+            <span class="text-xs">🚪</span>
+            <span>Logout</span>
+          </button>
+        </div>
+
+        <!-- 5-Tab Clean Top Navigation Bar -->
+        <div class="grid grid-cols-5 gap-1.5 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-2xl p-1.5 shadow-inner">
+          <button id="atab-menu" onclick="switchAdminTab('menu')" class="py-2 px-1 rounded-xl text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight transition-all focus:outline-none flex flex-col items-center justify-center space-y-0.5 cursor-pointer text-white bg-[var(--accent-color)] shadow-sm">
+            <span class="text-sm">⚡</span>
+            <span>Menu</span>
+          </button>
+          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="py-2 px-1 rounded-xl text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] hover:text-white focus:outline-none flex flex-col items-center justify-center space-y-0.5 cursor-pointer">
+            <span class="text-sm">👨‍⚕️</span>
+            <span>Doctors</span>
+          </button>
+          <button id="atab-hospitals" onclick="switchAdminTab('hospitals')" class="py-2 px-1 rounded-xl text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] hover:text-white focus:outline-none flex flex-col items-center justify-center space-y-0.5 cursor-pointer">
+            <span class="text-sm">🏥</span>
+            <span>Hospitals</span>
+          </button>
+          <button id="atab-stores" onclick="switchAdminTab('stores')" class="py-2 px-1 rounded-xl text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] hover:text-white focus:outline-none flex flex-col items-center justify-center space-y-0.5 cursor-pointer">
+            <span class="text-sm">💊</span>
+            <span>Stores</span>
+          </button>
+          <button id="atab-labs" onclick="switchAdminTab('labs')" class="py-2 px-1 rounded-xl text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] hover:text-white focus:outline-none flex flex-col items-center justify-center space-y-0.5 cursor-pointer">
+            <span class="text-sm">🔬</span>
+            <span>Labs</span>
+          </button>
         </div>
       </div>
 
-      <!-- Body -->
+      <!-- Main Body Container -->
       <div class="flex-1 overflow-y-auto no-scrollbar">
 
-        <!-- ADMIN HOME VIEW: MENU CARDS & MAIN DASHBOARD -->
+        <!-- TAB 1: MAIN MENU & OVERVIEW DASHBOARD -->
         <div id="admin-tab-stats" class="px-5 py-4 space-y-5">
+          
           <!-- Welcome Banner Header -->
-          <div class="glass-card rounded-2xl p-4 border border-[var(--accent-color)]/20 bg-gradient-to-r from-[var(--accent-color)]/10 to-transparent flex items-center justify-between">
+          <div class="glass-card rounded-2xl p-4 border border-[var(--accent-color)]/20 bg-gradient-to-r from-[var(--accent-color)]/10 via-transparent to-emerald-500/10 flex items-center justify-between shadow-lg">
             <div>
               <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20 uppercase tracking-wider">Super Admin Active</span>
               <h3 class="text-xs font-extrabold text-[var(--text-color)] mt-1">Welcome, <span id="admin-display-username">Admin (03103716116)</span> 👋</h3>
-              <p class="text-[9px] text-[var(--text-muted)] mt-0.5">Dera Care Health System Master Control</p>
+              <p class="text-[9px] text-[var(--text-muted)] mt-0.5">Dera Care Health System Control Panel</p>
             </div>
-            <button onclick="openAdminLogoutModal()" class="h-8 px-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400 text-[9px] font-extrabold hover:bg-rose-500/20 transition-all focus:outline-none flex items-center space-x-1 cursor-pointer">
-              <span>🚪 Logout</span>
+            <button onclick="switchAdminTab('profile')" class="h-8 px-3 rounded-xl border border-[var(--accent-color)]/30 bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[9px] font-extrabold hover:bg-[var(--accent-color)]/20 transition-all focus:outline-none flex items-center space-x-1 cursor-pointer">
+              <span>👤 Profile &amp; PIN</span>
             </button>
           </div>
 
-          <!-- PROMINENT ADMIN NAVIGATION MENU CARDS -->
+          <!-- PROMINENT 4 NAVIGATION CARDS GRID -->
           <div class="space-y-2.5">
             <div class="flex items-center justify-between">
-              <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">⚡ Management Menu</h3>
-              <span class="text-[9px] text-[var(--accent-color)] font-bold">Select a section to manage</span>
+              <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">⚡ Management Modules</h3>
+              <span class="text-[9px] text-[var(--accent-color)] font-bold">Select a section</span>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -912,7 +938,7 @@
                     <span>Manage Doctors</span>
                     <span class="text-xs group-hover:translate-x-1 transition-transform">➔</span>
                   </h4>
-                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Add, edit or delete doctor profiles, hospital tags &amp; login PINs.</p>
+                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Add, edit or delete doctor profiles, hospital tags &amp; PINs.</p>
                 </div>
               </div>
 
@@ -927,7 +953,7 @@
                     <span>Manage Hospitals</span>
                     <span class="text-xs group-hover:translate-x-1 transition-transform">➔</span>
                   </h4>
-                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Register hospitals, update addresses, helpline numbers &amp; OPD info.</p>
+                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Register hospitals, update addresses, phone &amp; OPD info.</p>
                 </div>
               </div>
 
@@ -942,7 +968,7 @@
                     <span>Manage Medical Stores</span>
                     <span class="text-xs group-hover:translate-x-1 transition-transform">➔</span>
                   </h4>
-                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Configure pharmacies, store locations &amp; direct WhatsApp order dispatchers.</p>
+                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Configure pharmacies, store locations &amp; WhatsApp dispatchers.</p>
                 </div>
               </div>
 
@@ -957,7 +983,7 @@
                     <span>Manage Lab Tests</span>
                     <span class="text-xs group-hover:translate-x-1 transition-transform">➔</span>
                   </h4>
-                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Update diagnostic test names, pricing structure &amp; turnaround details.</p>
+                  <p class="text-[9.5px] text-[var(--text-muted)] mt-1 leading-normal">Update diagnostic test names, pricing structure &amp; turnaround time.</p>
                 </div>
               </div>
             </div>
@@ -985,7 +1011,7 @@
             </div>
           </div>
 
-          <!-- Patient & Appointment Records Section -->
+          <!-- Recent Patient Bookings Section -->
           <div class="space-y-2.5">
             <div class="flex items-center justify-between">
               <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Recent Patient Bookings</h3>
@@ -1018,9 +1044,8 @@
           </div>
         </div>
 
-        <!-- SUB-VIEW: DOCTOR MANAGEMENT & MASTER CONTROL -->
-        <div id="admin-tab-doctors" class="px-5 py-4 space-y-6 hidden">
-          <!-- Back to Admin Menu Header Bar -->
+        <!-- TAB 2: DOCTOR MANAGEMENT (CRUD) -->
+        <div id="admin-tab-doctors" class="px-5 py-4 space-y-4 hidden">
           <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
             <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
               <span>⬅️</span>
@@ -1028,138 +1053,182 @@
             </button>
             <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center space-x-1">
               <span>👨‍⚕️</span>
-              <span>System Management</span>
+              <span>Doctor Control</span>
             </span>
           </div>
 
-          <!-- SECTION 1: DOCTOR MANAGEMENT -->
-          <div id="admin-sec-doctors" class="space-y-4">
-            <!-- Add Doctor Form -->
-            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-                <span id="doc-form-title-icon">➕</span><span id="doc-form-title">Add New Doctor</span>
-              </h3>
-              <div class="space-y-2.5">
-                <input id="add-doc-name" type="text" placeholder="Doctor Full Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <input id="add-doc-specialty" type="text" placeholder="Specialty (e.g. Cardiologist)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <input id="add-doc-hospital" type="text" placeholder="Hospital / Clinic Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <div class="grid grid-cols-2 gap-2.5">
-                  <input id="add-doc-id" type="tel" placeholder="Doctor ID / Phone" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                  <div class="relative">
-                    <input id="add-doc-pin" type="password" placeholder="Assign PIN Code" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-3.5 pr-9 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                    <button type="button" onclick="togglePasswordVisibility('add-doc-pin', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                    </button>
-                  </div>
+          <!-- Add / Edit Doctor Form -->
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="doc-form-title-icon">➕</span><span id="doc-form-title">Add New Doctor</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="add-doc-name" type="text" placeholder="Doctor Full Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <input id="add-doc-specialty" type="text" placeholder="Specialty (e.g. Cardiologist)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <input id="add-doc-hospital" type="text" placeholder="Hospital / Clinic Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="add-doc-id" type="tel" placeholder="Doctor ID / Phone" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <div class="relative">
+                  <input id="add-doc-pin" type="password" placeholder="Assign PIN Code" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-3.5 pr-9 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <button type="button" onclick="togglePasswordVisibility('add-doc-pin', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-              <div class="flex space-x-2.5 pt-1">
-                <button id="btn-save-doctor" onclick="saveDoctor()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Doctor</button>
-                <button id="btn-cancel-edit" onclick="cancelDoctorEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
-              </div>
             </div>
-
-            <!-- Doctor Directory List -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Registered Doctors Directory</h3>
-                <span id="admin-doc-count" class="text-[9px] text-[var(--accent-color)] font-extrabold">0 doctors</span>
-              </div>
-              <div id="admin-doctor-list" class="space-y-2.5">
-                <!-- Rendered dynamically -->
-              </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-doctor" onclick="saveDoctor()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md cursor-pointer">💾 Save Doctor</button>
+              <button id="btn-cancel-edit" onclick="cancelDoctorEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none cursor-pointer">✕ Cancel</button>
             </div>
           </div>
 
-          <!-- SECTION 2: HOSPITAL MANAGEMENT (Physically appended right below Doctor Directory) -->
-          <div id="admin-sec-hospitals" class="pt-5 border-t border-white/10 space-y-4">
-            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-                <span id="hosp-form-title-icon">🏥</span><span id="hosp-form-title">Add New Hospital</span>
-              </h3>
-              <div class="space-y-2.5">
-                <input id="admin-hosp-name" type="text" placeholder="Hospital Name (e.g. DHQ Hospital)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <input id="admin-hosp-address" type="text" placeholder="Address / Location (e.g. Chishti Chowk, Circular Road)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <div class="grid grid-cols-2 gap-2.5">
-                  <input id="admin-hosp-contact" type="tel" placeholder="Contact Phone (0966-9280111)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                  <input id="admin-hosp-doctors" type="text" placeholder="Specialties (e.g. Cardiology, ER)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                </div>
-              </div>
-              <div class="flex space-x-2.5 pt-1">
-                <button id="btn-save-hosp" onclick="saveAdminHospital()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Hospital</button>
-                <button id="btn-cancel-hosp" onclick="cancelAdminHospitalEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
-              </div>
+          <!-- Doctor Directory List -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Registered Doctors Directory</h3>
+              <span id="admin-doc-count" class="text-[9px] text-[var(--accent-color)] font-extrabold">0 doctors</span>
             </div>
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🏥 Registered Hospitals Directory</h3>
-                <span id="admin-hosp-count" class="text-[9px] text-emerald-400 font-extrabold">0 Hospitals</span>
-              </div>
-              <div id="admin-hospitals-list" class="space-y-2.5"></div>
-            </div>
-          </div>
-
-          <!-- SECTION 3: MEDICAL STORE MANAGEMENT (Physically appended right below Hospital Directory) -->
-          <div id="admin-sec-stores" class="pt-5 border-t border-white/10 space-y-4">
-            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-                <span id="store-form-title-icon">💊</span><span id="store-form-title">Add Medical Store</span>
-              </h3>
-              <div class="space-y-2.5">
-                <input id="admin-store-name" type="text" placeholder="Store Name (e.g. Al-Shafa Pharmacy)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <div class="grid grid-cols-2 gap-2.5">
-                  <input id="admin-store-area" type="text" placeholder="Area (e.g. Topanwala Bazar)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                  <input id="admin-store-whatsapp" type="tel" placeholder="WhatsApp (923103716116)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                </div>
-              </div>
-              <div class="flex space-x-2.5 pt-1">
-                <button id="btn-save-store" onclick="saveAdminStore()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Store</button>
-                <button id="btn-cancel-store" onclick="cancelAdminStoreEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
-              </div>
-            </div>
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">💊 Medical Stores Directory</h3>
-                <span id="admin-store-count" class="text-[9px] text-amber-400 font-extrabold">0 Stores</span>
-              </div>
-              <div id="admin-stores-list" class="space-y-2.5"></div>
-            </div>
-          </div>
-
-          <!-- SECTION 4: LAB TEST MANAGEMENT (Physically appended right below Medical Store Directory) -->
-          <div id="admin-sec-labs" class="pt-5 border-t border-white/10 space-y-4">
-            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-                <span id="lab-form-title-icon">🔬</span><span id="lab-form-title">Add Diagnostic Test</span>
-              </h3>
-              <div class="space-y-2.5">
-                <input id="admin-lab-name" type="text" placeholder="Test Name (e.g. Complete Blood Count - CBC)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <div class="grid grid-cols-2 gap-2.5">
-                  <input id="admin-lab-price" type="number" placeholder="Price PKR (e.g. 800)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                  <input id="admin-lab-desc" type="text" placeholder="Description / Turnaround Time" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                </div>
-              </div>
-              <div class="flex space-x-2.5 pt-1">
-                <button id="btn-save-lab" onclick="saveAdminLabTest()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Test</button>
-                <button id="btn-cancel-lab" onclick="cancelAdminLabEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
-              </div>
-            </div>
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🧪 Diagnostic Test Catalog</h3>
-                <span id="admin-lab-count" class="text-[9px] text-cyan-400 font-extrabold">0 Tests</span>
-              </div>
-              <div id="admin-labs-list" class="space-y-2.5"></div>
+            <div id="admin-doctor-list" class="space-y-2.5">
+              <!-- Rendered dynamically -->
             </div>
           </div>
         </div>
 
-        <!-- SUB-VIEW: ADMIN PROFILE SETTINGS -->
+        <!-- TAB 3: HOSPITAL MANAGEMENT (CRUD) -->
+        <div id="admin-tab-hospitals" class="px-5 py-4 space-y-4 hidden">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
+            <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
+              <span>⬅️</span>
+              <span>Back to Admin Menu</span>
+            </button>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-blue-400 flex items-center space-x-1">
+              <span>🏥</span>
+              <span>Hospital Control</span>
+            </span>
+          </div>
+
+          <!-- Add / Edit Hospital Form -->
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="hosp-form-title-icon">➕</span><span id="hosp-form-title">Add New Hospital</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="admin-hosp-name" type="text" placeholder="Hospital Name (e.g. DHQ Hospital)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <input id="admin-hosp-address" type="text" placeholder="Address / Location (e.g. Chishti Chowk, Circular Road)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="admin-hosp-contact" type="tel" placeholder="Contact Phone (0966-9280111)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="admin-hosp-doctors" type="text" placeholder="Specialties (e.g. Cardiology, ER)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+            </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-hosp" onclick="saveAdminHospital()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md cursor-pointer">💾 Save Hospital</button>
+              <button id="btn-cancel-hosp" onclick="cancelAdminHospitalEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none cursor-pointer">✕ Cancel</button>
+            </div>
+          </div>
+
+          <!-- Hospital Directory List -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🏥 Registered Hospitals Directory</h3>
+              <span id="admin-hosp-count" class="text-[9px] text-emerald-400 font-extrabold">0 Hospitals</span>
+            </div>
+            <div id="admin-hospitals-list" class="space-y-2.5">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: MEDICAL STORE MANAGEMENT (CRUD) -->
+        <div id="admin-tab-stores" class="px-5 py-4 space-y-4 hidden">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
+            <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
+              <span>⬅️</span>
+              <span>Back to Admin Menu</span>
+            </button>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center space-x-1">
+              <span>💊</span>
+              <span>Medical Store Control</span>
+            </span>
+          </div>
+
+          <!-- Add / Edit Store Form -->
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="store-form-title-icon">➕</span><span id="store-form-title">Add Medical Store</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="admin-store-name" type="text" placeholder="Store Name (e.g. Al-Shafa Pharmacy)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="admin-store-area" type="text" placeholder="Area (e.g. Topanwala Bazar)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="admin-store-whatsapp" type="tel" placeholder="WhatsApp (923103716116)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+            </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-store" onclick="saveAdminStore()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md cursor-pointer">💾 Save Store</button>
+              <button id="btn-cancel-store" onclick="cancelAdminStoreEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none cursor-pointer">✕ Cancel</button>
+            </div>
+          </div>
+
+          <!-- Medical Store Directory List -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">💊 Medical Stores Directory</h3>
+              <span id="admin-store-count" class="text-[9px] text-amber-400 font-extrabold">0 Stores</span>
+            </div>
+            <div id="admin-stores-list" class="space-y-2.5">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: LAB TEST MANAGEMENT (CRUD) -->
+        <div id="admin-tab-labs" class="px-5 py-4 space-y-4 hidden">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
+            <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
+              <span>⬅️</span>
+              <span>Back to Admin Menu</span>
+            </button>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-cyan-400 flex items-center space-x-1">
+              <span>🔬</span>
+              <span>Lab Test Catalog Control</span>
+            </span>
+          </div>
+
+          <!-- Add / Edit Lab Test Form -->
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="lab-form-title-icon">➕</span><span id="lab-form-title">Add Diagnostic Test</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="admin-lab-name" type="text" placeholder="Test Name (e.g. Complete Blood Count - CBC)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="admin-lab-price" type="number" placeholder="Price PKR (e.g. 800)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="admin-lab-desc" type="text" placeholder="Description / Turnaround Time" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+            </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-lab" onclick="saveAdminLabTest()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md cursor-pointer">💾 Save Test</button>
+              <button id="btn-cancel-lab" onclick="cancelAdminLabEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none cursor-pointer">✕ Cancel</button>
+            </div>
+          </div>
+
+          <!-- Lab Test Catalog List -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🧪 Diagnostic Test Catalog</h3>
+              <span id="admin-lab-count" class="text-[9px] text-cyan-400 font-extrabold">0 Tests</span>
+            </div>
+            <div id="admin-labs-list" class="space-y-2.5">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6: ADMIN PROFILE & PASSWORD MANAGEMENT -->
         <div id="admin-tab-profile" class="px-5 py-4 space-y-4 hidden">
-          <!-- Back to Admin Menu Header Bar -->
           <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
             <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
               <span>⬅️</span>
@@ -1167,22 +1236,23 @@
             </button>
             <span class="text-xs font-extrabold uppercase tracking-wider text-[var(--accent-color)] flex items-center space-x-1">
               <span>👤</span>
-              <span>Admin Profile &amp; Security</span>
+              <span>Admin Profile &amp; PIN</span>
             </span>
           </div>
 
+          <!-- Change Password & Credentials Form -->
           <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">👤 Update Admin Credentials</h3>
-            <p class="text-[9px] text-[var(--text-muted)] leading-relaxed">Changes take effect immediately and persist across sessions.</p>
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🔐 Update Admin Password &amp; Profile</h3>
+            <p class="text-[9px] text-[var(--text-muted)] leading-relaxed">Update your master admin credentials. Changes take effect immediately.</p>
             <div class="space-y-2.5">
               <div>
-                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Username</label>
-                <input id="admin-new-username" type="text" placeholder="Enter new admin username" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Username / Phone</label>
+                <input id="admin-new-username" type="text" placeholder="Enter new username or phone (e.g. 03103716116)" class="w-full mt-1.5 h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-4 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
               </div>
               <div>
-                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Current Password (verify)</label>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Current Password / PIN (Required to Save)</label>
                 <div class="relative mt-1.5">
-                  <input id="admin-current-pass" type="password" placeholder="Enter current master password" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <input id="admin-current-pass" type="password" placeholder="Enter current password or PIN" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
                   <button type="button" onclick="togglePasswordVisibility('admin-current-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1192,7 +1262,7 @@
                 </div>
               </div>
               <div>
-                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Password</label>
+                <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">New Password / PIN</label>
                 <div class="relative mt-1.5">
                   <input id="admin-new-pass" type="password" placeholder="Enter new master password" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
                   <button type="button" onclick="togglePasswordVisibility('admin-new-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
@@ -1206,7 +1276,7 @@
               <div>
                 <label class="text-[9px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Confirm New Password</label>
                 <div class="relative mt-1.5">
-                  <input id="admin-confirm-pass" type="password" placeholder="Re-enter new password" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <input id="admin-confirm-pass" type="password" placeholder="Re-enter new master password" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-4 pr-11 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
                   <button type="button" onclick="togglePasswordVisibility('admin-confirm-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1216,21 +1286,21 @@
                 </div>
               </div>
             </div>
-            <button onclick="saveAdminProfile()" class="btn-primary w-full h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md mt-1">🔐 Save Changes</button>
+            <button onclick="saveAdminProfile()" class="btn-primary w-full h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md mt-1 cursor-pointer">🔐 Save Changes</button>
           </div>
 
-          <!-- Current credentials info card -->
+          <!-- Current Active Credentials Info Card -->
           <div class="glass-card rounded-2xl p-4 border border-white/5 space-y-2">
-            <h3 class="text-[10px] font-extrabold text-[var(--text-muted)] uppercase tracking-wider">Current Active Credentials</h3>
+            <h3 class="text-[10px] font-extrabold text-[var(--text-muted)] uppercase tracking-wider">Active Admin Profile Details</h3>
             <div class="flex items-center justify-between">
-              <span class="text-[10px] text-[var(--text-color)] font-semibold">Master Username</span>
-              <span class="text-[10px] font-extrabold text-[var(--accent-color)]" id="admin-display-username">MSadaf</span>
+              <span class="text-[10px] text-[var(--text-color)] font-semibold">Master Account / Username</span>
+              <span class="text-[10px] font-extrabold text-[var(--accent-color)]" id="admin-display-username">Admin (03103716116)</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-[10px] text-[var(--text-color)] font-semibold">Password Status</span>
+              <span class="text-[10px] text-[var(--text-color)] font-semibold">Master Password / PIN</span>
               <div class="flex items-center space-x-1.5">
                 <span class="text-[10px] font-extrabold text-emerald-400" id="admin-creds-pass-text">••••••••</span>
-                <button type="button" onclick="toggleAdminCredsPassVisibility(this)" class="text-[var(--text-muted)] hover:text-white p-0.5 focus:outline-none transition-colors" title="Toggle Password Visibility">
+                <button type="button" onclick="toggleAdminCredsPassVisibility(this)" class="text-[var(--text-muted)] hover:text-white p-0.5 focus:outline-none transition-colors cursor-pointer" title="Toggle Password Visibility">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -1238,6 +1308,13 @@
                 </button>
               </div>
             </div>
+          </div>
+
+          <!-- Direct Logout Action inside Profile View -->
+          <div class="pt-2">
+            <button onclick="logoutToLogin()" class="w-full h-11 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500/20 font-extrabold text-xs uppercase tracking-wider transition-all focus:outline-none flex items-center justify-center space-x-2 cursor-pointer shadow-md">
+              <span>🚪 Logout Admin Account</span>
+            </button>
           </div>
         </div>
 
