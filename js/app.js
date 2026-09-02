@@ -1125,6 +1125,50 @@ function openPrescriptionModal(e) {
   openDocPrescriptionModal(e);
 }
 
+function openHospitalsModal() { openModal('hospitals-modal'); }
+function closeHospitalsModal() { closeModal('hospitals-modal'); }
+
+function openMedicineModal() { openModal('medicine-modal'); }
+function closeMedicineModal() { closeModal('medicine-modal'); }
+
+function openLabModal() { openModal('lab-modal'); }
+function closeLabModal() { closeModal('lab-modal'); }
+
+function openSpecialtiesModal() { openModal('specialties-modal'); }
+function closeSpecialtiesModal() { closeModal('specialties-modal'); }
+
+function openNotificationsModal() { openModal('notifications-modal'); }
+function closeNotificationsModal() { closeModal('notifications-modal'); }
+
+function openPrivacyModal() { openModal('privacy-modal'); }
+function closePrivacyModal() { closeModal('privacy-modal'); }
+
+function scrollToDoctorsSection() {
+  const anchor = document.getElementById('doctors-anchor') || document.getElementById('doctors-list-container');
+  if (anchor) {
+    anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showToast('Top Rated Doctors', 'Browsing verified specialist profiles.', 'info');
+  }
+}
+
+let appointmentRemindersEnabled = true;
+function toggleAppointmentReminders(btn) {
+  appointmentRemindersEnabled = !appointmentRemindersEnabled;
+  if (!btn) return;
+  const statusSpan = btn.querySelector('span:last-child');
+  if (statusSpan) {
+    if (appointmentRemindersEnabled) {
+      statusSpan.textContent = 'Enabled ✓';
+      statusSpan.className = 'text-[10px] text-emerald-400 font-bold';
+      showToast('Reminders Enabled ✓', 'Push notification alerts activated for appointments.', 'success');
+    } else {
+      statusSpan.textContent = 'Disabled ✕';
+      statusSpan.className = 'text-[10px] text-[var(--text-muted)] font-bold';
+      showToast('Reminders Disabled ✕', 'Appointment push notifications paused.', 'info');
+    }
+  }
+}
+
 window.openAvailabilityModal = openAvailabilityModal;
 window.openPrescriptionModal = openPrescriptionModal;
 window.openDocAvailabilityModal = openDocAvailabilityModal;
@@ -1132,6 +1176,20 @@ window.closeDocAvailabilityModal = closeDocAvailabilityModal;
 window.saveDoctorAvailability = saveDoctorAvailability;
 window.openDocPrescriptionModal = openDocPrescriptionModal;
 window.closeDocPrescriptionModal = closeDocPrescriptionModal;
+window.openHospitalsModal = openHospitalsModal;
+window.closeHospitalsModal = closeHospitalsModal;
+window.openMedicineModal = openMedicineModal;
+window.closeMedicineModal = closeMedicineModal;
+window.openLabModal = openLabModal;
+window.closeLabModal = closeLabModal;
+window.openSpecialtiesModal = openSpecialtiesModal;
+window.closeSpecialtiesModal = closeSpecialtiesModal;
+window.openNotificationsModal = openNotificationsModal;
+window.closeNotificationsModal = closeNotificationsModal;
+window.openPrivacyModal = openPrivacyModal;
+window.closePrivacyModal = closePrivacyModal;
+window.scrollToDoctorsSection = scrollToDoctorsSection;
+window.toggleAppointmentReminders = toggleAppointmentReminders;
 
 function issueDigitalPrescription() {
   const patientEl = document.getElementById('doc-rx-patient');
