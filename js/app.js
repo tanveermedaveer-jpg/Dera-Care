@@ -693,33 +693,17 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('[Dera Care] ✅ doctors-list-container event delegation attached');
   }
 
-  const rxBtn = document.getElementById('write-prescription-btn') || document.getElementById('btn-write-prescription');
-  if (rxBtn && !rxBtn.dataset.listenerAttached) {
-    rxBtn.dataset.listenerAttached = 'true';
-    rxBtn.addEventListener('click', function(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      console.log('[Dera Care] 📝 Write Prescription clicked via dedicated listener');
-      openDocPrescriptionModal(e);
-    });
-    console.log('[Dera Care] ✅ write-prescription-btn event listener attached');
-  }
+  document.getElementById('set-availability-btn')?.addEventListener('click', (e) => {
+    if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+    console.log('[Dera Care] 📅 Set Availability clicked via dedicated listener');
+    openAvailabilityModal(e);
+  });
 
-  const availBtn = document.getElementById('set-availability-btn') || document.getElementById('btn-set-availability');
-  if (availBtn && !availBtn.dataset.listenerAttached) {
-    availBtn.dataset.listenerAttached = 'true';
-    availBtn.addEventListener('click', function(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      console.log('[Dera Care] 📅 Set Availability clicked via dedicated listener');
-      openDocAvailabilityModal(e);
-    });
-    console.log('[Dera Care] ✅ set-availability-btn event listener attached');
-  }
+  document.getElementById('write-prescription-btn')?.addEventListener('click', (e) => {
+    if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+    console.log('[Dera Care] 📝 Write Prescription clicked via dedicated listener');
+    openPrescriptionModal(e);
+  });
 });
 
 // Global fallback click delegation across document
@@ -1074,6 +1058,16 @@ function closeDocPrescriptionModal() {
   }
 }
 
+function openAvailabilityModal(e) {
+  openDocAvailabilityModal(e);
+}
+
+function openPrescriptionModal(e) {
+  openDocPrescriptionModal(e);
+}
+
+window.openAvailabilityModal = openAvailabilityModal;
+window.openPrescriptionModal = openPrescriptionModal;
 window.openDocAvailabilityModal = openDocAvailabilityModal;
 window.closeDocAvailabilityModal = closeDocAvailabilityModal;
 window.saveDoctorAvailability = saveDoctorAvailability;
