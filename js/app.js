@@ -668,12 +668,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     console.log('[Dera Care] ✅ doctors-list-container event delegation attached');
   }
+
+  const rxBtn = document.getElementById('btn-write-prescription');
+  if (rxBtn && !rxBtn.dataset.listenerAttached) {
+    rxBtn.dataset.listenerAttached = 'true';
+    rxBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('[Dera Care] btn-write-prescription click captured via DOMContentLoaded listener');
+      openDocPrescriptionModal();
+    });
+    console.log('[Dera Care] ✅ btn-write-prescription event listener attached');
+  }
+
+  const availBtn = document.getElementById('btn-set-availability');
+  if (availBtn && !availBtn.dataset.listenerAttached) {
+    availBtn.dataset.listenerAttached = 'true';
+    availBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('[Dera Care] btn-set-availability click captured via DOMContentLoaded listener');
+      openDocAvailabilityModal();
+    });
+    console.log('[Dera Care] ✅ btn-set-availability event listener attached');
+  }
 });
 
 // Global fallback click delegation across document
 document.addEventListener('click', function(e) {
   const profileBtn = e.target.closest('.btn-doc-profile');
   const bookBtn = e.target.closest('.btn-doc-book');
+  const rxQuickBtn = e.target.closest('#btn-write-prescription, [onclick*="openDocPrescriptionModal"]');
+  const availQuickBtn = e.target.closest('#btn-set-availability, [onclick*="openDocAvailabilityModal"]');
 
   if (profileBtn) {
     const docId = profileBtn.dataset.docId || profileBtn.getAttribute('data-doc-id');
@@ -689,6 +713,14 @@ document.addEventListener('click', function(e) {
       console.log('[Dera Care] 🌐 Global document delegation captured book click:', docName, docSpec);
       triggerSpecificBooking(docName, docSpec);
     }
+  } else if (rxQuickBtn) {
+    e.preventDefault();
+    console.log('[Dera Care] 🌐 Global document delegation captured Write Prescription click');
+    openDocPrescriptionModal();
+  } else if (availQuickBtn) {
+    e.preventDefault();
+    console.log('[Dera Care] 🌐 Global document delegation captured Set Availability click');
+    openDocAvailabilityModal();
   }
 });
 
@@ -876,14 +908,23 @@ function rejectDoctorRequest(btn, patientName) {
 
 function openDocAvailabilityModal() {
   const modal = document.getElementById('doc-availability-modal');
-  if (modal) modal.classList.remove('hidden', 'translate-y-full');
+  if (modal) {
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.classList.remove('hidden');
+    void modal.offsetWidth;
+    modal.classList.remove('translate-y-full');
+    console.log('[Dera Care] 📅 Doctor availability modal opened successfully');
+  }
 }
 
 function closeDocAvailabilityModal() {
   const modal = document.getElementById('doc-availability-modal');
   if (modal) {
     modal.classList.add('translate-y-full');
-    setTimeout(() => modal.classList.add('hidden'), 300);
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.style.removeProperty('display');
+    }, 300);
   }
 }
 
@@ -953,16 +994,31 @@ document.addEventListener('click', function(e) {
 
 function openDocPrescriptionModal() {
   const modal = document.getElementById('doc-prescription-modal');
-  if (modal) modal.classList.remove('hidden', 'translate-y-full');
+  if (modal) {
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.classList.remove('hidden');
+    void modal.offsetWidth;
+    modal.classList.remove('translate-y-full');
+    console.log('[Dera Care] 📝 Digital Rx Pad / Prescription modal opened successfully');
+  }
 }
 
 function closeDocPrescriptionModal() {
   const modal = document.getElementById('doc-prescription-modal');
   if (modal) {
     modal.classList.add('translate-y-full');
-    setTimeout(() => modal.classList.add('hidden'), 300);
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.style.removeProperty('display');
+    }, 300);
   }
 }
+
+window.openDocAvailabilityModal = openDocAvailabilityModal;
+window.closeDocAvailabilityModal = closeDocAvailabilityModal;
+window.saveDoctorAvailability = saveDoctorAvailability;
+window.openDocPrescriptionModal = openDocPrescriptionModal;
+window.closeDocPrescriptionModal = closeDocPrescriptionModal;
 
 function issueDigitalPrescription() {
   const patientEl = document.getElementById('doc-rx-patient');
@@ -994,6 +1050,7 @@ function issueDigitalPrescription() {
   if (dosageEl) dosageEl.value = '';
   if (durationEl) durationEl.value = '';
 }
+window.issueDigitalPrescription = issueDigitalPrescription;
 
 function renderDoctorPatientChat() {
   const select = document.getElementById('doc-chat-patient-select');
