@@ -791,25 +791,16 @@ async function handlePatientSignup(e) {
         console.log('[Dera Care] 🔥 Firebase User Created & Profile Saved:', fbUserCreated.email);
       }
     } catch(fbErr) {
-      console.log('[Dera Care] Firebase Signup Notice:', fbErr.code || fbErr.message);
-      if (fbErr.code === 'auth/email-already-in-use') {
-        showToast("Email Already Registered", "An account with this email already exists. Please log in.", "error");
-        if (btn) {
-          btn.dataset.submitting = 'false';
-          btn.disabled = false;
-          btn.innerText = "CREATE ACCOUNT →";
-        }
-        closeRegisterView();
-        return false;
-      } else if (fbErr.code === 'auth/weak-password') {
-        showToast("Weak Password", "Firebase requires a password with at least 6 characters.", "error");
-        if (btn) {
-          btn.dataset.submitting = 'false';
-          btn.disabled = false;
-          btn.innerText = "CREATE ACCOUNT →";
-        }
-        return false;
+      console.error('[Dera Care] ❌ Firebase Signup Exception:', fbErr);
+      const errMsg = fbErr.message || fbErr.code || String(fbErr);
+      alert("Firebase Error: " + errMsg);
+      showToast("Firebase Error", errMsg, "error");
+      if (btn) {
+        btn.dataset.submitting = 'false';
+        btn.disabled = false;
+        btn.innerText = "CREATE ACCOUNT →";
       }
+      return false;
     }
   }
 
