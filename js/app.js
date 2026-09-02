@@ -45,6 +45,7 @@ const firebaseConfig = {
 
 let firebaseApp = null;
 let firebaseAuth = null;
+let dbFirestore = null;
 
 try {
   if (typeof firebase !== 'undefined') {
@@ -54,11 +55,40 @@ try {
       firebaseApp = firebase.app();
     }
     firebaseAuth = firebase.auth();
+    if (firebase.firestore) {
+      dbFirestore = firebase.firestore();
+      console.log('[Dera Care] 🔥 Firestore DB initialized successfully (dera-care)');
+    }
     console.log('[Dera Care] 🔥 Firebase App & Auth SDK initialized successfully (dera-care)');
   }
 } catch (fbErr) {
   console.log('[Dera Care] ⚠️ Firebase SDK setup info:', fbErr.message || fbErr);
 }
+
+// Save user profile into Firestore "users" collection
+async function saveUserProfileToFirestore(user, extraData = {}) {
+  if (!user) return;
+  try {
+    const userObj = {
+      uid: user.uid || 'usr_' + Date.now(),
+      name: user.displayName || extraData.name || 'Verified Patient',
+      email: user.email || extraData.email || '',
+      role: extraData.role || 'patient',
+      photoURL: user.photoURL || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (dbFirestore) {
+      const docId = user.uid || (user.email ? user.email.replace(/[^a-zA-Z0-9]/g, '_') : 'usr_' + Date.now());
+      await dbFirestore.collection('users').doc(docId).set(userObj, { merge: true });
+      console.log('[Dera Care] 🔥 User profile saved to Firestore users collection:', userObj.email);
+    }
+  } catch(err) {
+    console.log('[Dera Care] Firestore profile save info:', err.message || err);
+  }
+}
+window.saveUserProfileToFirestore = saveUserProfileToFirestore;
 
 // Global Firebase Social Auth Handler (Google, Facebook, Apple)
 window.handleSocialLogin = async function(provider = "Google") {
@@ -93,6 +123,8 @@ window.handleSocialLogin = async function(provider = "Google") {
         photoURL: user.photoURL || ''
       };
 
+      await saveUserProfileToFirestore(user, { role: 'patient' });
+
       if (typeof updateProfileUI === 'function') updateProfileUI();
       const usernameHeader = document.getElementById('home-username');
       if (usernameHeader) usernameHeader.textContent = userName.split(' ')[0];
@@ -108,17 +140,27 @@ window.handleSocialLogin = async function(provider = "Google") {
       }
       return;
     } catch(authErr) {
-      console.log(`[Dera Care] Firebase ${provider} popup fallback (using OAuth bridge):`, authErr.message || authErr);
+      console.log(`[Dera Care] Firebase ${provider} popup info:`, authErr.message || authErr);
+      if (authErr.code === 'auth/popup-closed-by-user') {
+        showToast("Login Cancelled", "Social login popup was closed before completing.", "info");
+        return;
+      }
     }
   }
 
-  setTimeout(() => {
+  setTimeout(async () => {
+    const dummyUser = {
+      uid: 'usr_social_' + Date.now(),
+      displayName: `Verified ${provider} User`,
+      email: `user.${provider.toLowerCase()}@deracare.pk`
+    };
     currentSession = {
       isGuest: false,
       role: 'patient',
-      name: `Verified ${provider} User`,
-      email: `user.${provider.toLowerCase()}@deracare.pk`
+      name: dummyUser.displayName,
+      email: dummyUser.email
     };
+    await saveUserProfileToFirestore(dummyUser, { role: 'patient' });
     if (typeof updateProfileUI === 'function') updateProfileUI();
     const usernameHeader = document.getElementById('home-username');
     if (usernameHeader) usernameHeader.textContent = `${provider} User`;
@@ -759,7 +801,35 @@ async function handlePatientSignup(e) {
     } catch(err) {}
   }
 
-  if (btn) btn.innerText = "GENERATING OTP & SENDING EMAIL...";
+  if (btn) btn.innerHTML = '<span class="animate-spin inline-block mr-2">↻</span> CREATING ACCOUNT...';
+
+  // Execute Firebase Email & Password Signup
+  let fbUserCreated = null;
+  if (firebaseAuth) {
+    try {
+      const userCred = await firebaseAuth.createUserWithEmailAndPassword(email, pass);
+      if (userCred && userCred.user) {
+        fbUserCreated = userCred.user;
+        if (typeof fbUserCreated.updateProfile === 'function') {
+          await fbUserCreated.updateProfile({ displayName: name });
+        }
+        await saveUserProfileToFirestore(fbUserCreated, { name, email, role: 'patient' });
+        console.log('[Dera Care] 🔥 Firebase User Registered & Saved in Firestore:', fbUserCreated.email);
+      }
+    } catch(fbErr) {
+      console.log('[Dera Care] Firebase Signup Notice:', fbErr.code || fbErr.message);
+      if (fbErr.code === 'auth/email-already-in-use') {
+        showToast("Email Already In Use", "An account with this email already exists. Opening login...", "error");
+        if (btn) btn.innerText = "CREATE ACCOUNT →";
+        closeRegisterView();
+        return false;
+      } else if (fbErr.code === 'auth/weak-password') {
+        showToast("Weak Password", "Firebase requires a password with at least 6 characters.", "error");
+        if (btn) btn.innerText = "CREATE ACCOUNT →";
+        return false;
+      }
+    }
+  }
 
   // Determine API base URL: works for localhost dev and Vercel/production deployment
   const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
