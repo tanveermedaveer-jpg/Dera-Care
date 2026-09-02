@@ -505,15 +505,12 @@ function showScreen(id) {
     target.classList.add('translate-x-0', 'opacity-100');
 
     if (id === 'admin-panel') {
-      const statsTab = document.getElementById('admin-tab-stats');
-      if (statsTab) {
-        statsTab.classList.remove('hidden');
-        statsTab.style.setProperty('display', 'block', 'important');
-        statsTab.style.setProperty('visibility', 'visible', 'important');
-        statsTab.style.setProperty('opacity', '1', 'important');
-      }
       try { if (typeof renderAdminDoctorList === 'function') renderAdminDoctorList(); } catch(e) {}
+      try { if (typeof renderAdminHospitals === 'function') renderAdminHospitals(); } catch(e) {}
+      try { if (typeof renderAdminStores === 'function') renderAdminStores(); } catch(e) {}
+      try { if (typeof renderAdminLabTests === 'function') renderAdminLabTests(); } catch(e) {}
       try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
+      try { switchAdminTab('doctors'); } catch(e) {}
     }
   } catch (err) {
     console.error("Error in showScreen:", err);

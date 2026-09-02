@@ -870,14 +870,32 @@
             <span>Logout</span>
           </button>
         </div>
-        <!-- Admin Tab Bar -->
-        <div class="flex space-x-1 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl p-1 overflow-x-auto no-scrollbar">
-          <button id="atab-stats" onclick="switchAdminTab('stats')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all focus:outline-none flex-shrink-0" style="background:var(--accent-color);color:var(--primary-btn-text);">📊 Overview</button>
-          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">🩺 Doctors</button>
-          <button id="atab-hospitals" onclick="switchAdminTab('hospitals')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">🏥 Hospitals</button>
-          <button id="atab-stores" onclick="switchAdminTab('stores')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">💊 Stores</button>
-          <button id="atab-labs" onclick="switchAdminTab('labs')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">🧪 Lab Tests</button>
-          <button id="atab-profile" onclick="switchAdminTab('profile')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">⚙️ Profile</button>
+        <!-- Admin Master Multi-Tab Service Navigation Bar -->
+        <div class="grid grid-cols-3 gap-1.5 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-2xl p-1.5 shadow-inner">
+          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all focus:outline-none flex flex-col items-center justify-center space-y-0.5" style="background:var(--accent-color);color:var(--primary-btn-text);">
+            <span class="text-sm">👨‍⚕️</span>
+            <span>Doctors</span>
+          </button>
+          <button id="atab-hospitals" onclick="switchAdminTab('hospitals')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
+            <span class="text-sm">🏥</span>
+            <span>Hospitals</span>
+          </button>
+          <button id="atab-stores" onclick="switchAdminTab('stores')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
+            <span class="text-sm">💊</span>
+            <span>Pharmacies</span>
+          </button>
+          <button id="atab-labs" onclick="switchAdminTab('labs')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
+            <span class="text-sm">🔬</span>
+            <span>Lab Tests</span>
+          </button>
+          <button id="atab-stats" onclick="switchAdminTab('stats')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
+            <span class="text-sm">📊</span>
+            <span>Overview</span>
+          </button>
+          <button id="atab-profile" onclick="switchAdminTab('profile')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
+            <span class="text-sm">⚙️</span>
+            <span>Settings</span>
+          </button>
         </div>
       </div>
 
@@ -957,31 +975,31 @@
             <h3 class="text-xs font-extrabold text-[var(--text-color)] uppercase tracking-wider">🛠️ System Controls &amp; Actions</h3>
             <div class="grid grid-cols-2 gap-2.5">
               <button onclick="switchAdminTab('doctors')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
-                <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm flex-shrink-0">🩺</div>
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm flex-shrink-0">👨‍⚕️</div>
                 <div>
-                  <p class="text-[10px] font-bold text-[var(--text-color)]">Doctor Portal</p>
-                  <p class="text-[8px] text-[var(--text-muted)]">Manage specialists</p>
+                  <p class="text-[10px] font-bold text-[var(--text-color)]">Doctors Directory</p>
+                  <p class="text-[8px] text-[var(--text-muted)]">Add &amp; manage doctors</p>
                 </div>
               </button>
-              <button onclick="switchAdminTab('profile')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
-                <div class="w-8 h-8 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] flex items-center justify-center text-sm flex-shrink-0">🔑</div>
+              <button onclick="switchAdminTab('hospitals')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+                <div class="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-sm flex-shrink-0">🏥</div>
                 <div>
-                  <p class="text-[10px] font-bold text-[var(--text-color)]">Admin Pass</p>
-                  <p class="text-[8px] text-[var(--text-muted)]">Update creds</p>
+                  <p class="text-[10px] font-bold text-[var(--text-color)]">Hospitals Control</p>
+                  <p class="text-[8px] text-[var(--text-muted)]">Medical centers list</p>
                 </div>
               </button>
-              <button onclick="showToast('Cache Cleared', 'System cache & local storage refreshed.', 'success')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
-                <div class="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm flex-shrink-0">⚡</div>
+              <button onclick="switchAdminTab('stores')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+                <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-sm flex-shrink-0">💊</div>
                 <div>
-                  <p class="text-[10px] font-bold text-[var(--text-color)]">Clear Cache</p>
-                  <p class="text-[8px] text-[var(--text-muted)]">Refresh PWA state</p>
+                  <p class="text-[10px] font-bold text-[var(--text-color)]">Medical Stores</p>
+                  <p class="text-[8px] text-[var(--text-muted)]">WhatsApp dispatchers</p>
                 </div>
               </button>
-              <button onclick="showToast('User Feedback', 'Patient satisfaction rating 4.9/5 stars.', 'success')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
-                <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm flex-shrink-0">💬</div>
+              <button onclick="switchAdminTab('labs')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center space-x-2.5 hover:border-[var(--accent-color)]/30 transition-all focus:outline-none text-left">
+                <div class="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm flex-shrink-0">🔬</div>
                 <div>
-                  <p class="text-[10px] font-bold text-[var(--text-color)]">User Feedback</p>
-                  <p class="text-[8px] text-[var(--text-muted)]">4.9/5 rating</p>
+                  <p class="text-[10px] font-bold text-[var(--text-color)]">Diagnostic Labs</p>
+                  <p class="text-[8px] text-[var(--text-muted)]">Manage test catalog</p>
                 </div>
               </button>
             </div>
