@@ -2350,39 +2350,42 @@ window.logoutToLogin = logoutToLogin;
 function switchAdminTab(tab) {
   try {
     ['stats','doctors','hospitals','stores','labs','profile'].forEach(t => {
-      const tabEl = document.getElementById('admin-tab-' + t);
-      if (tabEl) {
-        tabEl.classList.add('hidden');
-        tabEl.style.display = 'none';
+      const sectionEl = document.getElementById('admin-tab-' + t);
+      if (sectionEl) {
+        sectionEl.classList.add('hidden');
+        sectionEl.style.display = 'none';
       }
-      const btn = document.getElementById('atab-' + t);
+      const btn = document.getElementById('btn-admin-tab-' + t) || document.getElementById('atab-' + t);
       if (btn) {
         btn.style.background = '';
         btn.style.color = '';
         btn.classList.add('text-[var(--text-muted)]');
-        btn.classList.remove('shadow-sm');
+        btn.classList.remove('shadow-md');
       }
     });
-    const activeTabEl = document.getElementById('admin-tab-' + tab);
-    if (activeTabEl) {
-      activeTabEl.classList.remove('hidden');
-      activeTabEl.style.display = 'block';
-      activeTabEl.style.opacity = '1';
-      activeTabEl.style.visibility = 'visible';
+
+    const activeSectionEl = document.getElementById('admin-tab-' + tab);
+    if (activeSectionEl) {
+      activeSectionEl.classList.remove('hidden');
+      activeSectionEl.style.display = 'block';
+      activeSectionEl.style.opacity = '1';
+      activeSectionEl.style.visibility = 'visible';
     }
-    const active = document.getElementById('atab-' + tab);
-    if (active) {
-      active.classList.remove('text-[var(--text-muted)]');
-      active.style.background = 'var(--accent-color)';
-      active.style.color = 'var(--primary-btn-text)';
-      active.classList.add('shadow-sm');
+
+    const activeBtn = document.getElementById('btn-admin-tab-' + tab) || document.getElementById('atab-' + tab);
+    if (activeBtn) {
+      activeBtn.classList.remove('text-[var(--text-muted)]');
+      activeBtn.style.background = 'var(--accent-color)';
+      activeBtn.style.color = 'var(--primary-btn-text)';
+      activeBtn.classList.add('shadow-md');
     }
+
     if (tab === 'doctors' && typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
     if (tab === 'hospitals' && typeof renderAdminHospitals === 'function') renderAdminHospitals();
     if (tab === 'stores' && typeof renderAdminStores === 'function') renderAdminStores();
     if (tab === 'labs' && typeof renderAdminLabTests === 'function') renderAdminLabTests();
   } catch (err) {
-    triggerRawCrashDOM(err.message, err.stack);
+    console.error("switchAdminTab exception:", err);
   }
 }
 
