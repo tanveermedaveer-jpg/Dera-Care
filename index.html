@@ -1018,8 +1018,8 @@
           </div>
         </div>
 
-        <!-- SUB-VIEW: DOCTOR MANAGEMENT -->
-        <div id="admin-tab-doctors" class="px-5 py-4 space-y-4 hidden">
+        <!-- SUB-VIEW: DOCTOR MANAGEMENT & MASTER CONTROL -->
+        <div id="admin-tab-doctors" class="px-5 py-4 space-y-6 hidden">
           <!-- Back to Admin Menu Header Bar -->
           <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
             <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
@@ -1028,165 +1028,132 @@
             </button>
             <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center space-x-1">
               <span>👨‍⚕️</span>
-              <span>Doctors Control</span>
+              <span>System Management</span>
             </span>
           </div>
 
-          <!-- Add Doctor Form -->
-          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-              <span id="doc-form-title-icon">➕</span><span id="doc-form-title">Add New Doctor</span>
-            </h3>
-            <div class="space-y-2.5">
-              <input id="add-doc-name" type="text" placeholder="Doctor Full Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-              <input id="add-doc-specialty" type="text" placeholder="Specialty (e.g. Cardiologist)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-              <input id="add-doc-hospital" type="text" placeholder="Hospital / Clinic Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-              <div class="grid grid-cols-2 gap-2.5">
-                <input id="add-doc-id" type="tel" placeholder="Doctor ID / Phone" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <div class="relative">
-                  <input id="add-doc-pin" type="password" placeholder="Assign PIN Code" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-3.5 pr-9 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                  <button type="button" onclick="togglePasswordVisibility('add-doc-pin', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </button>
+          <!-- SECTION 1: DOCTOR MANAGEMENT -->
+          <div id="admin-sec-doctors" class="space-y-4">
+            <!-- Add Doctor Form -->
+            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+                <span id="doc-form-title-icon">➕</span><span id="doc-form-title">Add New Doctor</span>
+              </h3>
+              <div class="space-y-2.5">
+                <input id="add-doc-name" type="text" placeholder="Doctor Full Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="add-doc-specialty" type="text" placeholder="Specialty (e.g. Cardiologist)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="add-doc-hospital" type="text" placeholder="Hospital / Clinic Name" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <div class="grid grid-cols-2 gap-2.5">
+                  <input id="add-doc-id" type="tel" placeholder="Doctor ID / Phone" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <div class="relative">
+                    <input id="add-doc-pin" type="password" placeholder="Assign PIN Code" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl pl-3.5 pr-9 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                    <button type="button" onclick="togglePasswordVisibility('add-doc-pin', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white p-1 focus:outline-none transition-colors">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="flex space-x-2.5 pt-1">
-              <button id="btn-save-doctor" onclick="saveDoctor()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Doctor</button>
-              <button id="btn-cancel-edit" onclick="cancelDoctorEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
-            </div>
-          </div>
-
-          <!-- Doctor Directory List -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Registered Doctors Directory</h3>
-              <span id="admin-doc-count" class="text-[9px] text-[var(--accent-color)] font-extrabold">0 doctors</span>
-            </div>
-            <div id="admin-doctor-list" class="space-y-2.5">
-              <!-- Rendered dynamically -->
-            </div>
-          </div>
-        </div>
-
-        <!-- SUB-VIEW: HOSPITALS MANAGEMENT -->
-        <div id="admin-tab-hospitals" class="px-5 py-4 space-y-4 hidden">
-          <!-- Back to Admin Menu Header Bar -->
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
-            <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
-              <span>⬅️</span>
-              <span>Back to Admin Menu</span>
-            </button>
-            <span class="text-xs font-extrabold uppercase tracking-wider text-blue-400 flex items-center space-x-1">
-              <span>🏥</span>
-              <span>Hospitals Control</span>
-            </span>
-          </div>
-
-          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-              <span id="hosp-form-title-icon">➕</span><span id="hosp-form-title">Add New Hospital</span>
-            </h3>
-            <div class="space-y-2.5">
-              <input id="admin-hosp-name" type="text" placeholder="Hospital Name (e.g. DHQ Hospital)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-              <input id="admin-hosp-address" type="text" placeholder="Address / Location (e.g. Chishti Chowk, Circular Road)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-              <div class="grid grid-cols-2 gap-2.5">
-                <input id="admin-hosp-contact" type="tel" placeholder="Contact Phone (0966-9280111)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <input id="admin-hosp-doctors" type="text" placeholder="Specialties (e.g. Cardiology, ER)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="flex space-x-2.5 pt-1">
+                <button id="btn-save-doctor" onclick="saveDoctor()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Doctor</button>
+                <button id="btn-cancel-edit" onclick="cancelDoctorEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
               </div>
             </div>
-            <div class="flex space-x-2.5 pt-1">
-              <button id="btn-save-hosp" onclick="saveAdminHospital()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Hospital</button>
-              <button id="btn-cancel-hosp" onclick="cancelAdminHospitalEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🏥 Registered Hospitals Directory</h3>
-              <span id="admin-hosp-count" class="text-[9px] text-emerald-400 font-extrabold">0 Hospitals</span>
-            </div>
-            <div id="admin-hospitals-list" class="space-y-2.5"></div>
-          </div>
-        </div>
 
-        <!-- SUB-VIEW: MEDICAL STORES MANAGEMENT -->
-        <div id="admin-tab-stores" class="px-5 py-4 space-y-4 hidden">
-          <!-- Back to Admin Menu Header Bar -->
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
-            <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
-              <span>⬅️</span>
-              <span>Back to Admin Menu</span>
-            </button>
-            <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center space-x-1">
-              <span>💊</span>
-              <span>Medical Stores Control</span>
-            </span>
-          </div>
-
-          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-              <span id="store-form-title-icon">➕</span><span id="store-form-title">Add Medical Store</span>
-            </h3>
-            <div class="space-y-2.5">
-              <input id="admin-store-name" type="text" placeholder="Store Name (e.g. Al-Shafa Pharmacy)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-              <div class="grid grid-cols-2 gap-2.5">
-                <input id="admin-store-area" type="text" placeholder="Area (e.g. Topanwala Bazar)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <input id="admin-store-whatsapp" type="tel" placeholder="WhatsApp (923103716116)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+            <!-- Doctor Directory List -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">📋 Registered Doctors Directory</h3>
+                <span id="admin-doc-count" class="text-[9px] text-[var(--accent-color)] font-extrabold">0 doctors</span>
+              </div>
+              <div id="admin-doctor-list" class="space-y-2.5">
+                <!-- Rendered dynamically -->
               </div>
             </div>
-            <div class="flex space-x-2.5 pt-1">
-              <button id="btn-save-store" onclick="saveAdminStore()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Store</button>
-              <button id="btn-cancel-store" onclick="cancelAdminStoreEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">💊 Medical Stores Directory</h3>
-              <span id="admin-store-count" class="text-[9px] text-amber-400 font-extrabold">0 Stores</span>
-            </div>
-            <div id="admin-stores-list" class="space-y-2.5"></div>
-          </div>
-        </div>
-
-        <!-- SUB-VIEW: LAB TESTS MANAGEMENT -->
-        <div id="admin-tab-labs" class="px-5 py-4 space-y-4 hidden">
-          <!-- Back to Admin Menu Header Bar -->
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
-            <button onclick="switchAdminTab('menu')" class="h-9 px-3.5 rounded-xl bg-[var(--accent-color)]/10 text-[var(--accent-color)] border border-[var(--accent-color)]/30 hover:bg-[var(--accent-color)]/20 transition-all font-extrabold text-[10px] sm:text-xs flex items-center space-x-1.5 focus:outline-none shadow-sm cursor-pointer">
-              <span>⬅️</span>
-              <span>Back to Admin Menu</span>
-            </button>
-            <span class="text-xs font-extrabold uppercase tracking-wider text-cyan-400 flex items-center space-x-1">
-              <span>🔬</span>
-              <span>Diagnostic Labs Control</span>
-            </span>
           </div>
 
-          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
-            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
-              <span id="lab-form-title-icon">➕</span><span id="lab-form-title">Add Diagnostic Test</span>
-            </h3>
-            <div class="space-y-2.5">
-              <input id="admin-lab-name" type="text" placeholder="Test Name (e.g. Complete Blood Count - CBC)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-              <div class="grid grid-cols-2 gap-2.5">
-                <input id="admin-lab-price" type="number" placeholder="Price PKR (e.g. 800)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
-                <input id="admin-lab-desc" type="text" placeholder="Description / Turnaround Time" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+          <!-- SECTION 2: HOSPITAL MANAGEMENT (Physically appended right below Doctor Directory) -->
+          <div id="admin-sec-hospitals" class="pt-5 border-t border-white/10 space-y-4">
+            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+                <span id="hosp-form-title-icon">🏥</span><span id="hosp-form-title">Add New Hospital</span>
+              </h3>
+              <div class="space-y-2.5">
+                <input id="admin-hosp-name" type="text" placeholder="Hospital Name (e.g. DHQ Hospital)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="admin-hosp-address" type="text" placeholder="Address / Location (e.g. Chishti Chowk, Circular Road)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <div class="grid grid-cols-2 gap-2.5">
+                  <input id="admin-hosp-contact" type="tel" placeholder="Contact Phone (0966-9280111)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <input id="admin-hosp-doctors" type="text" placeholder="Specialties (e.g. Cardiology, ER)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                </div>
+              </div>
+              <div class="flex space-x-2.5 pt-1">
+                <button id="btn-save-hosp" onclick="saveAdminHospital()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Hospital</button>
+                <button id="btn-cancel-hosp" onclick="cancelAdminHospitalEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
               </div>
             </div>
-            <div class="flex space-x-2.5 pt-1">
-              <button id="btn-save-lab" onclick="saveAdminLabTest()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Lab Test</button>
-              <button id="btn-cancel-lab" onclick="cancelAdminLabEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🏥 Registered Hospitals Directory</h3>
+                <span id="admin-hosp-count" class="text-[9px] text-emerald-400 font-extrabold">0 Hospitals</span>
+              </div>
+              <div id="admin-hospitals-list" class="space-y-2.5"></div>
             </div>
           </div>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🧪 Diagnostic Test Catalog</h3>
-              <span id="admin-lab-count" class="text-[9px] text-cyan-400 font-extrabold">0 Tests</span>
+
+          <!-- SECTION 3: MEDICAL STORE MANAGEMENT (Physically appended right below Hospital Directory) -->
+          <div id="admin-sec-stores" class="pt-5 border-t border-white/10 space-y-4">
+            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+                <span id="store-form-title-icon">💊</span><span id="store-form-title">Add Medical Store</span>
+              </h3>
+              <div class="space-y-2.5">
+                <input id="admin-store-name" type="text" placeholder="Store Name (e.g. Al-Shafa Pharmacy)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <div class="grid grid-cols-2 gap-2.5">
+                  <input id="admin-store-area" type="text" placeholder="Area (e.g. Topanwala Bazar)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <input id="admin-store-whatsapp" type="tel" placeholder="WhatsApp (923103716116)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                </div>
+              </div>
+              <div class="flex space-x-2.5 pt-1">
+                <button id="btn-save-store" onclick="saveAdminStore()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Store</button>
+                <button id="btn-cancel-store" onclick="cancelAdminStoreEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+              </div>
             </div>
-            <div id="admin-labs-list" class="space-y-2.5"></div>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">💊 Medical Stores Directory</h3>
+                <span id="admin-store-count" class="text-[9px] text-amber-400 font-extrabold">0 Stores</span>
+              </div>
+              <div id="admin-stores-list" class="space-y-2.5"></div>
+            </div>
+          </div>
+
+          <!-- SECTION 4: LAB TEST MANAGEMENT (Physically appended right below Medical Store Directory) -->
+          <div id="admin-sec-labs" class="pt-5 border-t border-white/10 space-y-4">
+            <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+                <span id="lab-form-title-icon">🔬</span><span id="lab-form-title">Add Diagnostic Test</span>
+              </h3>
+              <div class="space-y-2.5">
+                <input id="admin-lab-name" type="text" placeholder="Test Name (e.g. Complete Blood Count - CBC)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <div class="grid grid-cols-2 gap-2.5">
+                  <input id="admin-lab-price" type="number" placeholder="Price PKR (e.g. 800)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                  <input id="admin-lab-desc" type="text" placeholder="Description / Turnaround Time" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                </div>
+              </div>
+              <div class="flex space-x-2.5 pt-1">
+                <button id="btn-save-lab" onclick="saveAdminLabTest()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Test</button>
+                <button id="btn-cancel-lab" onclick="cancelAdminLabEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🧪 Diagnostic Test Catalog</h3>
+                <span id="admin-lab-count" class="text-[9px] text-cyan-400 font-extrabold">0 Tests</span>
+              </div>
+              <div id="admin-labs-list" class="space-y-2.5"></div>
+            </div>
           </div>
         </div>
 
