@@ -510,7 +510,7 @@ function showScreen(id) {
       try { if (typeof renderAdminStores === 'function') renderAdminStores(); } catch(e) {}
       try { if (typeof renderAdminLabTests === 'function') renderAdminLabTests(); } catch(e) {}
       try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
-      try { switchAdminTab('doctors'); } catch(e) {}
+      try { switchAdminTab('menu'); } catch(e) {}
     }
   } catch (err) {
     console.error("Error in showScreen:", err);
@@ -2349,22 +2349,17 @@ window.logoutToLogin = logoutToLogin;
 
 function switchAdminTab(tab) {
   try {
-    ['stats','doctors','hospitals','stores','labs','profile'].forEach(t => {
+    const targetTab = (tab === 'menu' || tab === 'main' || !tab) ? 'stats' : tab;
+
+    ['stats', 'doctors', 'hospitals', 'stores', 'labs', 'profile'].forEach(t => {
       const sectionEl = document.getElementById('admin-tab-' + t);
       if (sectionEl) {
         sectionEl.classList.add('hidden');
         sectionEl.style.display = 'none';
       }
-      const btn = document.getElementById('btn-admin-tab-' + t) || document.getElementById('atab-' + t);
-      if (btn) {
-        btn.style.background = '';
-        btn.style.color = '';
-        btn.classList.add('text-[var(--text-muted)]');
-        btn.classList.remove('shadow-md');
-      }
     });
 
-    const activeSectionEl = document.getElementById('admin-tab-' + tab);
+    const activeSectionEl = document.getElementById('admin-tab-' + targetTab);
     if (activeSectionEl) {
       activeSectionEl.classList.remove('hidden');
       activeSectionEl.style.display = 'block';
@@ -2372,18 +2367,11 @@ function switchAdminTab(tab) {
       activeSectionEl.style.visibility = 'visible';
     }
 
-    const activeBtn = document.getElementById('btn-admin-tab-' + tab) || document.getElementById('atab-' + tab);
-    if (activeBtn) {
-      activeBtn.classList.remove('text-[var(--text-muted)]');
-      activeBtn.style.background = 'var(--accent-color)';
-      activeBtn.style.color = 'var(--primary-btn-text)';
-      activeBtn.classList.add('shadow-md');
-    }
-
-    if (tab === 'doctors' && typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
-    if (tab === 'hospitals' && typeof renderAdminHospitals === 'function') renderAdminHospitals();
-    if (tab === 'stores' && typeof renderAdminStores === 'function') renderAdminStores();
-    if (tab === 'labs' && typeof renderAdminLabTests === 'function') renderAdminLabTests();
+    if ((targetTab === 'stats' || targetTab === 'menu') && typeof updateAdminStats === 'function') updateAdminStats();
+    if (targetTab === 'doctors' && typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
+    if (targetTab === 'hospitals' && typeof renderAdminHospitals === 'function') renderAdminHospitals();
+    if (targetTab === 'stores' && typeof renderAdminStores === 'function') renderAdminStores();
+    if (targetTab === 'labs' && typeof renderAdminLabTests === 'function') renderAdminLabTests();
   } catch (err) {
     console.error("switchAdminTab exception:", err);
   }
@@ -2544,11 +2532,25 @@ function renderAdminDoctorList() {
 function updateAdminStats() {
   try {
     const docCount = (DC.getDoctors() || []).length;
+    const hospCount = (typeof getAdminHospitals === 'function' ? getAdminHospitals() : []).length;
+    const storeCount = (typeof getAdminStores === 'function' ? getAdminStores() : []).length;
+    const labCount = (typeof getAdminLabs === 'function' ? getAdminLabs() : []).length;
     const patientCount = (DC.getPatients() || []).length;
+
     const docEl = document.getElementById('admin-stat-doctors');
     const patientEl = document.getElementById('admin-stat-patients');
     if (docEl) docEl.textContent = docCount;
     if (patientEl) patientEl.textContent = patientCount;
+
+    const cardDocEl = document.getElementById('admin-card-doc-count');
+    const cardHospEl = document.getElementById('admin-card-hosp-count');
+    const cardStoreEl = document.getElementById('admin-card-store-count');
+    const cardLabEl = document.getElementById('admin-card-lab-count');
+
+    if (cardDocEl) cardDocEl.textContent = `${docCount} Doctor${docCount !== 1 ? 's' : ''}`;
+    if (cardHospEl) cardHospEl.textContent = `${hospCount} Hospital${hospCount !== 1 ? 's' : ''}`;
+    if (cardStoreEl) cardStoreEl.textContent = `${storeCount} Store${storeCount !== 1 ? 's' : ''}`;
+    if (cardLabEl) cardLabEl.textContent = `${labCount} Test${labCount !== 1 ? 's' : ''}`;
   } catch(err) {
     console.error("updateAdminStats error:", err);
   }
@@ -2852,6 +2854,7 @@ function renderAdminHospitals() {
     `).join('');
 
     renderUserHospitals();
+    try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
   } catch(e) {
     console.error("renderAdminHospitals error:", e);
   }
@@ -2974,6 +2977,7 @@ function renderAdminStores() {
     `).join('');
 
     renderUserStoresDropdown();
+    try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
   } catch(e) {
     console.error("renderAdminStores error:", e);
   }
@@ -3093,6 +3097,7 @@ function renderAdminLabTests() {
     `).join('');
 
     renderUserLabTests();
+    try { if (typeof updateAdminStats === 'function') updateAdminStats(); } catch(e) {}
   } catch(e) {
     console.error("renderAdminLabTests error:", e);
   }
