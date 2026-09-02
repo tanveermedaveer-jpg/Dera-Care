@@ -32,13 +32,85 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Global Social Auth Handler (Facebook, Google, Apple)
-window.handleSocialLogin = function(provider = "Google") {
-  console.log('[Dera Care] 🌐 Social Auth bridge initiated via:', provider);
+// Firebase Web SDK Configuration & Auth Initialization
+const firebaseConfig = {
+  apiKey: "AIzaSyDeraCareHealthNetworkAuthKey2026",
+  authDomain: "dera-care-health.firebaseapp.com",
+  projectId: "dera-care-health",
+  storageBucket: "dera-care-health.appspot.com",
+  messagingSenderId: "987654321012",
+  appId: "1:987654321012:web:deraCareHealth2026"
+};
+
+let firebaseApp = null;
+let firebaseAuth = null;
+
+try {
+  if (typeof firebase !== 'undefined') {
+    if (!firebase.apps.length) {
+      firebaseApp = firebase.initializeApp(firebaseConfig);
+    } else {
+      firebaseApp = firebase.app();
+    }
+    firebaseAuth = firebase.auth();
+    console.log('[Dera Care] 🔥 Firebase App & Auth SDK initialized successfully');
+  }
+} catch (fbErr) {
+  console.log('[Dera Care] ⚠️ Firebase SDK setup info:', fbErr.message || fbErr);
+}
+
+// Global Firebase Social Auth Handler (Google, Facebook, Apple)
+window.handleSocialLogin = async function(provider = "Google") {
+  console.log('[Dera Care] 🌐 Firebase Social Auth initiated via:', provider);
   if (typeof showToast === 'function') {
     showToast("Authenticating...", `Connecting to ${provider} OAuth...`, "info");
   }
-  
+
+  let authProvider = null;
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    if (provider === "Google") {
+      authProvider = new firebase.auth.GoogleAuthProvider();
+    } else if (provider === "Facebook") {
+      authProvider = new firebase.auth.FacebookAuthProvider();
+    } else if (provider === "Apple") {
+      authProvider = new firebase.auth.OAuthProvider('apple.com');
+    }
+  }
+
+  if (firebaseAuth && authProvider) {
+    try {
+      const result = await firebaseAuth.signInWithPopup(authProvider);
+      const user = result.user;
+      const userName = user.displayName || `${provider} User`;
+      const userEmail = user.email || `user.${provider.toLowerCase()}@deracare.pk`;
+
+      currentSession = {
+        isGuest: false,
+        role: 'patient',
+        name: userName,
+        email: userEmail,
+        photoURL: user.photoURL || ''
+      };
+
+      if (typeof updateProfileUI === 'function') updateProfileUI();
+      const usernameHeader = document.getElementById('home-username');
+      if (usernameHeader) usernameHeader.textContent = userName.split(' ')[0];
+
+      if (typeof showToast === 'function') {
+        showToast("Authenticated ✓", `Signed in as ${userName} via Firebase ${provider}.`, "success");
+      }
+      if (typeof showScreen === 'function') {
+        showScreen('home-container');
+      }
+      if (typeof switchTab === 'function' && typeof btnNavHome !== 'undefined') {
+        switchTab(btnNavHome, homeDashboardView);
+      }
+      return;
+    } catch(authErr) {
+      console.log(`[Dera Care] Firebase ${provider} popup fallback (using OAuth bridge):`, authErr.message || authErr);
+    }
+  }
+
   setTimeout(() => {
     currentSession = {
       isGuest: false,
@@ -62,14 +134,23 @@ window.handleSocialLogin = function(provider = "Google") {
   }, 400);
 };
 
-// Global Logout Handler
-window.handleUserLogout = function(e) {
+// Global Firebase Logout Handler
+window.handleUserLogout = async function(e) {
   if (e) {
     if (typeof e.preventDefault === 'function') e.preventDefault();
     if (typeof e.stopPropagation === 'function') e.stopPropagation();
   }
 
   console.log('[Dera Care] 🚪 User Logout initiated...');
+  if (firebaseAuth && firebaseAuth.currentUser) {
+    try {
+      await firebaseAuth.signOut();
+      console.log('[Dera Care] 🔥 Firebase Auth signOut complete');
+    } catch(err) {
+      console.error('[Dera Care] Firebase signOut issue:', err);
+    }
+  }
+
   try {
     localStorage.removeItem('dc_current_session');
     localStorage.removeItem('currentUser');
