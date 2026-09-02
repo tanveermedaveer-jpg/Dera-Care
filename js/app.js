@@ -32,14 +32,15 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Firebase Web SDK Configuration & Auth Initialization
+// Official Dera Care Firebase Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDeraCareHealthNetworkAuthKey2026",
-  authDomain: "dera-care-health.firebaseapp.com",
-  projectId: "dera-care-health",
-  storageBucket: "dera-care-health.appspot.com",
-  messagingSenderId: "987654321012",
-  appId: "1:987654321012:web:deraCareHealth2026"
+  apiKey: "AIzaSyDXKp9IohXYUAfmB4DhGUgKbHYtNMAA6BE",
+  authDomain: "dera-care.firebaseapp.com",
+  projectId: "dera-care",
+  storageBucket: "dera-care.firebasestorage.app",
+  messagingSenderId: "505285564694",
+  appId: "1:505285564694:web:f8f6d3aa4c48b7f10e9837",
+  measurementId: "G-6YMX72R34T"
 };
 
 let firebaseApp = null;
@@ -53,7 +54,7 @@ try {
       firebaseApp = firebase.app();
     }
     firebaseAuth = firebase.auth();
-    console.log('[Dera Care] 🔥 Firebase App & Auth SDK initialized successfully');
+    console.log('[Dera Care] 🔥 Firebase App & Auth SDK initialized successfully (dera-care)');
   }
 } catch (fbErr) {
   console.log('[Dera Care] ⚠️ Firebase SDK setup info:', fbErr.message || fbErr);
