@@ -1012,7 +1012,31 @@ document.addEventListener('click', function(e) {
 
 function loadSavedUserSession() {
   try {
-    const adminSaved = localStorage.getItem('dc_current_session');
+    const isDeraAdmin = localStorage.getItem('dera_is_admin') === 'true';
+    if (isDeraAdmin) {
+      currentSession = {
+        isGuest: false,
+        role: 'admin',
+        name: `Super Admin (muhammadsadaf010@gmail.com)`,
+        phone: "03103716116",
+        email: "muhammadsadaf010@gmail.com"
+      };
+      const lbl = document.getElementById('admin-logged-in-label');
+      if (lbl) lbl.textContent = `Logged in as Admin (muhammadsadaf010@gmail.com)`;
+      const disp = document.getElementById('admin-display-username');
+      if (disp) disp.textContent = "muhammadsadaf010@gmail.com";
+      const loginCard = document.getElementById('login-container');
+      if (loginCard) {
+        loginCard.style.setProperty('display', 'none', 'important');
+      }
+      setTimeout(() => {
+        showScreen('admin-panel');
+        switchAdminTab('menu');
+      }, 50);
+      return;
+    }
+
+    const adminSaved = localStorage.getItem('dc_current_session') || localStorage.getItem('dc_session');
     if (adminSaved) {
       const sess = JSON.parse(adminSaved);
       if (sess && sess.role === 'admin') {
@@ -1021,9 +1045,14 @@ function loadSavedUserSession() {
         if (lbl) lbl.textContent = `Logged in as ${sess.name}`;
         const disp = document.getElementById('admin-display-username');
         if (disp) disp.textContent = sess.name;
+        const loginCard = document.getElementById('login-container');
+        if (loginCard) {
+          loginCard.style.setProperty('display', 'none', 'important');
+        }
         setTimeout(() => {
           showScreen('admin-panel');
-        }, 100);
+          switchAdminTab('menu');
+        }, 50);
         return;
       }
     }
@@ -1988,12 +2017,14 @@ async function handleUniversalLogin(e) {
       };
 
       try {
+        localStorage.setItem('dera_is_admin', 'true');
         localStorage.setItem('dc_session', JSON.stringify(currentSession));
       } catch(err) {}
 
       const loginCard = document.getElementById('login-container');
       if (loginCard) {
         loginCard.style.setProperty('display', 'none', 'important');
+        loginCard.classList.add('hidden');
       }
 
       showScreen('admin-panel');
@@ -2158,6 +2189,7 @@ window.handlePatientLogin = handleUniversalLogin;
 function logoutToLogin() {
   currentSession = null;
   try {
+    localStorage.removeItem('dera_is_admin');
     localStorage.removeItem('dc_session');
     localStorage.removeItem('dc_user_session');
   } catch(e) {}
