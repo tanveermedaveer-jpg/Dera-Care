@@ -796,12 +796,31 @@ async function handlePatientSignup(e) {
 }
 window.handlePatientSignup = handlePatientSignup;
 
-// Backup programmatic event listener — ensures the button works even if inline onclick is stripped
+// Backup programmatic event listener — ensures forms and buttons submit cleanly
 document.addEventListener('DOMContentLoaded', function() {
+  const regForm = document.getElementById('patient-signup-form');
+  if (regForm && !regForm.dataset.listenerAttached) {
+    regForm.dataset.listenerAttached = 'true';
+    regForm.addEventListener('submit', function(e) {
+      if (e && typeof e.preventDefault === 'function') e.preventDefault();
+      handlePatientSignup(e);
+    });
+  }
+
+  const loginForm = document.getElementById('universal-login-form');
+  if (loginForm && !loginForm.dataset.listenerAttached) {
+    loginForm.dataset.listenerAttached = 'true';
+    loginForm.addEventListener('submit', function(e) {
+      if (e && typeof e.preventDefault === 'function') e.preventDefault();
+      handleUniversalLogin(e);
+    });
+  }
+
   const regBtn = document.getElementById('register-btn');
   if (regBtn && !regBtn.dataset.listenerAttached) {
     regBtn.dataset.listenerAttached = 'true';
     regBtn.addEventListener('click', function(e) {
+      if (e && typeof e.preventDefault === 'function') e.preventDefault();
       console.log('[Dera Care] register-btn click captured via DOMContentLoaded listener');
       handlePatientSignup(e);
     });
