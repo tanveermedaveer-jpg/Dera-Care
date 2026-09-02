@@ -870,31 +870,23 @@
             <span>Logout</span>
           </button>
         </div>
-        <!-- Admin Master Multi-Tab Service Navigation Bar -->
-        <div class="grid grid-cols-3 gap-1.5 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-2xl p-1.5 shadow-inner">
-          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all focus:outline-none flex flex-col items-center justify-center space-y-0.5" style="background:var(--accent-color);color:var(--primary-btn-text);">
-            <span class="text-sm">👨‍⚕️</span>
+        <!-- Admin Main 4-Tab Service Navigation Bar -->
+        <div class="grid grid-cols-4 gap-2 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-2xl p-2 shadow-lg">
+          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="py-2.5 px-1 rounded-xl text-[10px] sm:text-[11px] font-extrabold uppercase tracking-tight transition-all focus:outline-none flex flex-col items-center justify-center space-y-1 shadow-md" style="background:var(--accent-color);color:var(--primary-btn-text);">
+            <span class="text-base">👨‍⚕️</span>
             <span>Doctors</span>
           </button>
-          <button id="atab-hospitals" onclick="switchAdminTab('hospitals')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
-            <span class="text-sm">🏥</span>
+          <button id="atab-hospitals" onclick="switchAdminTab('hospitals')" class="py-2.5 px-1 rounded-xl text-[10px] sm:text-[11px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] hover:text-white focus:outline-none flex flex-col items-center justify-center space-y-1">
+            <span class="text-base">🏥</span>
             <span>Hospitals</span>
           </button>
-          <button id="atab-stores" onclick="switchAdminTab('stores')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
-            <span class="text-sm">💊</span>
-            <span>Pharmacies</span>
+          <button id="atab-stores" onclick="switchAdminTab('stores')" class="py-2.5 px-1 rounded-xl text-[10px] sm:text-[11px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] hover:text-white focus:outline-none flex flex-col items-center justify-center space-y-1">
+            <span class="text-base">💊</span>
+            <span>Medical Stores</span>
           </button>
-          <button id="atab-labs" onclick="switchAdminTab('labs')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
-            <span class="text-sm">🔬</span>
+          <button id="atab-labs" onclick="switchAdminTab('labs')" class="py-2.5 px-1 rounded-xl text-[10px] sm:text-[11px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] hover:text-white focus:outline-none flex flex-col items-center justify-center space-y-1">
+            <span class="text-base">🔬</span>
             <span>Lab Tests</span>
-          </button>
-          <button id="atab-stats" onclick="switchAdminTab('stats')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
-            <span class="text-sm">📊</span>
-            <span>Overview</span>
-          </button>
-          <button id="atab-profile" onclick="switchAdminTab('profile')" class="py-2 px-1 rounded-xl text-[10px] font-extrabold uppercase tracking-tight transition-all text-[var(--text-muted)] focus:outline-none flex flex-col items-center justify-center space-y-0.5">
-            <span class="text-sm">⚙️</span>
-            <span>Settings</span>
           </button>
         </div>
       </div>
