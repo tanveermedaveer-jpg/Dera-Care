@@ -310,7 +310,7 @@ const DC = {
   getAdminCreds() {
     const stored = localStorage.getItem('dc_admin_creds');
     if (stored) return JSON.parse(stored);
-    return { username: 'MSadaf', password: 'Sadaf@9099' };
+    return { username: 'muhammadsadaf010@gmail.com', password: 'Sadaf@10' };
   },
   saveAdminCreds(u, p) {
     localStorage.setItem('dc_admin_creds', JSON.stringify({ username: u, password: p }));
@@ -1883,160 +1883,17 @@ function toggleDoctorPassVis(id) {
 }
 
 function renderUpgradedAdminDashboard(mainFrame) {
-  if (!mainFrame) return;
-
-  const bg = '#ffffff';
-  const text = '#000000';
-  const cardBg = '#f8fafc';
-  const border = '#cbd5e1';
-  const inputBg = '#ffffff';
-  const textMuted = '#64748b';
-  const formBg = '#ffffff';
-
-  const doctors = getAdminDoctorsList();
-  const docCount = doctors ? doctors.length : 0;
-
-  let patients = [];
-  try {
-    patients = (typeof DC !== 'undefined' && DC.getPatients) ? (DC.getPatients() || []) : [];
-  } catch(e) {
-    patients = [];
+  if (typeof showScreen === 'function') {
+    showScreen('admin-panel');
   }
-  const patientCount = patients ? patients.length : 0;
-
-  let doctorsCardsHtml = '';
-  if (!doctors || doctors.length === 0) {
-    doctorsCardsHtml = `
-      <div style="text-align: center; color: ${textMuted}; font-size: 12px; padding: 24px 16px; background: ${cardBg}; border: 1.5px dashed ${border}; border-radius: 12px; margin-bottom: 10px;">
-        <div style="font-size: 22px; margin-bottom: 4px;">🩺</div>
-        <div style="font-weight: 800; color: ${text};">No Doctors Registered Yet</div>
-        <div style="font-size: 11px; margin-top: 2px; color: ${textMuted};">Add a new doctor using the form above.</div>
-      </div>
-    `;
-  } else {
-    doctors.forEach((d, idx) => {
-      const passInputId = `doc-pass-view-${idx}`;
-      doctorsCardsHtml += `
-        <div style="background: ${cardBg}; border: 1.5px solid ${border}; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div>
-              <div style="font-weight: 800; font-size: 14px; color: ${text};">${d.name || 'Doctor'}</div>
-              <div style="font-size: 11px; color: ${textMuted}; margin-top: 1px;">${d.specialty || 'General Practice'} · ${d.hospital || 'DHQ Hospital'}</div>
-            </div>
-            <span style="background: #dcfce7; color: #15803d; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">Active</span>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 6px 10px; font-size: 11px;">
-            <div>
-              <span style="color: ${textMuted}; font-weight: bold;">ID/Email:</span>
-              <span style="color: ${text}; font-weight: bold; margin-left: 4px;">${d.docId || 'N/A'}</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <span style="color: ${textMuted}; font-weight: bold;">PIN:</span>
-              <input id="${passInputId}" type="password" value="${d.pin || ''}" readonly style="width: 60px; border: none; background: transparent; font-weight: bold; color: #059669; outline: none; font-size: 11px;">
-              <button type="button" onclick="toggleDoctorPassVis('${passInputId}')" style="background: none; border: none; cursor: pointer; padding: 2px; color: ${textMuted}; font-size: 13px;" title="Toggle Password Visibility">
-                👁️
-              </button>
-            </div>
-          </div>
-
-          <div style="display: flex; gap: 8px; margin-top: 2px;">
-            <button onclick="editAdminDoctor('${d.docId}')" style="flex: 1; background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 8px; padding: 6px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
-              ✏️ Change Password / Edit
-            </button>
-            <button onclick="deleteAdminDoctor('${d.docId}')" style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
-              🗑️ Delete
-            </button>
-          </div>
-        </div>
-      `;
-    });
+  if (typeof switchAdminTab === 'function') {
+    switchAdminTab('menu');
   }
-
-  mainFrame.innerHTML = `
-    <div style="background: ${bg}; color: ${text}; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; height: 100%; overflow-y: auto; box-sizing: border-box;">
-      
-      <!-- Top Bar Header & Logout -->
-      <div style="background: #059669; color: #ffffff; padding: 14px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(5,150,105,0.2);">
-        <div>
-          <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff;">Admin Panel</h2>
-          <p style="margin: 2px 0 0 0; font-size: 10px; color: #e6fffa;">muhammadsadaf010@gmail.com</p>
-        </div>
-        <button onclick="logoutToLogin()" style="background: #dc2626; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
-          🚪 Logout
-        </button>
-      </div>
-
-      <!-- Overview Stats Cards Grid -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-        <div style="background: ${cardBg}; border: 2px solid ${border}; border-radius: 12px; padding: 12px; text-align: center;">
-          <div style="font-size: 24px; font-weight: 900; color: #2563eb;">${patientCount}</div>
-          <div style="font-size: 10px; font-weight: 800; color: ${textMuted}; text-transform: uppercase;">Total Patients</div>
-        </div>
-        <div style="background: ${cardBg}; border: 2px solid ${border}; border-radius: 12px; padding: 12px; text-align: center;">
-          <div style="font-size: 24px; font-weight: 900; color: #16a34a;">${docCount}</div>
-          <div style="font-size: 10px; font-weight: 800; color: ${textMuted}; text-transform: uppercase;">Active Doctors</div>
-        </div>
-      </div>
-
-      <!-- FEATURE 1: ADD NEW DOCTOR FORM -->
-      <div id="admin-doctor-form-section" style="background: ${formBg}; border: 2px solid #00a86b; border-radius: 14px; padding: 14px; margin-bottom: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.05);">
-        <h3 id="admin-doc-form-title" style="margin: 0 0 12px 0; font-size: 13px; font-weight: 800; color: ${text}; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid ${border}; padding-bottom: 6px;">
-          ➕ Add New Doctor
-        </h3>
-        <form onsubmit="saveAdminDoctor(event); return false;" style="display: flex; flex-direction: column; gap: 10px;">
-          <div>
-            <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Doctor Full Name</label>
-            <input id="admin-add-doc-name" type="text" placeholder="Enter doctor's name" required
-              style="width: 100%; margin-top: 4px; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
-          </div>
-          <div>
-            <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Specialization</label>
-            <input id="admin-add-doc-spec" type="text" placeholder="Enter specialization (e.g., Cardiology)" required
-              style="width: 100%; margin-top: 4px; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div>
-              <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Email / Login ID</label>
-              <input id="admin-add-doc-id" type="text" placeholder="Enter email or login ID" required
-                style="width: 100%; margin-top: 4px; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
-            </div>
-            <div>
-              <label style="font-size: 10px; font-weight: bold; color: #00a86b; text-transform: uppercase;">Password / Pin</label>
-              <div style="position: relative; margin-top: 4px;">
-                <input id="admin-add-doc-pin" type="password" placeholder="Enter password or PIN" required
-                  style="width: 100%; height: 38px; background: ${inputBg}; border: 1px solid ${border}; border-radius: 8px; padding: 0 32px 0 10px; font-size: 12px; color: ${text}; box-sizing: border-box; outline: none;">
-                <button type="button" onclick="toggleDoctorPassVis('admin-add-doc-pin')" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: ${textMuted}; font-size: 12px;" title="Toggle Visibility">
-                  👁️
-                </button>
-              </div>
-            </div>
-          </div>
-          <button id="admin-doc-save-btn" type="submit" style="margin-top: 4px; height: 40px; background: #00a86b; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px;">
-            💾 SAVE DOCTOR
-          </button>
-        </form>
-      </div>
-
-      <!-- FEATURE 3 & 4: DOCTOR DIRECTORY & ACTIONS LIST -->
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin: 0; font-size: 13px; font-weight: 800; color: ${text}; text-transform: uppercase; letter-spacing: 0.5px;">
-            🩺 Doctor Directory (${docCount})
-          </h3>
-          <span style="font-size: 10px; color: #00a86b; font-weight: bold;">Pre-Approved Only</span>
-        </div>
-        ${doctorsCardsHtml}
-      </div>
-
-    </div>
-  `;
 }
 
-window.saveAdminDoctor = saveAdminDoctor;
-window.editAdminDoctor = editAdminDoctor;
-window.deleteAdminDoctor = deleteAdminDoctor;
-window.toggleDoctorPassVis = toggleDoctorPassVis;
+window.saveAdminDoctor = saveDoctor;
+window.editAdminDoctor = editDoctor;
+window.deleteAdminDoctor = deleteDoctor;
 window.renderUpgradedAdminDashboard = renderUpgradedAdminDashboard;
 
 function showLoginErrorBanner(msg) {
@@ -2069,7 +1926,7 @@ async function handleUniversalLogin(e) {
   }
 
   const adminEmail = "muhammadsadaf010@gmail.com";
-  const adminPass = "Sadaf@9099";
+  const adminPass = "Sadaf@10";
 
   try {
     const idEl = document.getElementById('universal-login-id') || document.getElementById('admin-user-input') || document.getElementById('patient-login-email') || document.getElementById('doctor-id-input');
@@ -2088,12 +1945,16 @@ async function handleUniversalLogin(e) {
     const cleanId = rawId.toLowerCase().trim();
     const cleanPhone = rawId.replace(/[\s\-\(\)\+]/g, '');
 
+    const activeCreds = (typeof DC !== 'undefined' && DC.getAdminCreds) ? DC.getAdminCreds() : { username: adminEmail, password: adminPass };
+    const validPass = activeCreds.password || adminPass;
+    const validUser = (activeCreds.username || adminEmail).toLowerCase();
+
     // 1. HARDCODED SUPER ADMIN CREDENTIALS CHECK
-    const isAdminEmail = (cleanId === adminEmail);
+    const isAdminEmail = (cleanId === adminEmail || cleanId === validUser);
     const isAdminPhone = (cleanPhone === '03103716116' || cleanPhone === '923103716116' || cleanPhone === '3103716116' || rawId === '03103716116');
     const isAdminUser = (cleanId === 'msadaf');
 
-    if ((isAdminEmail || isAdminPhone || isAdminUser) && rawPass === adminPass) {
+    if ((isAdminEmail || isAdminPhone || isAdminUser) && (rawPass === validPass || rawPass === adminPass || rawPass === 'Sadaf@10')) {
       hideLoginErrorBanner();
       currentSession = {
         isGuest: false,
@@ -2108,8 +1969,8 @@ async function handleUniversalLogin(e) {
         loginCard.style.display = 'none';
       }
 
-      const mainFrame = document.getElementById('mobile-frame') || document.body;
-      renderUpgradedAdminDashboard(mainFrame);
+      showScreen('admin-panel');
+      switchAdminTab('menu');
 
       if (typeof showToast === 'function') {
         showToast('Admin Access Granted ✓', `Welcome Admin: ${adminEmail}`, 'success');
