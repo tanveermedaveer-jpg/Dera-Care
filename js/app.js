@@ -1585,10 +1585,16 @@ function changePatientPassword() {
 }
 
 function handlePatientLogin() {
-  const emailEl = document.getElementById('patient-login-email');
-  const passEl = document.getElementById('patient-login-pass');
+  const emailEl = document.getElementById('patient-login-email') || document.getElementById('universal-login-id');
+  const passEl = document.getElementById('patient-login-pass') || document.getElementById('universal-login-pass');
   const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
   const pass = passEl ? passEl.value.trim() : "";
+
+  if (email === 'muhammadsadaf010@gmail.com' || email.includes('sadaf') || email.includes('03103716116')) {
+    if (typeof handleUniversalLogin === 'function') handleUniversalLogin();
+    return;
+  }
+
   if (!email || !pass) {
     showToast('Missing Fields', 'Please enter your email and password.', 'error');
     return;
@@ -1944,17 +1950,34 @@ async function handleUniversalLogin(e) {
 
     const cleanId = rawId.toLowerCase().trim();
     const cleanPhone = rawId.replace(/[\s\-\(\)\+]/g, '');
+    const cleanPass = rawPass.trim();
 
     const activeCreds = (typeof DC !== 'undefined' && DC.getAdminCreds) ? DC.getAdminCreds() : { username: adminEmail, password: adminPass };
-    const validPass = activeCreds.password || adminPass;
-    const validUser = (activeCreds.username || adminEmail).toLowerCase();
+    const storedPass = (activeCreds.password || adminPass).trim();
+    const storedUser = (activeCreds.username || adminEmail).toLowerCase().trim();
 
-    // 1. HARDCODED SUPER ADMIN CREDENTIALS CHECK
-    const isAdminEmail = (cleanId === adminEmail || cleanId === validUser);
-    const isAdminPhone = (cleanPhone === '03103716116' || cleanPhone === '923103716116' || cleanPhone === '3103716116' || rawId === '03103716116');
-    const isAdminUser = (cleanId === 'msadaf');
+    // 1. HARDCODED SUPER ADMIN DIRECT BYPASS CHECK
+    const isMasterAdminId = (
+      cleanId === 'muhammadsadaf010@gmail.com' ||
+      cleanId === storedUser ||
+      cleanId.includes('muhammadsadaf010') ||
+      cleanId === 'msadaf' ||
+      cleanPhone === '03103716116' ||
+      cleanPhone === '923103716116' ||
+      cleanPhone === '3103716116' ||
+      rawId === '03103716116'
+    );
 
-    if ((isAdminEmail || isAdminPhone || isAdminUser) && (rawPass === validPass || rawPass === adminPass || rawPass === 'Sadaf@10')) {
+    const isMasterAdminPass = (
+      cleanPass === 'Sadaf@10' ||
+      cleanPass.toLowerCase() === 'sadaf@10' ||
+      cleanPass === 'Sadaf@9099' ||
+      cleanPass.toLowerCase() === 'sadaf@9099' ||
+      cleanPass === storedPass ||
+      cleanPass.toLowerCase() === storedPass.toLowerCase()
+    );
+
+    if (isMasterAdminId && isMasterAdminPass) {
       hideLoginErrorBanner();
       currentSession = {
         isGuest: false,
@@ -1964,9 +1987,13 @@ async function handleUniversalLogin(e) {
         email: adminEmail
       };
 
+      try {
+        localStorage.setItem('dc_session', JSON.stringify(currentSession));
+      } catch(err) {}
+
       const loginCard = document.getElementById('login-container');
       if (loginCard) {
-        loginCard.style.display = 'none';
+        loginCard.style.setProperty('display', 'none', 'important');
       }
 
       showScreen('admin-panel');
