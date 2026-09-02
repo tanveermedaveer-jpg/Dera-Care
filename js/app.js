@@ -754,19 +754,22 @@ async function handlePatientSignup(e) {
   const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
   const pass = passEl ? passEl.value.trim() : "";
 
-  console.log('[Dera Care] handlePatientSignup triggered — Name:', name, '| Email:', email, '| Pass length:', pass.length);
+  console.log('[Dera Care] 📝 handlePatientSignup triggered — Name:', name, '| Email:', email);
 
   if (!name || !email || !pass) {
+    alert("Missing Fields: Please enter your full name, email address, and password.");
     showToast("Missing Fields", "Please enter your full name, email address, and password.", "error");
     return false;
   }
 
   if (!email.includes('@') || !email.includes('.')) {
+    alert("Invalid Email: Please enter a valid email address.");
     showToast("Invalid Email", "Please enter a valid email address.", "error");
     return false;
   }
 
   if (pass.length < 6) {
+    alert("Weak Password: Password must be at least 6 characters long.");
     showToast("Weak Password", "Password must be at least 6 characters long.", "error");
     return false;
   }
@@ -781,6 +784,7 @@ async function handlePatientSignup(e) {
   let fbUserCreated = null;
   if (firebaseAuth) {
     try {
+      console.log('[Dera Care] 🔥 Calling firebaseAuth.createUserWithEmailAndPassword...');
       const userCred = await firebaseAuth.createUserWithEmailAndPassword(email, pass);
       if (userCred && userCred.user) {
         fbUserCreated = userCred.user;
@@ -793,7 +797,7 @@ async function handlePatientSignup(e) {
     } catch(fbErr) {
       console.error('[Dera Care] ❌ Firebase Signup Exception:', fbErr);
       const errMsg = fbErr.message || fbErr.code || String(fbErr);
-      alert("Firebase Error: " + errMsg);
+      alert("Firebase Signup Error: " + errMsg);
       showToast("Firebase Error", errMsg, "error");
       if (btn) {
         btn.dataset.submitting = 'false';
@@ -820,7 +824,7 @@ async function handlePatientSignup(e) {
       email: email,
       pass: pass,
       password: pass,
-      isVerified: false,
+      isVerified: true,
       createdAt: new Date().toISOString()
     };
     patients.unshift(newUser);
@@ -852,13 +856,14 @@ async function handlePatientSignup(e) {
   const usernameHeader = document.getElementById('home-username');
   if (usernameHeader) usernameHeader.textContent = name.split(' ')[0];
 
-  closeRegisterView();
-  showToast("Account Created ✓", `Welcome ${name}! Registration complete.`, "success");
-
+  // Route directly to Patient Dashboard FIRST, then close register overlay
   showScreen('home-container');
   if (typeof switchTab === 'function' && typeof btnNavHome !== 'undefined') {
     switchTab(btnNavHome, homeDashboardView);
   }
+  closeRegisterView();
+
+  showToast("Account Created ✓", `Welcome ${name}! Registration complete.`, "success");
 
   return false;
 }
