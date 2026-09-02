@@ -2067,7 +2067,101 @@ async function handleUniversalLogin(e) {
       return false;
     }
 
-    // 3. REGISTERED PATIENT / USER LOGIN VALIDATION
+    // 3. FIREBASE AUTHENTICATION & CLOUD FIRESTORE USER / ADMIN CHECK
+    let fbSuccess = false;
+    let fbIsAdmin = false;
+    let fbUserData = null;
+
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      try {
+        const authObj = firebase.auth();
+        const userCredential = await authObj.signInWithEmailAndPassword(cleanId, rawPass);
+        const fbUser = userCredential.user;
+
+        if (fbUser) {
+          fbSuccess = true;
+          if (dbFirestore) {
+            try {
+              // Query Firestore 'users' collection where 'email' matches logged-in user's email
+              const snapshot = await dbFirestore.collection('users').where('email', '==', fbUser.email.toLowerCase()).get();
+              if (!snapshot.empty) {
+                const docData = snapshot.docs[0].data();
+                fbUserData = docData;
+                if (docData.isAdmin === true || docData.role === 'admin') {
+                  fbIsAdmin = true;
+                }
+              } else {
+                // Check doc by UID as fallback
+                const docUid = await dbFirestore.collection('users').doc(fbUser.uid).get();
+                if (docUid.exists) {
+                  const docData = docUid.data();
+                  fbUserData = docData;
+                  if (docData.isAdmin === true || docData.role === 'admin') {
+                    fbIsAdmin = true;
+                  }
+                }
+              }
+            } catch (fsErr) {
+              console.log("[Dera Care] Firestore user query info:", fsErr.message || fsErr);
+            }
+          }
+        }
+      } catch (fbAuthErr) {
+        console.log("[Dera Care] Firebase Auth sign in info:", fbAuthErr.message || fbAuthErr);
+      }
+    }
+
+    if (fbSuccess) {
+      hideLoginErrorBanner();
+      if (fbIsAdmin) {
+        currentSession = {
+          isGuest: false,
+          role: 'admin',
+          name: (fbUserData && fbUserData.name) ? fbUserData.name : `Admin (${cleanId})`,
+          email: cleanId
+        };
+        try {
+          localStorage.setItem('dera_is_admin', 'true');
+          localStorage.setItem('dc_session', JSON.stringify(currentSession));
+        } catch(err) {}
+
+        const loginCard = document.getElementById('login-container');
+        if (loginCard) {
+          loginCard.style.setProperty('display', 'none', 'important');
+          loginCard.classList.add('hidden');
+        }
+
+        showScreen('admin-panel');
+        switchAdminTab('menu');
+        if (typeof showToast === 'function') showToast('Admin Access Granted ✓', `Welcome Admin: ${cleanId}`, 'success');
+        return false;
+      } else {
+        // Regular patient / user (isAdmin is false or missing)
+        currentSession = {
+          isGuest: false,
+          role: 'patient',
+          name: (fbUserData && fbUserData.name) ? fbUserData.name : cleanId.split('@')[0],
+          email: cleanId
+        };
+        try {
+          localStorage.removeItem('dera_is_admin');
+          localStorage.setItem('dc_session', JSON.stringify(currentSession));
+          localStorage.setItem('currentUser', JSON.stringify(currentSession));
+        } catch(err) {}
+
+        const loginCard = document.getElementById('login-container');
+        if (loginCard) {
+          loginCard.style.setProperty('display', 'none', 'important');
+          loginCard.classList.add('hidden');
+        }
+
+        showScreen('home-container');
+        if (typeof showToast === 'function') showToast('Welcome Back ✓', `Logged in as ${currentSession.name}`, 'success');
+        return false;
+      }
+    }
+
+    // 4. FALLBACK REGISTERED PATIENT / USER LOGIN VALIDATION
     let backendSuccess = false;
     let backendUser = null;
 
@@ -2081,11 +2175,6 @@ async function handleUniversalLogin(e) {
       if (apiData.success) {
         backendSuccess = true;
         backendUser = apiData.user;
-      } else {
-        const errMsg = apiData.message || 'Account not found or unverified. Please register first.';
-        showLoginErrorBanner(errMsg);
-        if (typeof showToast === 'function') showToast('Login Failed', errMsg, 'error');
-        return false;
       }
     } catch(err) {
       console.log("Backend API offline, testing local storage authentication.");
