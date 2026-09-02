@@ -2235,6 +2235,16 @@ function logoutToLogin() {
 }
 window.logoutToLogin = logoutToLogin;
 
+function scrollToAdminSec(secId) {
+  try {
+    const el = document.getElementById(secId);
+    if (el && typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch(e) {}
+}
+window.scrollToAdminSec = scrollToAdminSec;
+
 function switchAdminTab(tab) {
   try {
     const targetTab = (tab === 'menu' || tab === 'main' || !tab) ? 'stats' : tab;
