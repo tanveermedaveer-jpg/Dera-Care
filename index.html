@@ -871,10 +871,13 @@
           </button>
         </div>
         <!-- Admin Tab Bar -->
-        <div class="flex space-x-1 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl p-1">
-          <button id="atab-stats" onclick="switchAdminTab('stats')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all focus:outline-none" style="background:var(--accent-color);color:var(--primary-btn-text);">📊 Overview</button>
-          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none">🩺 Doctors</button>
-          <button id="atab-profile" onclick="switchAdminTab('profile')" class="flex-1 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none">⚙️ Profile</button>
+        <div class="flex space-x-1 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl p-1 overflow-x-auto no-scrollbar">
+          <button id="atab-stats" onclick="switchAdminTab('stats')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all focus:outline-none flex-shrink-0" style="background:var(--accent-color);color:var(--primary-btn-text);">📊 Overview</button>
+          <button id="atab-doctors" onclick="switchAdminTab('doctors')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">🩺 Doctors</button>
+          <button id="atab-hospitals" onclick="switchAdminTab('hospitals')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">🏥 Hospitals</button>
+          <button id="atab-stores" onclick="switchAdminTab('stores')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">💊 Stores</button>
+          <button id="atab-labs" onclick="switchAdminTab('labs')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">🧪 Lab Tests</button>
+          <button id="atab-profile" onclick="switchAdminTab('profile')" class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wide transition-all text-[var(--text-muted)] focus:outline-none flex-shrink-0">⚙️ Profile</button>
         </div>
       </div>
 
@@ -1024,6 +1027,88 @@
             <div id="admin-doctor-list" class="space-y-2.5">
               <!-- Rendered dynamically -->
             </div>
+          </div>
+        </div>
+
+        <!-- TAB: HOSPITALS MANAGEMENT -->
+        <div id="admin-tab-hospitals" class="px-5 py-4 space-y-4 hidden">
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="hosp-form-title-icon">➕</span><span id="hosp-form-title">Add New Hospital</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="admin-hosp-name" type="text" placeholder="Hospital Name (e.g. DHQ Hospital)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <input id="admin-hosp-address" type="text" placeholder="Address / Location (e.g. Chishti Chowk, Circular Road)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="admin-hosp-contact" type="tel" placeholder="Contact Phone (0966-9280111)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="admin-hosp-doctors" type="text" placeholder="Specialties (e.g. Cardiology, ER)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+            </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-hosp" onclick="saveAdminHospital()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Hospital</button>
+              <button id="btn-cancel-hosp" onclick="cancelAdminHospitalEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🏥 Registered Hospitals Directory</h3>
+              <span id="admin-hosp-count" class="text-[9px] text-emerald-400 font-extrabold">0 Hospitals</span>
+            </div>
+            <div id="admin-hospitals-list" class="space-y-2.5"></div>
+          </div>
+        </div>
+
+        <!-- TAB: MEDICAL STORES MANAGEMENT -->
+        <div id="admin-tab-stores" class="px-5 py-4 space-y-4 hidden">
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="store-form-title-icon">➕</span><span id="store-form-title">Add Medical Store</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="admin-store-name" type="text" placeholder="Store Name (e.g. Al-Shafa Pharmacy)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="admin-store-area" type="text" placeholder="Area (e.g. Topanwala Bazar)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="admin-store-whatsapp" type="tel" placeholder="WhatsApp (923103716116)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+            </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-store" onclick="saveAdminStore()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Store</button>
+              <button id="btn-cancel-store" onclick="cancelAdminStoreEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">💊 Medical Stores Directory</h3>
+              <span id="admin-store-count" class="text-[9px] text-amber-400 font-extrabold">0 Stores</span>
+            </div>
+            <div id="admin-stores-list" class="space-y-2.5"></div>
+          </div>
+        </div>
+
+        <!-- TAB: LAB TESTS MANAGEMENT -->
+        <div id="admin-tab-labs" class="px-5 py-4 space-y-4 hidden">
+          <div class="glass-card rounded-2xl p-4 border border-white/10 space-y-3">
+            <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider flex items-center space-x-1.5">
+              <span id="lab-form-title-icon">➕</span><span id="lab-form-title">Add Diagnostic Test</span>
+            </h3>
+            <div class="space-y-2.5">
+              <input id="admin-lab-name" type="text" placeholder="Test Name (e.g. Complete Blood Count - CBC)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              <div class="grid grid-cols-2 gap-2.5">
+                <input id="admin-lab-price" type="number" placeholder="Price PKR (e.g. 800)" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+                <input id="admin-lab-desc" type="text" placeholder="Description / Turnaround Time" class="w-full h-11 bg-[var(--input-bg)] border border-[var(--border-color)] focus:border-[var(--accent-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] placeholder-[var(--text-muted)] focus:outline-none transition-all">
+              </div>
+            </div>
+            <div class="flex space-x-2.5 pt-1">
+              <button id="btn-save-lab" onclick="saveAdminLabTest()" class="btn-primary flex-1 h-11 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition-all focus:outline-none shadow-md">💾 Save Lab Test</button>
+              <button id="btn-cancel-lab" onclick="cancelAdminLabEdit()" class="hidden h-11 px-4 rounded-xl font-extrabold text-[11px] uppercase tracking-wider border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white transition-all focus:outline-none">✕ Cancel</button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-extrabold text-[var(--text-color)] uppercase tracking-wider">🧪 Diagnostic Test Catalog</h3>
+              <span id="admin-lab-count" class="text-[9px] text-cyan-400 font-extrabold">0 Tests</span>
+            </div>
+            <div id="admin-labs-list" class="space-y-2.5"></div>
           </div>
         </div>
 
@@ -1735,59 +1820,50 @@
 
     <!-- 6. HOSPITALS MODAL -->
     <div id="hospitals-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
-      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[460px] flex flex-col justify-between">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[520px] flex flex-col justify-between">
         <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
         <div class="space-y-1">
           <h3 class="text-base font-bold text-[var(--text-color)]">D.I. Khan Hospitals</h3>
           <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Registered regional medical centers</p>
         </div>
-        <div class="modal-scroll flex-1 overflow-y-auto space-y-3.5 pr-2 my-2 text-[11px] text-[var(--text-muted)] font-medium">
-          <!-- Hospital 1 -->
-          <div class="glass-card p-3.5 rounded-xl border border-white/5 flex flex-col space-y-1">
-            <h4 class="text-xs font-bold text-[var(--text-color)]">Mufti Mahmood Memorial Hospital</h4>
-            <p>Location: Wana Road, Near Gomal University, D.I. Khan</p>
-            <p class="text-[9px] text-[#00E5FF] font-semibold">Status: 24/7 Emergency Active</p>
-          </div>
-          <!-- Hospital 2 -->
-          <div class="glass-card p-3.5 rounded-xl border border-white/5 flex flex-col space-y-1">
-            <h4 class="text-xs font-bold text-[var(--text-color)]">DHQ Hospital D.I. Khan</h4>
-            <p>Location: Chishti Chowk, Circular Road, D.I. Khan</p>
-            <p class="text-[9px] text-[#00E5FF] font-semibold">Status: 24/7 Emergency Active</p>
-          </div>
-          <!-- Hospital 3 -->
-          <div class="glass-card p-3.5 rounded-xl border border-white/5 flex flex-col space-y-1">
-            <h4 class="text-xs font-bold text-[var(--text-color)]">City Hospital D.I. Khan</h4>
-            <p>Location: Near Commissionery Bazar Road, D.I. Khan</p>
-            <p class="text-[9px] text-slate-500 font-semibold">Status: General Slots Only</p>
-          </div>
+        <div id="user-hospitals-list" class="modal-scroll flex-1 overflow-y-auto space-y-3 pr-1 my-1 text-[11px] text-[var(--text-muted)] font-medium">
+          <!-- Populated dynamically -->
         </div>
-        <button id="btn-close-hospitals" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+        <button id="btn-close-hospitals" onclick="closeHospitalsModal()" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
           Close
         </button>
       </div>
     </div>
 
-    <!-- 7. MEDICINE ORDERING MODAL -->
+    <!-- 7. MEDICINE ORDERING MODAL (WhatsApp Integration) -->
     <div id="medicine-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
-      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[420px] flex flex-col justify-between">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[520px] flex flex-col justify-between">
         <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
         <div class="space-y-1">
-          <h3 class="text-base font-bold text-[var(--text-color)]">Order Medicine</h3>
-          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Fast dispatch across D.I. Khan</p>
+          <h3 class="text-base font-bold text-[var(--text-color)]">Express Medicine Delivery</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Direct WhatsApp Order to Local Pharmacies</p>
         </div>
-        <div class="space-y-3.5 flex-1 my-2">
-          <label class="text-[10px] font-bold text-[var(--text-color)] uppercase tracking-wider">Upload Prescription Image</label>
-          <div class="h-28 border-2 border-dashed border-[var(--border-color)] rounded-xl flex flex-col items-center justify-center space-y-1.5 cursor-pointer bg-white/5 hover:bg-white/10 transition-colors">
-            <span class="text-2xl">📸</span>
-            <span class="text-[10px] text-slate-400">Click to Snap or Upload File</span>
+        <div class="space-y-3 flex-1 my-1 overflow-y-auto modal-scroll pr-1">
+          <div>
+            <label class="text-[9.5px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Patient Full Name</label>
+            <input type="text" id="medicine-patient-name" placeholder="Enter patient's name" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none transition-all">
           </div>
-          <p class="text-[9px] text-[var(--text-muted)] text-justify leading-relaxed">Our pharmacist map will review your uploaded file and match dosage parameters before dispatching rider. Payment on delivery.</p>
+          <div>
+            <label class="text-[9.5px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Select Pharmacy / Medical Store</label>
+            <select id="medicine-store-select" class="w-full mt-1 h-10 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl px-3.5 text-xs text-[var(--text-color)] focus:outline-none transition-all">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div>
+            <label class="text-[9.5px] font-bold text-[var(--accent-color)] uppercase tracking-wider px-1">Prescription &amp; Medicines Needed</label>
+            <textarea id="medicine-details-input" rows="3" placeholder="Type medicines list or prescription dosage (e.g. Panadol 500mg, Augmentin 625mg)..." class="w-full mt-1 bg-[var(--input-bg)] border border-[var(--border-color)] rounded-xl p-3 text-xs text-[var(--text-color)] focus:outline-none resize-none transition-all"></textarea>
+          </div>
         </div>
-        <div class="flex space-x-3">
-          <button onclick="showToast('Dispatching Order', 'Prescription dispatched to pharmacy.', 'success'); document.getElementById('btn-close-medicine').click();" class="btn-primary flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all shadow-md focus:outline-none">
-            Place Order
+        <div class="flex space-x-3 pt-1">
+          <button onclick="sendMedicineOrderWhatsApp()" class="btn-primary flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all shadow-md focus:outline-none flex items-center justify-center space-x-1.5">
+            <span>💬 SEND VIA WHATSAPP</span>
           </button>
-          <button id="btn-close-medicine" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+          <button id="btn-close-medicine" onclick="closeMedicineModal()" class="py-3 px-4 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
             Cancel
           </button>
         </div>
@@ -1796,35 +1872,18 @@
 
     <!-- 8. LAB TEST BOOKING MODAL -->
     <div id="lab-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end transition-all duration-300 transform translate-y-full hidden">
-      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[460px] flex flex-col justify-between">
+      <div class="glass-modal rounded-t-[32px] p-6 space-y-4 border-t border-white/10 shadow-2xl h-[520px] flex flex-col justify-between">
         <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mt-2"></div>
         <div class="space-y-1">
-          <h3 class="text-base font-bold text-[var(--text-color)]">Diagnostic Lab Tests</h3>
-          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Home sample collection available</p>
+          <h3 class="text-base font-bold text-[var(--text-color)]">Diagnostic Lab Tests Catalog</h3>
+          <p class="text-[10px] text-[var(--accent-color)] font-semibold uppercase tracking-wider">Home sample collection available across D.I. Khan</p>
         </div>
-        <div class="space-y-3.5 flex-1 my-2 overflow-y-auto modal-scroll pr-1">
-          <!-- Labs selection list -->
-          <div onclick="selectLabTest(this, 'Complete Blood Count (CBC)', 800)" class="lab-item-card p-3 glass-card rounded-xl flex justify-between items-center cursor-pointer border border-white/5 hover:border-[var(--accent-color)]/20 transition-all">
-            <span class="text-xs text-[var(--text-color)] font-bold">CBC Test (General Health)</span>
-            <span class="text-xs text-[var(--accent-color)] font-extrabold">Rs. 800</span>
-          </div>
-          <div onclick="selectLabTest(this, 'Lipid Profile', 1500)" class="lab-item-card p-3 glass-card rounded-xl flex justify-between items-center cursor-pointer border border-white/5 hover:border-[var(--accent-color)]/20 transition-all">
-            <span class="text-xs text-[var(--text-color)] font-bold">Lipid Profile (Cholesterol)</span>
-            <span class="text-xs text-[var(--accent-color)] font-extrabold">Rs. 1,500</span>
-          </div>
-          <div onclick="selectLabTest(this, 'Blood Sugar Fasting', 300)" class="lab-item-card p-3 glass-card rounded-xl flex justify-between items-center cursor-pointer border border-white/5 hover:border-[var(--accent-color)]/20 transition-all">
-            <span class="text-xs text-[var(--text-color)] font-bold">Blood Sugar Fasting</span>
-            <span class="text-xs text-[var(--accent-color)] font-extrabold">Rs. 300</span>
-          </div>
+        <div id="user-labs-list" class="space-y-2.5 flex-1 my-1 overflow-y-auto modal-scroll pr-1">
+          <!-- Populated dynamically -->
         </div>
-        <div class="flex space-x-3">
-          <button onclick="confirmLabBooking()" class="btn-primary flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all shadow-md focus:outline-none">
-            Book Sample
-          </button>
-          <button id="btn-close-lab" class="flex-1 py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
-            Cancel
-          </button>
-        </div>
+        <button id="btn-close-lab" onclick="closeLabModal()" class="w-full py-3 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-color)] font-bold transition-all focus:outline-none">
+          Close
+        </button>
       </div>
     </div>
 

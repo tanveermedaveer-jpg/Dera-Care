@@ -2352,7 +2352,7 @@ window.logoutToLogin = logoutToLogin;
 
 function switchAdminTab(tab) {
   try {
-    ['stats','doctors','profile'].forEach(t => {
+    ['stats','doctors','hospitals','stores','labs','profile'].forEach(t => {
       const tabEl = document.getElementById('admin-tab-' + t);
       if (tabEl) {
         tabEl.classList.add('hidden');
@@ -2381,6 +2381,9 @@ function switchAdminTab(tab) {
       active.classList.add('shadow-sm');
     }
     if (tab === 'doctors' && typeof renderAdminDoctorList === 'function') renderAdminDoctorList();
+    if (tab === 'hospitals' && typeof renderAdminHospitals === 'function') renderAdminHospitals();
+    if (tab === 'stores' && typeof renderAdminStores === 'function') renderAdminStores();
+    if (tab === 'labs' && typeof renderAdminLabTests === 'function') renderAdminLabTests();
   } catch (err) {
     triggerRawCrashDOM(err.message, err.stack);
   }
@@ -2597,6 +2600,642 @@ function saveAdminProfile() {
     });
   showToast('Settings Saved ✓', 'Admin credentials updated successfully.', 'success');
 }
+
+// ═════════════════════════════════════════════════════════════════
+// ADMIN CRUD DATA STORES & DEFAULT REGIONAL DATA
+// ═════════════════════════════════════════════════════════════════
+
+const DEFAULT_ADMIN_HOSPITALS = [
+  {
+    id: 'hosp_1',
+    name: 'DHQ Hospital D.I. Khan',
+    address: 'Chishti Chowk, Circular Road, D.I. Khan',
+    contact: '0966-9280111',
+    doctors: 'Cardiology, Emergency, Pediatrics, ICU',
+    status: '24/7 Emergency Active'
+  },
+  {
+    id: 'hosp_2',
+    name: 'Mufti Mahmood Memorial Hospital',
+    address: 'Wana Road, Near Gomal University, D.I. Khan',
+    contact: '0966-730100',
+    doctors: 'Nephrology, Surgery, Gynecology, OPD',
+    status: '24/7 Emergency Active'
+  },
+  {
+    id: 'hosp_3',
+    name: 'City Hospital D.I. Khan',
+    address: 'Near Commissionery Bazar Road, D.I. Khan',
+    contact: '0966-712345',
+    doctors: 'Orthopedics, General Medicine, ENT',
+    status: 'General Slots Only'
+  }
+];
+
+const DEFAULT_ADMIN_STORES = [
+  {
+    id: 'store_1',
+    name: 'Al-Shafa Pharmacy',
+    area: 'Topanwala Bazar, D.I. Khan',
+    whatsapp: '923103716116'
+  },
+  {
+    id: 'store_2',
+    name: 'Khyber Medical Store',
+    area: 'Circular Road, D.I. Khan',
+    whatsapp: '923103716116'
+  },
+  {
+    id: 'store_3',
+    name: 'Dera Express Pharmacy',
+    area: 'Town Hall Road, D.I. Khan',
+    whatsapp: '923103716116'
+  }
+];
+
+const DEFAULT_ADMIN_LABS = [
+  {
+    id: 'lab_1',
+    name: 'Complete Blood Count (CBC)',
+    price: 800,
+    desc: 'General Health Panel — Same day report'
+  },
+  {
+    id: 'lab_2',
+    name: 'Lipid Profile (Cholesterol)',
+    price: 1500,
+    desc: 'HDL, LDL, Triglycerides — 12hr Fasting'
+  },
+  {
+    id: 'lab_3',
+    name: 'Blood Glucose Fasting',
+    price: 300,
+    desc: 'Diabetes Screening — 8hr Fasting'
+  },
+  {
+    id: 'lab_4',
+    name: 'Thyroid Profile (T3, T4, TSH)',
+    price: 2200,
+    desc: 'Hormone Function Test — 24hr Turnaround'
+  },
+  {
+    id: 'lab_5',
+    name: 'HbA1c (Diabetes Monitor)',
+    price: 1100,
+    desc: '3-Month Average Glucose Level'
+  }
+];
+
+function getAdminHospitals() {
+  try {
+    const data = localStorage.getItem('dc_admin_hospitals');
+    return data ? JSON.parse(data) : DEFAULT_ADMIN_HOSPITALS;
+  } catch(e) {
+    return DEFAULT_ADMIN_HOSPITALS;
+  }
+}
+function saveAdminHospitalsList(list) {
+  try {
+    localStorage.setItem('dc_admin_hospitals', JSON.stringify(list));
+  } catch(e) {}
+}
+
+function getAdminStores() {
+  try {
+    const data = localStorage.getItem('dc_admin_stores');
+    return data ? JSON.parse(data) : DEFAULT_ADMIN_STORES;
+  } catch(e) {
+    return DEFAULT_ADMIN_STORES;
+  }
+}
+function saveAdminStoresList(list) {
+  try {
+    localStorage.setItem('dc_admin_stores', JSON.stringify(list));
+  } catch(e) {}
+}
+
+function getAdminLabs() {
+  try {
+    const data = localStorage.getItem('dc_admin_labs');
+    return data ? JSON.parse(data) : DEFAULT_ADMIN_LABS;
+  } catch(e) {
+    return DEFAULT_ADMIN_LABS;
+  }
+}
+function saveAdminLabsList(list) {
+  try {
+    localStorage.setItem('dc_admin_labs', JSON.stringify(list));
+  } catch(e) {}
+}
+
+// ═════════════════════════════════════════════════════════════════
+// HOSPITALS CRUD MANAGEMENT
+// ═════════════════════════════════════════════════════════════════
+let editingHospId = null;
+
+function saveAdminHospital() {
+  const nameEl = document.getElementById('admin-hosp-name');
+  const addrEl = document.getElementById('admin-hosp-address');
+  const contactEl = document.getElementById('admin-hosp-contact');
+  const docsEl = document.getElementById('admin-hosp-doctors');
+
+  const name = nameEl ? nameEl.value.trim() : "";
+  const address = addrEl ? addrEl.value.trim() : "";
+  const contact = contactEl ? contactEl.value.trim() : "";
+  const doctors = docsEl ? docsEl.value.trim() : "";
+
+  if (!name || !address) {
+    showToast('Missing Fields', 'Hospital Name and Address are required.', 'error');
+    return;
+  }
+
+  let list = getAdminHospitals();
+
+  if (editingHospId !== null) {
+    const idx = list.findIndex(h => h.id === editingHospId);
+    if (idx > -1) {
+      list[idx] = { ...list[idx], name, address, contact, doctors };
+    }
+    showToast('Hospital Updated ✓', `${name} details updated.`, 'success');
+  } else {
+    const newHosp = {
+      id: 'hosp_' + Date.now(),
+      name,
+      address,
+      contact: contact || '0966-710000',
+      doctors: doctors || 'Emergency, General OPD',
+      status: '24/7 Emergency Active'
+    };
+    list.unshift(newHosp);
+    showToast('Hospital Added ✓', `${name} registered in system.`, 'success');
+  }
+
+  saveAdminHospitalsList(list);
+  cancelAdminHospitalEdit();
+  renderAdminHospitals();
+}
+
+function editAdminHospital(id) {
+  const list = getAdminHospitals();
+  const hosp = list.find(h => h.id === id);
+  if (!hosp) return;
+  editingHospId = id;
+
+  const nameEl = document.getElementById('admin-hosp-name');
+  const addrEl = document.getElementById('admin-hosp-address');
+  const contactEl = document.getElementById('admin-hosp-contact');
+  const docsEl = document.getElementById('admin-hosp-doctors');
+  const iconEl = document.getElementById('hosp-form-title-icon');
+  const titleEl = document.getElementById('hosp-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-hosp');
+
+  if (nameEl) nameEl.value = hosp.name;
+  if (addrEl) addrEl.value = hosp.address;
+  if (contactEl) contactEl.value = hosp.contact;
+  if (docsEl) docsEl.value = hosp.doctors;
+  if (iconEl) iconEl.textContent = '✏️';
+  if (titleEl) titleEl.textContent = 'Edit Hospital Details';
+  if (cancelBtn) cancelBtn.classList.remove('hidden');
+  if (nameEl) nameEl.focus();
+}
+
+function deleteAdminHospital(id) {
+  let list = getAdminHospitals();
+  const target = list.find(h => h.id === id);
+  list = list.filter(h => h.id !== id);
+  saveAdminHospitalsList(list);
+  showToast('Hospital Deleted', `${target ? target.name : 'Hospital'} removed.`, 'error');
+  renderAdminHospitals();
+}
+
+function cancelAdminHospitalEdit() {
+  editingHospId = null;
+  ['admin-hosp-name', 'admin-hosp-address', 'admin-hosp-contact', 'admin-hosp-doctors']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const iconEl = document.getElementById('hosp-form-title-icon');
+  const titleEl = document.getElementById('hosp-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-hosp');
+  if (iconEl) iconEl.textContent = '➕';
+  if (titleEl) titleEl.textContent = 'Add New Hospital';
+  if (cancelBtn) cancelBtn.classList.add('hidden');
+}
+
+function renderAdminHospitals() {
+  try {
+    const list = getAdminHospitals();
+    const container = document.getElementById('admin-hospitals-list');
+    const countEl = document.getElementById('admin-hosp-count');
+    if (countEl) countEl.textContent = `${list.length} Hospital${list.length !== 1 ? 's' : ''}`;
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `<div class="text-center py-6 text-[var(--text-muted)]"><p class="text-xs">No hospitals added yet.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(h => `
+      <div class="glass-card p-3.5 rounded-2xl border border-white/5 space-y-2">
+        <div class="flex items-center justify-between">
+          <h4 class="text-[11px] font-extrabold text-[var(--text-color)]">${h.name}</h4>
+          <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20">${h.status || 'Active'}</span>
+        </div>
+        <p class="text-[9.5px] text-[var(--text-muted)]">📍 ${h.address}</p>
+        <p class="text-[9px] text-[var(--accent-color)] font-bold">🩺 ${h.doctors || 'General OPD'}</p>
+        <div class="flex items-center justify-between pt-1.5 border-t border-[var(--border-color)]">
+          <span class="text-[9px] text-[var(--text-muted)]">📞 Phone: <span class="font-extrabold text-[var(--text-color)]">${h.contact}</span></span>
+          <div class="flex space-x-1.5">
+            <button onclick="editAdminHospital('${h.id}')" class="h-7 px-2.5 rounded-lg bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[8px] font-extrabold border border-[var(--accent-color)]/20 hover:bg-[var(--accent-color)]/20 transition-colors focus:outline-none">✏️ Edit</button>
+            <button onclick="deleteAdminHospital('${h.id}')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">🗑 Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    renderUserHospitals();
+  } catch(e) {
+    console.error("renderAdminHospitals error:", e);
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════
+// MEDICAL STORES CRUD MANAGEMENT
+// ═════════════════════════════════════════════════════════════════
+let editingStoreId = null;
+
+function saveAdminStore() {
+  const nameEl = document.getElementById('admin-store-name');
+  const areaEl = document.getElementById('admin-store-area');
+  const waEl = document.getElementById('admin-store-whatsapp');
+
+  const name = nameEl ? nameEl.value.trim() : "";
+  const area = areaEl ? areaEl.value.trim() : "";
+  const whatsapp = waEl ? waEl.value.trim() : "";
+
+  if (!name || !area || !whatsapp) {
+    showToast('Missing Fields', 'Store Name, Area, and WhatsApp Number are required.', 'error');
+    return;
+  }
+
+  let list = getAdminStores();
+
+  if (editingStoreId !== null) {
+    const idx = list.findIndex(s => s.id === editingStoreId);
+    if (idx > -1) {
+      list[idx] = { ...list[idx], name, area, whatsapp };
+    }
+    showToast('Store Updated ✓', `${name} profile updated.`, 'success');
+  } else {
+    const newStore = {
+      id: 'store_' + Date.now(),
+      name,
+      area,
+      whatsapp
+    };
+    list.unshift(newStore);
+    showToast('Store Added ✓', `${name} registered for express delivery.`, 'success');
+  }
+
+  saveAdminStoresList(list);
+  cancelAdminStoreEdit();
+  renderAdminStores();
+}
+
+function editAdminStore(id) {
+  const list = getAdminStores();
+  const store = list.find(s => s.id === id);
+  if (!store) return;
+  editingStoreId = id;
+
+  const nameEl = document.getElementById('admin-store-name');
+  const areaEl = document.getElementById('admin-store-area');
+  const waEl = document.getElementById('admin-store-whatsapp');
+  const iconEl = document.getElementById('store-form-title-icon');
+  const titleEl = document.getElementById('store-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-store');
+
+  if (nameEl) nameEl.value = store.name;
+  if (areaEl) areaEl.value = store.area;
+  if (waEl) waEl.value = store.whatsapp;
+  if (iconEl) iconEl.textContent = '✏️';
+  if (titleEl) titleEl.textContent = 'Edit Medical Store';
+  if (cancelBtn) cancelBtn.classList.remove('hidden');
+  if (nameEl) nameEl.focus();
+}
+
+function deleteAdminStore(id) {
+  let list = getAdminStores();
+  const target = list.find(s => s.id === id);
+  list = list.filter(s => s.id !== id);
+  saveAdminStoresList(list);
+  showToast('Store Removed', `${target ? target.name : 'Store'} deleted.`, 'error');
+  renderAdminStores();
+}
+
+function cancelAdminStoreEdit() {
+  editingStoreId = null;
+  ['admin-store-name', 'admin-store-area', 'admin-store-whatsapp']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const iconEl = document.getElementById('store-form-title-icon');
+  const titleEl = document.getElementById('store-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-store');
+  if (iconEl) iconEl.textContent = '➕';
+  if (titleEl) titleEl.textContent = 'Add Medical Store';
+  if (cancelBtn) cancelBtn.classList.add('hidden');
+}
+
+function renderAdminStores() {
+  try {
+    const list = getAdminStores();
+    const container = document.getElementById('admin-stores-list');
+    const countEl = document.getElementById('admin-store-count');
+    if (countEl) countEl.textContent = `${list.length} Store${list.length !== 1 ? 's' : ''}`;
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `<div class="text-center py-6 text-[var(--text-muted)]"><p class="text-xs">No medical stores registered.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(s => `
+      <div class="glass-card p-3.5 rounded-2xl border border-white/5 space-y-2">
+        <div class="flex items-center justify-between">
+          <h4 class="text-[11px] font-extrabold text-[var(--text-color)]">${s.name}</h4>
+          <span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-[8px] font-extrabold border border-amber-500/20">💬 WhatsApp Active</span>
+        </div>
+        <p class="text-[9.5px] text-[var(--text-muted)]">📍 ${s.area}</p>
+        <div class="flex items-center justify-between pt-1.5 border-t border-[var(--border-color)]">
+          <span class="text-[9px] text-[var(--text-muted)]">📱 WhatsApp: <span class="font-extrabold text-emerald-400">${s.whatsapp}</span></span>
+          <div class="flex space-x-1.5">
+            <button onclick="editAdminStore('${s.id}')" class="h-7 px-2.5 rounded-lg bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[8px] font-extrabold border border-[var(--accent-color)]/20 hover:bg-[var(--accent-color)]/20 transition-colors focus:outline-none">✏️ Edit</button>
+            <button onclick="deleteAdminStore('${s.id}')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">🗑 Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    renderUserStoresDropdown();
+  } catch(e) {
+    console.error("renderAdminStores error:", e);
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════
+// LAB TESTS CRUD MANAGEMENT
+// ═════════════════════════════════════════════════════════════════
+let editingLabId = null;
+
+function saveAdminLabTest() {
+  const nameEl = document.getElementById('admin-lab-name');
+  const priceEl = document.getElementById('admin-lab-price');
+  const descEl = document.getElementById('admin-lab-desc');
+
+  const name = nameEl ? nameEl.value.trim() : "";
+  const price = priceEl ? Number(priceEl.value) : 0;
+  const desc = descEl ? descEl.value.trim() : "";
+
+  if (!name || !price) {
+    showToast('Missing Fields', 'Test Name and Price are required.', 'error');
+    return;
+  }
+
+  let list = getAdminLabs();
+
+  if (editingLabId !== null) {
+    const idx = list.findIndex(l => l.id === editingLabId);
+    if (idx > -1) {
+      list[idx] = { ...list[idx], name, price, desc };
+    }
+    showToast('Lab Test Updated ✓', `${name} updated in catalog.`, 'success');
+  } else {
+    const newLab = {
+      id: 'lab_' + Date.now(),
+      name,
+      price,
+      desc: desc || 'Diagnostic screening test'
+    };
+    list.unshift(newLab);
+    showToast('Lab Test Added ✓', `${name} added to catalog.`, 'success');
+  }
+
+  saveAdminLabsList(list);
+  cancelAdminLabEdit();
+  renderAdminLabTests();
+}
+
+function editAdminLabTest(id) {
+  const list = getAdminLabs();
+  const lab = list.find(l => l.id === id);
+  if (!lab) return;
+  editingLabId = id;
+
+  const nameEl = document.getElementById('admin-lab-name');
+  const priceEl = document.getElementById('admin-lab-price');
+  const descEl = document.getElementById('admin-lab-desc');
+  const iconEl = document.getElementById('lab-form-title-icon');
+  const titleEl = document.getElementById('lab-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-lab');
+
+  if (nameEl) nameEl.value = lab.name;
+  if (priceEl) priceEl.value = lab.price;
+  if (descEl) descEl.value = lab.desc;
+  if (iconEl) iconEl.textContent = '✏️';
+  if (titleEl) titleEl.textContent = 'Edit Diagnostic Test';
+  if (cancelBtn) cancelBtn.classList.remove('hidden');
+  if (nameEl) nameEl.focus();
+}
+
+function deleteAdminLabTest(id) {
+  let list = getAdminLabs();
+  const target = list.find(l => l.id === id);
+  list = list.filter(l => l.id !== id);
+  saveAdminLabsList(list);
+  showToast('Test Removed', `${target ? target.name : 'Test'} deleted from catalog.`, 'error');
+  renderAdminLabTests();
+}
+
+function cancelAdminLabEdit() {
+  editingLabId = null;
+  ['admin-lab-name', 'admin-lab-price', 'admin-lab-desc']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const iconEl = document.getElementById('lab-form-title-icon');
+  const titleEl = document.getElementById('lab-form-title');
+  const cancelBtn = document.getElementById('btn-cancel-lab');
+  if (iconEl) iconEl.textContent = '➕';
+  if (titleEl) titleEl.textContent = 'Add Diagnostic Test';
+  if (cancelBtn) cancelBtn.classList.add('hidden');
+}
+
+function renderAdminLabTests() {
+  try {
+    const list = getAdminLabs();
+    const container = document.getElementById('admin-labs-list');
+    const countEl = document.getElementById('admin-lab-count');
+    if (countEl) countEl.textContent = `${list.length} Test${list.length !== 1 ? 's' : ''}`;
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `<div class="text-center py-6 text-[var(--text-muted)]"><p class="text-xs">No lab tests in catalog.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(l => `
+      <div class="glass-card p-3.5 rounded-2xl border border-white/5 space-y-2">
+        <div class="flex items-center justify-between">
+          <h4 class="text-[11px] font-extrabold text-[var(--text-color)]">${l.name}</h4>
+          <span class="px-2.5 py-0.5 rounded-md bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[10px] font-extrabold border border-[var(--accent-color)]/20">PKR ${l.price}</span>
+        </div>
+        <p class="text-[9.5px] text-[var(--text-muted)]">📋 ${l.desc}</p>
+        <div class="flex items-center justify-end pt-1.5 border-t border-[var(--border-color)] space-x-1.5">
+          <button onclick="editAdminLabTest('${l.id}')" class="h-7 px-2.5 rounded-lg bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-[8px] font-extrabold border border-[var(--accent-color)]/20 hover:bg-[var(--accent-color)]/20 transition-colors focus:outline-none">✏️ Edit</button>
+          <button onclick="deleteAdminLabTest('${l.id}')" class="h-7 px-2.5 rounded-lg bg-rose-500/10 text-rose-400 text-[8px] font-extrabold border border-rose-500/20 hover:bg-rose-500/20 transition-colors focus:outline-none">🗑 Delete</button>
+        </div>
+      </div>
+    `).join('');
+
+    renderUserLabTests();
+  } catch(e) {
+    console.error("renderAdminLabTests error:", e);
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════
+// USER FRONTEND RENDERERS & WHATSAPP INTEGRATION
+// ═════════════════════════════════════════════════════════════════
+
+function renderUserHospitals() {
+  try {
+    const list = getAdminHospitals();
+    const container = document.getElementById('user-hospitals-list');
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `<div class="text-center py-6 text-[var(--text-muted)]"><p class="text-xs">No medical centers listed.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(h => `
+      <div class="glass-card p-3.5 rounded-2xl border border-white/5 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-extrabold text-[var(--text-color)]">${h.name}</h4>
+          <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[8px] font-extrabold border border-emerald-500/20">${h.status || 'Active'}</span>
+        </div>
+        <p class="text-[10px] text-[var(--text-muted)]">📍 ${h.address}</p>
+        <p class="text-[9.5px] text-[var(--accent-color)] font-bold">🩺 Available: ${h.doctors || 'General Emergency'}</p>
+        <div class="pt-1 flex items-center justify-between">
+          <a href="tel:${h.contact}" class="h-7 px-3 rounded-lg bg-emerald-500/10 text-emerald-400 text-[9px] font-extrabold border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors flex items-center space-x-1">
+            <span>📞 Call ${h.contact}</span>
+          </a>
+          <button onclick="closeHospitalsModal(); showScreen('home-container'); scrollToDoctorsSection();" class="h-7 px-3 rounded-lg btn-primary text-[9px] font-extrabold uppercase">Book Doctor</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    console.error("renderUserHospitals error:", e);
+  }
+}
+
+function renderUserStoresDropdown() {
+  try {
+    const list = getAdminStores();
+    const selectEl = document.getElementById('medicine-store-select');
+    if (!selectEl) return;
+
+    if (list.length === 0) {
+      selectEl.innerHTML = `<option value="" disabled selected>No stores registered</option>`;
+      return;
+    }
+
+    selectEl.innerHTML = list.map(s => `
+      <option value="${s.whatsapp}">${s.name} (${s.area})</option>
+    `).join('');
+  } catch(e) {
+    console.error("renderUserStoresDropdown error:", e);
+  }
+}
+
+function sendMedicineOrderWhatsApp() {
+  const nameEl = document.getElementById('medicine-patient-name');
+  const storeEl = document.getElementById('medicine-store-select');
+  const detailsEl = document.getElementById('medicine-details-input');
+
+  const patientName = nameEl ? nameEl.value.trim() : "";
+  const selectedWhatsapp = storeEl ? storeEl.value : "";
+  const storeText = (storeEl && storeEl.options[storeEl.selectedIndex]) ? storeEl.options[storeEl.selectedIndex].text : "";
+  const details = detailsEl ? detailsEl.value.trim() : "";
+
+  if (!patientName || !details || !selectedWhatsapp) {
+    alert("Missing Details: Please enter your name, select a pharmacy store, and list the medicines required.");
+    showToast("Missing Fields", "Please complete all fields before sending your WhatsApp order.", "error");
+    return;
+  }
+
+  const cleanWhatsapp = selectedWhatsapp.replace(/[^\d]/g, '');
+  const msg = `Hello! I want to order medicine via Dera Care App:\n\n👤 Patient Name: ${patientName}\n🏥 Pharmacy Store: ${storeText}\n💊 Medicines / Prescription Notes:\n${details}\n\nPlease confirm availability and dispatch rider. Payment on delivery.`;
+  const url = `https://api.whatsapp.com/send?phone=${cleanWhatsapp}&text=${encodeURIComponent(msg)}`;
+
+  showToast("Opening WhatsApp 💬", "Transferring order to pharmacy WhatsApp...", "success");
+  closeMedicineModal();
+  window.open(url, '_blank');
+}
+
+function renderUserLabTests() {
+  try {
+    const list = getAdminLabs();
+    const container = document.getElementById('user-labs-list');
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `<div class="text-center py-6 text-[var(--text-muted)]"><p class="text-xs">No lab tests available.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(l => `
+      <div class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5 hover:border-[var(--accent-color)]/20 transition-all">
+        <div>
+          <h4 class="text-xs font-bold text-[var(--text-color)]">${l.name}</h4>
+          <p class="text-[9px] text-[var(--text-muted)]">${l.desc}</p>
+        </div>
+        <div class="text-right flex flex-col items-end space-y-1">
+          <span class="text-xs text-[var(--accent-color)] font-extrabold">PKR ${l.price}</span>
+          <button onclick="bookLabTestDirect('${l.name.replace(/'/g, "\\'")}', ${l.price})" class="h-6 px-2.5 rounded-md btn-primary text-[8px] font-extrabold uppercase">Book Now</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    console.error("renderUserLabTests error:", e);
+  }
+}
+
+function bookLabTestDirect(testName, price) {
+  closeLabModal();
+  openBookingModal('Diagnostic Lab Test', `${testName} (Rs. ${price})`);
+  showToast('Lab Test Selected', `Booking slot for ${testName} (PKR ${price})`, 'info');
+}
+
+// Window Function Exports
+window.saveAdminHospital = saveAdminHospital;
+window.editAdminHospital = editAdminHospital;
+window.deleteAdminHospital = deleteAdminHospital;
+window.cancelAdminHospitalEdit = cancelAdminHospitalEdit;
+window.renderAdminHospitals = renderAdminHospitals;
+
+window.saveAdminStore = saveAdminStore;
+window.editAdminStore = editAdminStore;
+window.deleteAdminStore = deleteAdminStore;
+window.cancelAdminStoreEdit = cancelAdminStoreEdit;
+window.renderAdminStores = renderAdminStores;
+
+window.saveAdminLabTest = saveAdminLabTest;
+window.editAdminLabTest = editAdminLabTest;
+window.deleteAdminLabTest = deleteAdminLabTest;
+window.cancelAdminLabEdit = cancelAdminLabEdit;
+window.renderAdminLabTests = renderAdminLabTests;
+
+window.renderUserHospitals = renderUserHospitals;
+window.renderUserStoresDropdown = renderUserStoresDropdown;
+window.sendMedicineOrderWhatsApp = sendMedicineOrderWhatsApp;
+window.renderUserLabTests = renderUserLabTests;
+window.bookLabTestDirect = bookLabTestDirect;
 
 themeToggles.forEach(btn => {
   btn.addEventListener('click', () => {
