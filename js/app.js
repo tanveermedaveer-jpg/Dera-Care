@@ -945,8 +945,17 @@ function rejectDoctorRequest(btn, patientName) {
 }
 
 function openDocAvailabilityModal(e) {
-  if (e && typeof e.preventDefault === 'function') e.preventDefault();
-  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+  if (e) {
+    if (typeof e.preventDefault === 'function') e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+  }
+  // Ensure prescription modal is closed/hidden to prevent overlapping views
+  const rxModal = document.getElementById('doc-prescription-modal');
+  if (rxModal) {
+    rxModal.classList.add('translate-y-full', 'hidden');
+    rxModal.style.removeProperty('display');
+  }
+
   const modal = document.getElementById('doc-availability-modal');
   if (modal) {
     modal.style.setProperty('display', 'flex', 'important');
@@ -1033,8 +1042,17 @@ document.addEventListener('click', function(e) {
 });
 
 function openDocPrescriptionModal(e) {
-  if (e && typeof e.preventDefault === 'function') e.preventDefault();
-  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+  if (e) {
+    if (typeof e.preventDefault === 'function') e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+  }
+  // Ensure availability modal is closed/hidden to prevent overlapping views
+  const availModal = document.getElementById('doc-availability-modal');
+  if (availModal) {
+    availModal.classList.add('translate-y-full', 'hidden');
+    availModal.style.removeProperty('display');
+  }
+
   const modal = document.getElementById('doc-prescription-modal');
   if (modal) {
     modal.style.setProperty('display', 'flex', 'important');
