@@ -474,7 +474,7 @@ function showScreen(id) {
     }
 
     // Hide all non-target screens
-    document.querySelectorAll('#login-container, #home-container, #doctor-dashboard, #admin-panel, #terms-view, #privacy-view').forEach(el => {
+    document.querySelectorAll('#login-container, #home-container, #doctor-dashboard, #admin-panel, #terms-view, #privacy-view, #register-overlay').forEach(el => {
       if (el !== target) {
         el.style.setProperty('display', 'none', 'important');
         el.style.setProperty('opacity', '0', 'important');
@@ -2258,9 +2258,9 @@ function switchAdminTab(tab) {
     const activeSectionEl = document.getElementById('admin-tab-' + targetTab);
     if (activeSectionEl) {
       activeSectionEl.classList.remove('hidden');
-      activeSectionEl.style.display = 'block';
-      activeSectionEl.style.opacity = '1';
-      activeSectionEl.style.visibility = 'visible';
+      activeSectionEl.style.setProperty('display', 'block', 'important');
+      activeSectionEl.style.setProperty('opacity', '1', 'important');
+      activeSectionEl.style.setProperty('visibility', 'visible', 'important');
     }
 
     // Highlight active top nav tab button
