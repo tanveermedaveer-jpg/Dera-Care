@@ -387,9 +387,33 @@ function selectAuthAccount(name, email) {
   }, 700);
 }
 
+function handleSocialLogin(provider = "Google") {
+  console.log('[Dera Care] 🌐 Social Auth bridge initiated via:', provider);
+  showToast("Authenticating...", `Connecting to ${provider} OAuth...`, "info");
+  
+  setTimeout(() => {
+    currentSession = {
+      isGuest: false,
+      role: 'patient',
+      name: `Verified ${provider} User`,
+      email: `user.${provider.toLowerCase()}@deracare.pk`
+    };
+    if (typeof updateProfileUI === 'function') updateProfileUI();
+    const usernameHeader = document.getElementById('home-username');
+    if (usernameHeader) usernameHeader.textContent = `${provider} User`;
+
+    showToast("Authenticated ✓", `Signed in successfully via ${provider}.`, "success");
+    showScreen('home-container');
+    if (typeof switchTab === 'function' && typeof btnNavHome !== 'undefined') {
+      switchTab(btnNavHome, homeDashboardView);
+    }
+  }, 600);
+}
+
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.selectAuthAccount = selectAuthAccount;
+window.handleSocialLogin = handleSocialLogin;
 window.closeModals = function() {
   const t = document.getElementById('terms-modal');
   const p = document.getElementById('privacy-modal');
