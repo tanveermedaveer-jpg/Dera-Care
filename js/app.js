@@ -844,12 +844,30 @@ async function handlePatientSignup(e) {
     btn.innerText = "CREATE ACCOUNT →";
   }
 
-  // Prevent unwanted redirect to login screen & force OTP modal open immediately
-  closeRegisterView();
-  showToast("OTP Dispatched ✓", `Verification code sent to ${email}`, "success");
+  // Set active user session immediately
+  currentSession = {
+    isGuest: false,
+    role: 'patient',
+    name: name,
+    email: email
+  };
 
-  console.log('[Dera Care] Register view closed — opening OTP modal for:', email);
-  openOtpModal(email);
+  try {
+    localStorage.setItem('currentUser', JSON.stringify(currentSession));
+    localStorage.setItem('dc_current_session', JSON.stringify(currentSession));
+  } catch(err) {}
+
+  if (typeof updateProfileUI === 'function') updateProfileUI();
+  const usernameHeader = document.getElementById('home-username');
+  if (usernameHeader) usernameHeader.textContent = name.split(' ')[0];
+
+  closeRegisterView();
+  showToast("Account Created ✓", `Welcome ${name}! Registration complete.`, "success");
+
+  showScreen('home-container');
+  if (typeof switchTab === 'function' && typeof btnNavHome !== 'undefined') {
+    switchTab(btnNavHome, homeDashboardView);
+  }
 
   return false;
 }
