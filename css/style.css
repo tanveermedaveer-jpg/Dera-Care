@@ -217,3 +217,28 @@ html, body {
 button, input, select, textarea, a, label {
   pointer-events: auto !important;
 }
+
+/* Compact Circular Social Login Buttons */
+.social-icon-btn {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background-color: #FFFFFF !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #E2E8F0 !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+}
+
+.social-icon-btn:hover {
+  transform: translateY(-2px) scale(1.06) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12) !important;
+  border-color: var(--accent-color) !important;
+}
+
+.social-icon-btn:active {
+  transform: scale(0.95) !important;
+}
